@@ -10,10 +10,14 @@
     "tako": "0.2",
     "marked": "~0.2.4",
     "graceful-fs": "~1.1.8",
-    "redis": "~0.7.1"
+    "redis": "~0.7.1",
+    "cookies": "~0.2.2",
+    "keygrip": "~0.2.0"
   },
   "optionalDependencies": {
     "hiredis": "~0.1.14"
   },
-  "bundleDependencies": [ "tako" ]
+  "bundleDependencies": [
+    "tako"
+  ]
 }
