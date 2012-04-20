@@ -1,7 +1,45 @@
-// XXX Use the npm-data worker in a forked module instead.
+// XXX Get npm data from the master module.
+
+var cluster = require("cluster")
+if (cluster.isMaster) {
+  require("./server.js")
+  return
+}
+
+
+// message brokering
+var callbacks = {}
+
+process.on("message", function (m) {
+  if (m.id && callbacks[m.id]) {
+    callbacks[m.id](m)
+    delete callbacks[m.id]
+  }
+})
+
+var ID = 0
+function message (m, cb) {
+  var id = ID++
+  m.id = id
+  m.from = cluster.worker.uniqueID
+  if (cb) {
+    var to = setTimeout(function () {
+      delete callbacks[m.id]
+      var er = new Error("timeout")
+      er.message = m
+      cb(er)
+    }, m.timeout || 5000)
+    callbacks[m.id] = function (resp) {
+      clearTimeout(to)
+      cb(null, resp)
+    }
+  }
+  process.send(m)
+}
 
 
 
+// the http server
 
 var tako = require("tako")
 , request = require("request")
@@ -13,7 +51,6 @@ var tako = require("tako")
 , url = require("url")
 , marked = require("marked")
 , glob = require("glob")
-, filed = require("filed")
 , registry = require("npm/lib/utils/npm-registry-client/index.js")
 , LRU = require("lru-cache")
 , regData = new LRU(10000)
@@ -23,33 +60,13 @@ var tako = require("tako")
 , Cookies = require("cookies")
 , EventEmitter = require("events").EventEmitter
 
+, tc = require("tako-cookies")
+, ST = require("tako-session-token")
+, sessionToken = new ST("npm-www-session")
 
-// middleware that adds cookie support
-var cookieMiddle = new EventEmitter()
-cookieMiddle.on("request", function (req, res) {
-  console.error("Cookies middleware")
-  req.cookies = res.cookies = new Cookies(req, res, keygrip)
-})
-app.middle(cookieMiddle)
-
-
-// middleware that adds session token
-var sessionToken = new EventEmitter()
-, sessionKey = config.sessionKey || "npm-www-session"
-sessionToken.on("request", function (req, res) {
-  console.error("session token middleware")
-  if (!req.cookies) {
-    throw new Error("session token requires cookies")
-  }
-  var key = req.cookies.get(sessionKey, {signed: true})
-  if (!key) {
-    key = crypto.randomBytes(30).toString("base64")
-    req.cookies.set(sessionKey, key, {signed: true})
-  }
-  console.error("set session to ", key)
-  req.session = res.session = key
-})
+app.middle(tc)
 app.middle(sessionToken)
+
 
 
 
@@ -81,7 +98,6 @@ app.route("/favicon.ico").file(path.resolve(__dirname, "favicon.ico"))
 
 app.route("/-").html(function (req, res) {
   res.notfound()
-  //app.notfound(res)
 })
 
 app.route("/-/login", function (req, res) {
