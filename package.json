@@ -6,20 +6,9 @@
   "version": "0.0.0",
   "dependencies": {
     "request": "~2.9.202",
-    "tako": "0.2",
     "marked": "~0.2.4",
-    "graceful-fs": "~1.1.8",
     "redis": "~0.7.1",
     "lru-cache": "~1.1.0",
-    "glob": "~3.1.9",
-    "cluster-master": "0.0.2",
-    "tako-cookies": "0.0.2",
-    "tako-session-token": "0.0.1"
-  },
-  "optionalDependencies": {
-    "hiredis": "~0.1.14"
-  },
-  "bundleDependencies": [
-    "tako"
-  ]
+    "cluster-master": "0"
+  }
 }
