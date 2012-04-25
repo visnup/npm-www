@@ -1,6 +1,7 @@
 module.exports = login
 var url = require("url")
 , request = require("request")
+, config = require("../config.js")
 
 function login (req, res) {
   switch (req.method) {
@@ -26,7 +27,6 @@ function login (req, res) {
             return res.redirect("/-/login", 302)
           }
 
-          console.error("auth data", data)
           req.session.set("auth", data)
           return res.redirect("/-/profile")
         })
@@ -35,7 +35,6 @@ function login (req, res) {
     case 'HEAD':
     case 'GET':
       return req.session.get('auth', function (er, data) {
-        console.error("auth in /-/login", er, data)
         if (data && !data.error) return res.redirect("/-/profile")
         res.sendHTML("<html>login, please: " +
                   "<form method='post'><label>u: <input name='user'></label>" +
