@@ -24,10 +24,17 @@ function site (req, res) {
   d.add(res)
   d.on("error", function (er) {
     try {
-      errors(er, req, res)
+      res.error(er)
+      // don't destroy before sending the error
       res.on("close", function () {
         d.dispose()
       })
+
+      // don't wait forever, though.
+      setTimeout(function () {
+        d.dispose()
+      }, 1000)
+
     } catch (er) {
       d.dispose()
     }
