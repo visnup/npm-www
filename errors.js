@@ -26,6 +26,10 @@ function errors (er, req, res) {
     message = er.message || STATUS_CODES[code]
   }
 
+  if (er && er.stack) {
+    message += '\n' + er.stack
+  }
+
   console.error("Error %s", req.url, req.headers, code, message, er)
 
   // serve in either html or json
@@ -39,7 +43,7 @@ function errors (er, req, res) {
   switch (mt) {
     case 'text/html':
       // XXX templates
-      msg = new Buffer("<html><body>" + code + " " + message 
+      msg = new Buffer("<html><body><pre>" + code + " " + message 
                       + '\n' + u)
       break
 
