@@ -3,7 +3,7 @@ var filed = require("filed")
 
 module.exports = function (req, res) {
   if (req.url === '/favicon.ico') {
-    return filed("favicon.ico").pipe(res)
+    req.splats = ["", req.url]
   }
 
   // read from the 'static' folder.
