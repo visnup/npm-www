@@ -9,6 +9,10 @@ var routes = require("routes")
 , path = require('path')
 , callresp = require("cluster-callresp")
 , errors = require("./errors.js")
+, request = require("request")
+, url = require("url")
+, config = require("./config.js")
+
 
 module.exports = router
 
@@ -23,6 +27,66 @@ router.addRoute("/favicon.ico", function (req, res) {
   filed("favicon.ico").pipe(res)
 })
 
+router.addRoute("/-/login", function (req, res) {
+  switch (req.method) {
+    case 'POST':
+      return req.on('form', function (data) {
+        if (!data.user || !data.pass) return loginFail(req, res)
+
+        // verify the data in couch by looking up the user record
+        var u = url.parse( config.registryCouch
+                         + "/_users/org.couchdb.user:"
+                         + data.user )
+        u.auth = data.user + ":" + data.pass
+
+        // verify the login
+        request({ url: u, json: true }, function (er, r, data) {
+          if (er) {
+            er.statusCode = r && r.statusCode || 500
+            return res.error(er)
+          }
+
+          if (r.statusCode !== 200 || data.error) {
+            req.session.set("auth", data)
+            return res.redirect("/-/login", 302)
+          }
+
+          console.error("auth data", data)
+          req.session.set("auth", data)
+          return res.redirect("/-/profile")
+        })
+      })
+
+    case 'HEAD':
+    case 'GET':
+      return req.session.get('auth', function (er, data) {
+        console.error("auth in /-/login", er, data)
+        if (data && !data.error) return res.redirect("/-/profile")
+        res.sendHTML("<html>login, please: " +
+                  "<form method='post'><label>u: <input name='user'></label>" +
+                  "<label>p: <input type='password' name='pass'></label>" +
+                  "<input type='submit'></form>")
+      })
+  }
+
+})
+
+router.addRoute("/-/profile", function (req, res) {
+  req.session.get("auth", function (er, data) {
+    if (er) return res.error(er)
+    res.sendJSON(data)
+  })
+})
+
+router.addRoute("/-/logout", function (req, res) {
+  req.session.del("auth", function (er) {
+    if (er) return res.error(er)
+    res.sendHTML("<html><body>you are logged out")
+  })
+})
+
+
+// any other /-/special routes should 404
 router.addRoute("/-/*", errors(404))
 router.addRoute("/-", errors(404))
 

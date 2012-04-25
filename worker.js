@@ -1,49 +1,21 @@
 // XXX Get npm data from the master module.
 
 var cluster = require("cluster")
+, config = require("./config.js")
+
 if (cluster.isMaster) {
+  // just spin up one worker for dev stuff
+  config.cluster.size = 1
   require("./server.js")
   return
 }
 
 
-// message brokering
-var callbacks = {}
-
-process.on("message", function (m) {
-  if (m.id && callbacks[m.id]) {
-    callbacks[m.id](m)
-    delete callbacks[m.id]
-  }
-})
-
-var ID = 0
-function message (m, cb) {
-  var id = ID++
-  m.id = id
-  m.from = cluster.worker.uniqueID
-  if (cb) {
-    var to = setTimeout(function () {
-      delete callbacks[m.id]
-      var er = new Error("timeout")
-      er.message = m
-      cb(er)
-    }, m.timeout || 5000)
-    callbacks[m.id] = function (resp) {
-      clearTimeout(to)
-      cb(null, resp)
-    }
-  }
-  process.send(m)
-}
-
-
+var callresp = require("cluster-callresp")
 
 // the http server
 
-var tako = require("tako")
-, request = require("request")
-, app = tako()
+var request = require("request")
 , fs = require("fs")
 , path = require("path")
 , config = require("./config.js")
@@ -51,47 +23,29 @@ var tako = require("tako")
 , url = require("url")
 , marked = require("marked")
 , glob = require("glob")
-, registry = require("npm/lib/utils/npm-registry-client/index.js")
-, LRU = require("lru-cache")
-, regData = new LRU(10000)
 , qs = require("querystring")
 , crypto = require("crypto")
-, keygrip = require("keygrip")()
+, Keygrip = require("keygrip")
 , Cookies = require("cookies")
-, EventEmitter = require("events").EventEmitter
+, redis = require("redis")
+, http = require("http")
+, https = require("https")
+, site = require("./site.js")
+, LRU = require("lru-cache")
+, regData = new LRU(10000)
 
-, tc = require("tako-cookies")
-, ST = require("tako-session-token")
-, sessionToken = new ST("npm-www-session")
-
-app.middle(tc)
-app.middle(sessionToken)
-
-
-
-
-// XXX replace with real session backing
-var superShittyMemorySessionStore = {}
-
-app.auth(function (req, res, cb) {
-  console.error("session id = "+req.session)
-  console.error("session store =", superShittyMemorySessionStore)
-
-  var user
-  if (req.session && superShittyMemorySessionStore[req.session]) {
-    // valid session!
-    user = superShittyMemorySessionStore[req.session]
-  }
-  cb(user)
-})
-
-
-npm.load({ "cache-min": "60000", "node-version": null }, function (er) {
-  if (er) throw er
-
-  app.httpServer.listen(config.port)
+if (config.https) {
+  https.createServer(config.https, site).listen(config.port)
+  console.log("SSL Listening on %d", config.port)
+} else {
+  http.createServer(site).listen(config.port)
   console.log("Listening on %d", config.port)
-})
+}
+
+return
+
+
+/// that's it.  the rest down here is just older stuff
 
 app.route("/-/static/*").files(path.resolve(__dirname, "static"))
 app.route("/favicon.ico").file(path.resolve(__dirname, "favicon.ico"))
@@ -170,7 +124,9 @@ app.route("/*").html(function (req, res) {
 
   if (data) return showReadme(data, req, res)
 
-  registry.get(name, version, 60000, false, true, function (er, data) {
+  callresp({ cmd: 'registry.get'
+           , name: name
+           , version: version }, function (er, data) {
     if (er) return res.error(er)
 
     regData.set(k, data)

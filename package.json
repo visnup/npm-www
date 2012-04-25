@@ -9,6 +9,12 @@
     "marked": "~0.2.4",
     "redis": "~0.7.1",
     "lru-cache": "~1.1.0",
-    "cluster-master": "0"
+    "cluster-master": "0",
+    "negotiator": "~0.2.3",
+    "routes": "~0.1.1",
+    "keygrip": "~0.2.0",
+    "cookies": "~0.2.2",
+    "cluster-callresp": "0.0.1",
+    "redsess": "0.0.1"
   }
 }

@@ -26,7 +26,7 @@ function errors (er, req, res) {
     message = er.message || STATUS_CODES[code]
   }
 
-  console.error("Error %s", req.url, code, message, er)
+  console.error("Error %s", req.url, req.headers, code, message, er)
 
   // serve in either html or json
   var neg = req.negotiator
