@@ -28,7 +28,9 @@ callresp(function (req, cb) {
 
       registry.get(n, v, 60000, false, true, function (er, data, raw, res) {
         if (er) {
-          er.statusCode = res.statusCode
+          console.error("error", er)
+          er.statusCode = res && res.statusCode || 404
+          er.stack = er.stack
           return cb(er, data)
         }
         regData.set(k, data)
@@ -41,7 +43,10 @@ callresp(function (req, cb) {
   }
 })
 
-npm.load({ "cache-min": "60000", "node-version": null }, function (er) {
+var npmconf = config.npm || {}
+npmconf["cache-min"] = 60000
+npmconf["node-version"] = null
+npm.load(npmconf, function (er) {
   if (er) throw er
 
   // Ok, we're ready!  Spin up the cluster.

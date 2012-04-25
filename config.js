@@ -4,3 +4,4 @@ exports.cluster = { size : require("os").cpus().length }
 // redis auth 
 exports.redis = { host: '127.0.0.1', port: 6379 }
 exports.registryCouch = "https://isaacs.iriscouch.net/"
+exports.npm = { loglevel: "warn" }
