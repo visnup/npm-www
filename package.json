@@ -17,6 +17,9 @@
     "cluster-callresp": "0",
     "redsess": "0",
     "ejs": "~0.7.1",
-    "templar": "0"
+    "templar": "0",
+    "glob": "3",
+    "filed": "0",
+    "stylus": "git://github.com/visnup/stylus.git#0.7"
   }
 }

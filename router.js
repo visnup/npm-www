@@ -18,6 +18,8 @@ router.addRoute("/-/static/*", static)
 router.addRoute("/-/static", static)
 router.addRoute("/favicon.ico", static)
 
+router.addRoute("/css/*", require("./routes/css.js"))
+
 router.addRoute("/-/login", require("./routes/login.js"))
 router.addRoute("/-/profile", require("./routes/profile.js"))
 router.addRoute("/-/logout", require("./routes/logout.js"))

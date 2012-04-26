@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title><%= package.name %> – npm module</title>
+  <link type="text/css" rel="stylesheet" media="all" href="/-/static/normalize.css" />
+  <link type="text/css" rel="stylesheet" media="all" href="/css/index.css" />
+  <body>
+
+    <nav>
+      <ul>
+        <li class="home"><a href="http://nodejs.org/">Node.js Home</a></li>
+        <li class="download">Download</li>
+        <li class="about">About</li>
+        <li class="npm">NPM Registry</li>
+        <li class="docs">Docs</li>
+        <li class="blog">Blog</li>
+        <li class="community">Community</li>
+        <li class="jobs">Jobs</li>
+      </ul>
+    </nav>
+
+    <aside class="login">
+      <img src="" />
+      Mr. Logged-in Guy
+    </aside>
+
+    <div id="page">
+
+      <header>
+        <h1>npm</h1>
+        <form>
+          <input type="search" placeholder="Search Packages" />
+        </form>
+      </header>
+
+      <div id="package">
+        <h1><%= package.name %></h1>
+        <p class="description"><%= package.description %></p>
+
+        <table class="metadata">
+          <tr>
+            <th>Author:</th>
+            <td>
+              <img src="" />
+              <%= package.author.name %>
+            </td>
+          </tr>
+          <tr>
+            <th>Version:</th>
+            <td><%= package.version %></td>
+          </tr>
+          <tr>
+            <th>Tags:</th>
+            <td><%= package.tags.join(', ') %></td>
+          </tr>
+          <tr>
+            <th>Dependencies:</th>
+            <td><%= package.dependencies %></td>
+          </tr>
+          <tr>
+            <th>Dependents:</th>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <th>Starred by:</th>
+            <td>
+            </td>
+          </tr>
+        </table>
+
+        <div class="details">
+          <ul class="toc">
+            <li><a href="#readme"><%= package.name %> Read Me</a></li>
+            <li><a href="#commits">Commits</a></li>
+            <li><a href="#stats">Stats</a></li>
+          </ul>
+
+          <section id="readme">
+            <%- marked.parse(package.readme) %>
+          </section>
+        <div>
+      </div>
+    </div>
+  </body>
+</html>
