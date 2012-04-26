@@ -21,65 +21,98 @@
     </nav>
 
     <aside class="login">
-      <img src="" />
-      Mr. Logged-in Guy
+      <img src="<%= gravatar('visnupx@gmail.com') %>" class="avatar" />
+      <div class="profile">
+        Visnu Pitiyanuvath
+      </div>
+      <ul class="menu">
+      </ul>
     </aside>
 
     <div id="page">
 
       <header>
-        <h1>npm</h1>
         <form>
           <input type="search" placeholder="Search Packages" />
         </form>
+        <h1>npm</h1>
       </header>
 
       <div id="package">
         <h1><%= package.name %></h1>
-        <p class="description"><%= package.description %></p>
+        <p class="description"><%= package.description || 'No description' %></p>
 
         <table class="metadata">
           <tr>
             <th>Author:</th>
-            <td>
-              <img src="" />
-              <%= package.author.name %>
-            </td>
+            <% if (package.author) { %>
+              <td class="with-avatar">
+                <img src="<%= gravatar(package.author.email) %>" class="avatar" />
+                <%= package.author.name %>
+              </td>
+            <% } else { %>
+              <td>None</td>
+            <% } %>
           </tr>
           <tr>
             <th>Version:</th>
             <td><%= package.version %></td>
           </tr>
-          <tr>
-            <th>Tags:</th>
-            <td><%- (package.tags || ['(none)']).join(', ') %></td>
-          </tr>
+          <% if (package.tags) { %>
+            <tr>
+              <th>Tags:</th>
+              <td><%- package.tags.map(function(tag) { return '<a href="/-/tags/' + tag + '">' + tag + '</a>' }).join(', ') %></td>
+            </tr>
+          <% } %>
+          <% if (package.repository) { %>
+            <tr>
+              <th>Repository:</td>
+              <td>
+                <%= package.repository.url %> (<%= package.repository.type %>)
+              </td>
+          <% } %>
+          <% if (package.bugs) { %>
+            <tr>
+              <th>Bugs:</td>
+              <td>
+                <a href="<%= package.bugs.url %>"><%= package.bugs.url %></a>
+              </td>
+          <% } %>
           <tr>
             <th>Dependencies:</th>
-            <td><%= package.dependencies %></td>
-          </tr>
-          <tr>
-            <th>Dependents:</th>
             <td>
+              <%- Object.keys(package.dependencies || {}).map(function(pkg) { return '<a href="/' + pkg + '">' + pkg + '</a>' }).join(', ') || 'None' %>
             </td>
           </tr>
-          <tr>
-            <th>Starred by:</th>
-            <td>
-            </td>
-          </tr>
+          <% if (package.dependents) { %>
+            <tr>
+              <th>Dependents:</th>
+              <td>
+              </td>
+            </tr>
+          <% } %>
+          <% if (package.users) { %>
+            <tr>
+              <th>Starred by:</th>
+              <td>
+                <%= package.users %>
+              </td>
+            </tr>
+          <% } %>
         </table>
 
         <div class="details">
           <ul class="toc">
-            <li><a href="#readme"><%= package.name %> Read Me</a></li>
-            <li><a href="#commits">Commits</a></li>
-            <li><a href="#stats">Stats</a></li>
+            <% if (package.readme) { %>
+              <li><a href="#readme">Read Me</a></li>
+            <% } %>
           </ul>
 
-          <section id="readme">
-            <%- marked.parse(package.readme) %>
-          </section>
+          <% if (package.readme) { %>
+            <section id="readme">
+              <%- marked.parse(package.readme) %>
+            </section>
+          <% } %>
         <div>
       </div>
     </div>

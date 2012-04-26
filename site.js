@@ -16,6 +16,7 @@ var router = require("./router.js")
 , qs = require("querystring")
 , path = require('path')
 
+, path = require('path')
 , Templar = require("templar")
 , ejs = require('ejs')
 , tplDir = path.resolve(__dirname, 'templates')
