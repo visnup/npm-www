@@ -3,7 +3,7 @@
 red = #cc3d33
 
 body, input {
-  font: 14px Lucida Grande;
+  font: 14px Lucida Grande, sans-serif;
   color: #666;
 }
 
@@ -11,6 +11,15 @@ body {
   background-color: #f4f4f2;
   border-top: solid 6px red;
   padding: 55px 16px;
+}
+
+input {
+  font-family: Georgia, serif;
+  border: solid 1px transparent;
+  padding: 0.5em;
+  outline: none;
+  &:hover { border-color: #ccc; }
+  &:focus { border-color: #000; }
 }
 
 a {
@@ -31,6 +40,7 @@ nav {
     color: #999;
   }
   ul {
+    margin: 0;
     padding: 0;
     li {
       padding: 0.5em 0;
@@ -59,27 +69,29 @@ aside.login {
   margin-right: 220px + 40px;
 
   header {
-    h1, form {
-      display: inline-block;
-    }
     h1 {
       text-indent: -999em;
       width: 200px;
       height: 78px;
       background: url('/-/static/npm.png') no-repeat;
       background-size: 200px 78px;
-      margin: 0;
+      margin: -5px 0 0;
+    }
+    form input {
+      font-size: 18px;
+      width: 50%;
+      float: right;
     }
   }
 }
 
 #package {
   > h1 {
-    font: 28px Georgia;
+    font: 28px Georgia, serif;
     border-bottom: solid 1px #000;
   }
   p.description {
-    font: 18px Georgia;
+    font: 18px Georgia, serif;
   }
   td.with-avatar {
     position: relative;
