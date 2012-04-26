@@ -14,6 +14,7 @@ var router = require("./router.js")
 , url = require("url")
 , StringDecoder = require('string_decoder').StringDecoder
 , qs = require("querystring")
+, path = require('path')
 
 , Templar = require("templar")
 , ejs = require('ejs')
