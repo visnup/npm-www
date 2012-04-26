@@ -13,7 +13,7 @@ var LRU = require("lru-cache")
 
 function packagePage (req, res) {
   var name = req.params.name
-  , version = req.params.version
+  , version = req.params.version || 'latest'
 
   var k = name + '/' + (version || '')
   , data = regData.get(k)

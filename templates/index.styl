@@ -15,6 +15,7 @@ body {
 
 a {
   text-decoration: none;
+  color: red;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -67,6 +68,7 @@ aside.login {
       height: 78px;
       background: url('/-/static/npm.png') no-repeat;
       background-size: 200px 78px;
+      margin: 0;
     }
   }
 }
@@ -79,11 +81,16 @@ aside.login {
   p.description {
     font: 18px Georgia;
   }
-  .avatar {
-    width: 25px;
-    height: 25px;
-    vertical-align: middle;
-    margin-top: -0.25em;
+  td.with-avatar {
+    position: relative;
+    padding-left: 30px;
+    .avatar {
+      position: absolute;
+      top: 3px;
+      left: 0;
+      width: 25px;
+      height: 25px;
+    }
   }
   table.metadata {
     margin: 1em 0;
@@ -94,6 +101,7 @@ aside.login {
   }
   th, td {
     padding: 0.5em 0;
+    vertical-align: baseline;
   }
   th {
     color: #000;

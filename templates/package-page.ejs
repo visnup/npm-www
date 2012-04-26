@@ -40,15 +40,19 @@
 
       <div id="package">
         <h1><%= package.name %></h1>
-        <p class="description"><%= package.description %></p>
+        <p class="description"><%= package.description || 'No description' %></p>
 
         <table class="metadata">
           <tr>
             <th>Author:</th>
-            <td>
-              <img src="<%= gravatar(package.author.email) %>" class="avatar" />
-              <%= package.author.name %>
-            </td>
+            <% if (package.author) { %>
+              <td class="with-avatar">
+                <img src="<%= gravatar(package.author.email) %>" class="avatar" />
+                <%= package.author.name %>
+              </td>
+            <% } else { %>
+              <td>None</td>
+            <% } %>
           </tr>
           <tr>
             <th>Version:</th>
@@ -62,18 +66,25 @@
           <% } %>
           <tr>
             <th>Dependencies:</th>
-            <td><%= package.dependencies %></td>
-          </tr>
-          <tr>
-            <th>Dependents:</th>
             <td>
+              <%- Object.keys(package.dependencies || {}).map(function(pkg) { return '<a href="/' + pkg + '">' + pkg + '</a>' }).join(', ') || 'None' %>
             </td>
           </tr>
-          <tr>
-            <th>Starred by:</th>
-            <td>
-            </td>
-          </tr>
+          <% if (package.dependents) { %>
+            <tr>
+              <th>Dependents:</th>
+              <td>
+              </td>
+            </tr>
+          <% } %>
+          <% if (package.users) { %>
+            <tr>
+              <th>Starred by:</th>
+              <td>
+                <%= package.users %>
+              </td>
+            </tr>
+          <% } %>
         </table>
 
         <div class="details">
@@ -82,9 +93,11 @@
             <li><a href="#commits">Commits</a></li>
           </ul>
 
-          <section id="readme">
-            <%- marked.parse(package.readme) %>
-          </section>
+          <% if (package.readme) { %>
+            <section id="readme">
+              <%- marked.parse(package.readme) %>
+            </section>
+          <% } %>
         <div>
       </div>
     </div>
