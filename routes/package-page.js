@@ -4,7 +4,6 @@ var LRU = require("lru-cache")
 , regData = new LRU(10000)
 , marked = require("marked")
 , callresp = require("cluster-callresp")
-, template = null
 
 function packagePage (req, res) {
   var name = req.params.name
@@ -28,11 +27,6 @@ function packagePage (req, res) {
 }
 
 function render (data, req, res) {
-  res.sendHTML(template({ package: data, marked: marked }))
+  var local = { package: data, marked: marked }
+  res.template("package-page.ejs", local)
 }
-
-fs.readFile('./templates/package-page.ejs', function(err, data) {
-  if (err) return console.log(err)
-
-  template = require('ejs').compile(data.toString())
-})

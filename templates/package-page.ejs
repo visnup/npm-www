@@ -52,7 +52,7 @@
           </tr>
           <tr>
             <th>Tags:</th>
-            <td><%= package.tags.join(', ') %></td>
+            <td><%- (package.tags || ['(none)']).join(', ') %></td>
           </tr>
           <tr>
             <th>Dependencies:</th>
