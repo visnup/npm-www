@@ -16,6 +16,7 @@
     "cookies": "~0.2.2",
     "cluster-callresp": "0",
     "redsess": "0",
-    "ejs": "~0.7.1"
+    "ejs": "~0.7.1",
+    "templar": "0"
   }
 }
