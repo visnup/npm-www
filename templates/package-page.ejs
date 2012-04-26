@@ -64,6 +64,20 @@
               <td><%- package.tags.map(function(tag) { return '<a href="/-/tags/' + tag + '">' + tag + '</a>' }).join(', ') %></td>
             </tr>
           <% } %>
+          <% if (package.repository) { %>
+            <tr>
+              <th>Repository:</td>
+              <td>
+                <%= package.repository.url %> (<%= package.repository.type %>)
+              </td>
+          <% } %>
+          <% if (package.bugs) { %>
+            <tr>
+              <th>Bugs:</td>
+              <td>
+                <a href="<%= package.bugs.url %>"><%= package.bugs.url %></a>
+              </td>
+          <% } %>
           <tr>
             <th>Dependencies:</th>
             <td>
