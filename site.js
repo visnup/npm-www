@@ -15,6 +15,7 @@ var router = require("./router.js")
 , StringDecoder = require('string_decoder').StringDecoder
 , qs = require("querystring")
 
+, path = require('path')
 , Templar = require("templar")
 , ejs = require('ejs')
 , tplDir = path.resolve(__dirname, 'templates')

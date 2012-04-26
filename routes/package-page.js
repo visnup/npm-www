@@ -10,6 +10,7 @@ var LRU = require("lru-cache")
     marked: marked
   , gravatar: gravatar
 }
+, fs = require('fs')
 
 function packagePage (req, res) {
   var name = req.params.name
