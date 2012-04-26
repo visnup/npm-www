@@ -52,9 +52,9 @@ function errors (er, req, res) {
         { ok:false, code:code, message: message, url: u}))
       break
 
-    case 'text/plain':
+    default:
       msg = new Buffer(code + " " + message + "\n" + u)
   }
-  res.setHeader('content-length', msg.length)
+  if (msg) res.setHeader('content-length', msg.length)
   res.end(msg)
 }
