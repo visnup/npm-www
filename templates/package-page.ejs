@@ -89,8 +89,9 @@
 
         <div class="details">
           <ul class="toc">
-            <li><a href="#readme"><%= package.name %> Read Me</a></li>
-            <li><a href="#commits">Commits</a></li>
+            <% if (package.readme) { %>
+              <li><a href="#readme">Read Me</a></li>
+            <% } %>
           </ul>
 
           <% if (package.readme) { %>

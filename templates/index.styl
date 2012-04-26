@@ -111,17 +111,31 @@ aside.login {
   }
 
   .details {
-    padding: 16px;
-    background-color: #fff;
-    margin-right: -260px;
-  }
+    ul.toc {
+      padding: 0;
+      margin-bottom: 0;
+      li {
+        display: inline-block;
+        padding: 0.5em 32px 0.5em 16px;
+        &:first-child {
+          background-color: #fff;
+        }
+      }
+    }
 
-  #readme {
-    h1 { font-size: 24px; }
-    pre {
-      font-family: Monaco, monospace;
-      background-color: #f9f9f8;
+    section {
       padding: 16px;
+      background-color: #fff;
+      margin-right: -260px;
+
+      &#readme {
+        h1 { font-size: 24px; }
+        pre {
+          font-family: Monaco, monospace;
+          background-color: #f9f9f8;
+          padding: 16px;
+        }
+      }
     }
   }
 }
