@@ -24,18 +24,18 @@ function login (req, res) {
 
           if (r.statusCode !== 200 || data.error) {
             req.session.set("auth", data)
-            return res.redirect("/-/login", 302)
+            return res.redirect("/login", 302)
           }
 
           req.session.set("auth", data)
-          return res.redirect("/-/profile")
+          return res.redirect("/profile")
         })
       })
 
     case 'HEAD':
     case 'GET':
       return req.session.get('auth', function (er, data) {
-        if (data && !data.error) return res.redirect("/-/profile")
+        if (data && !data.error) return res.redirect("/profile")
         res.sendHTML("<html>login, please: " +
                   "<form method='post'><label>u: <input name='user'></label>" +
                   "<label>p: <input type='password' name='pass'></label>" +

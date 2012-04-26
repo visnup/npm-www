@@ -14,23 +14,17 @@ module.exports = router
 
 // static stuff serves out of the static folder.
 var static = require("./routes/static.js")
-router.addRoute("/-/static/*", static)
-router.addRoute("/-/static", static)
+router.addRoute("/static/*?", static)
 router.addRoute("/favicon.ico", static)
+router.addRoute("/stylus/*?", require("./routes/stylus.js"))
 
-router.addRoute("/css/*", require("./routes/css.js"))
+router.addRoute("/login", require("./routes/login.js"))
+router.addRoute("/profile", require("./routes/profile.js"))
+router.addRoute("/logout", require("./routes/logout.js"))
 
-router.addRoute("/-/login", require("./routes/login.js"))
-router.addRoute("/-/profile", require("./routes/profile.js"))
-router.addRoute("/-/logout", require("./routes/logout.js"))
-
-
-// any other /-/special routes should 404
-router.addRoute("/-/*", errors(404))
-router.addRoute("/-", errors(404))
 
 // The package details page
 // Definitely ought to be its own module.
 var packagePage = require("./routes/package-page.js")
-router.addRoute("/:name/:version", packagePage)
-router.addRoute("/:name", packagePage)
+router.addRoute("/package/:name/:version", packagePage)
+router.addRoute("/package/:name", packagePage)
