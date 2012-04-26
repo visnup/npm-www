@@ -61,7 +61,7 @@
           <% if (package.tags) { %>
             <tr>
               <th>Tags:</th>
-              <td><%= package.tags.join(', ') %></td>
+              <td><%- package.tags.map(function(tag) { return '<a href="/-/tags/' + tag + '">' + tag + '</a>' }).join(', ') %></td>
             </tr>
           <% } %>
           <tr>
