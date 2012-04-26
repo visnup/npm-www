@@ -3,10 +3,7 @@
 
 var cluster = require("cluster")
 if (cluster.isMaster) {
-  // just spin up one worker for dev stuff
-  config.cluster.size = 1
-  require("./server.js")
-  return
+  throw new Error("should only be invoked as cluster worker")
 }
 
 var config = require("./config.js")
