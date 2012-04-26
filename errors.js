@@ -1,3 +1,9 @@
+// XXX Flesh this module out a bit more, and make it
+// a standalone thing.
+//
+// It should detect a res.template() method, and use that
+// to generate an error page
+
 module.exports = errors
 
 var STATUS_CODES = require("http").STATUS_CODES
@@ -29,12 +35,18 @@ function errors (er, req, res) {
   if (er && er.stack) {
     message += '\n' + er.stack
   }
+  message += '\n'
 
-  console.error("Error %s", req.url, req.headers, code, message, er)
+  console.error("Error", code, u, message, er)
 
   // serve in either html or json
   var neg = req.negotiator
-  , avail = ['text/html', 'application/json', 'text/plain']
+  if (!neg) {
+    var Negotiator = require('negotiator')
+    neg = req.negotiator = new Negotiator(req)
+  }
+
+  var avail = ['text/html', 'application/json', 'text/plain']
   , mt = neg.preferredMediaType(avail) || 'text/plain'
 
   res.statusCode = code

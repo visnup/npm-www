@@ -14,7 +14,6 @@ var router = require("./router.js")
 , url = require("url")
 , StringDecoder = require('string_decoder').StringDecoder
 , qs = require("querystring")
-, path = require('path')
 
 , path = require('path')
 , Templar = require("templar")
@@ -92,36 +91,44 @@ function site (req, res) {
     }
   }
 
+  res.send = function (data, status, headers) {
+    res.statusCode = res.statusCode || status
+    if (headers) Object.keys(headers).forEach(function (h) {
+      res.setHeader(h, headers[h])
+    })
+    if (!Buffer.isBuffer(data)) data = new Buffer(data)
+    res.setHeader('content-length', data.length)
+    res.end(data)
+  }
+
 
   res.sendJSON = function (obj, status) {
-    res.statusCode = status || res.statusCode || 200
-    res.setHeader('content-type', 'application/json')
-    // XXX weakmap would be awesome to avoid doing this
-    // repeatedly for the same object.
-    var j = new Buffer(JSON.stringify(obj))
-    res.setHeader('content-length', j.length)
-    res.end(j)
+    res.send(JSON.stringify(obj), status, {'content-type':'application/json'})
   }
 
   res.sendHTML = function (data, status) {
-    res.statusCode = status || res.statusCode || 200
-    res.setHeader('content-type', 'text/html')
-    // XXX weakmap would be awesome to avoid doing this
-    // repeatedly for the same object.
-    var j = new Buffer(data)
-    res.setHeader('content-length', j.length)
-    res.end(j)
+    res.send(data, status, {'content-type':'text/html'})
   }
+  // decoration over
+
 
 
   var route = router.match(req.url)
-  if (!route) return errors(404, req, res)
+  if (!route) return res.error(404)
 
   Object.keys(route).forEach(function (k) {
     req[k] = route[k]
   })
 
   route.fn(req, res)
+
+  if (typeof req.maxLen === 'number') {
+    var cl = req.headers['content-length']
+    res.setHeader('max-length', ''+req.maxLen)
+    if (!cl) return res.error(411) // length required.
+    if (cl > req.maxLen) return res.error(413) // too long.
+  }
+
   if (req.listeners('json').length) {
     if (!req.headers['content-type'].match(/\/(x-)?json$/)) {
       return res.error(415)
@@ -149,14 +156,6 @@ function site (req, res) {
   }
 
   if (req.listeners('body').length) {
-    var maxLen = req.maxLen
-    if (maxLen) {
-      var cl = req.headers['content-length']
-      res.setHeader('max-length', ''+maxLen)
-      if (!cl) return res.error(411) // length required.
-      if (cl > maxLen) return res.error(413) // too long.
-    }
-
     var b = ''
     , d = new StringDecoder
     req.on('data', function (c) {
