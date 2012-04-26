@@ -5,7 +5,6 @@ var LRU = require("lru-cache")
 , marked = require("marked")
 , callresp = require("cluster-callresp")
 , crypto = require("crypto")
-, template = null
 , helpers = {
     marked: marked
   , gravatar: gravatar
@@ -37,7 +36,7 @@ function render (data, req, res) {
   var locals = { package: data }
   Object.keys(helpers).forEach(function (i) { locals[i] = helpers[i] })
 
-  res.sendHTML(template(locals))
+  res.template("package-page.ejs", locals)
 }
 
 function gravatar (email, size) {
