@@ -4,7 +4,12 @@ var LRU = require("lru-cache")
 , regData = new LRU(10000)
 , marked = require("marked")
 , callresp = require("cluster-callresp")
+, crypto = require("crypto")
 , template = null
+, helpers = {
+    marked: marked
+  , gravatar: gravatar
+}
 
 function packagePage (req, res) {
   var name = req.params.name
@@ -28,7 +33,17 @@ function packagePage (req, res) {
 }
 
 function render (data, req, res) {
-  res.sendHTML(template({ package: data, marked: marked }))
+  var locals = { package: data }
+  Object.keys(helpers).forEach(function (i) { locals[i] = helpers[i] })
+
+  res.sendHTML(template(locals))
+}
+
+function gravatar (email, size) {
+  var md5sum = crypto.createHash('md5')
+  , hash = md5sum.update(email.trim().toLowerCase()).digest('hex')
+  size = size || '50'
+  return 'https://secure.gravatar.com/avatar/' + hash + '?s=' + size
 }
 
 fs.readFile('./templates/package-page.ejs', function(err, data) {

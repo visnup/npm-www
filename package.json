@@ -20,6 +20,7 @@
     "templar": "0",
     "glob": "3",
     "filed": "0",
-    "stylus": "git://github.com/visnup/stylus.git#0.7"
+    "stylus": "git://github.com/visnup/stylus.git#0.7",
+    "nib": "0"
   }
 }

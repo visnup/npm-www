@@ -21,8 +21,12 @@
     </nav>
 
     <aside class="login">
-      <img src="" />
-      Mr. Logged-in Guy
+      <img src="<%= gravatar('visnupx@gmail.com') %>" class="avatar" />
+      <div class="profile">
+        Visnu Pitiyanuvath
+      </div>
+      <ul class="menu">
+      </ul>
     </aside>
 
     <div id="page">
@@ -42,7 +46,7 @@
           <tr>
             <th>Author:</th>
             <td>
-              <img src="" />
+              <img src="<%= gravatar(package.author.email) %>" class="avatar" />
               <%= package.author.name %>
             </td>
           </tr>
@@ -50,10 +54,12 @@
             <th>Version:</th>
             <td><%= package.version %></td>
           </tr>
-          <tr>
-            <th>Tags:</th>
-            <td><%= package.tags.join(', ') %></td>
-          </tr>
+          <% if (package.tags) { %>
+            <tr>
+              <th>Tags:</th>
+              <td><%= package.tags.join(', ') %></td>
+            </tr>
+          <% } %>
           <tr>
             <th>Dependencies:</th>
             <td><%= package.dependencies %></td>
@@ -74,7 +80,6 @@
           <ul class="toc">
             <li><a href="#readme"><%= package.name %> Read Me</a></li>
             <li><a href="#commits">Commits</a></li>
-            <li><a href="#stats">Stats</a></li>
           </ul>
 
           <section id="readme">
