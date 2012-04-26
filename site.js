@@ -15,6 +15,11 @@ var router = require("./router.js")
 , StringDecoder = require('string_decoder').StringDecoder
 , qs = require("querystring")
 
+, Templar = require("templar")
+, ejs = require('ejs')
+, tplDir = path.resolve(__dirname, 'templates')
+, templateOptions = { engine: ejs, debug: config.debug, folder: tplDir }
+
 RedSess.createClient(config.redis)
 
 function site (req, res) {
@@ -47,6 +52,8 @@ function site (req, res) {
   req.negotiator = new Negotiator(req)
   req.neg = req.negotiator
   req.session = res.session = new RedSess(req, res)
+
+  res.template = Templar(req, res, templateOptions)
 
   // don't print out that dumb 'cannot send blah blah' message
   if (req.method === 'HEAD') {
