@@ -41,7 +41,7 @@ function render (data, req, res) {
 
 function gravatar (email, size) {
   var md5sum = crypto.createHash('md5')
-  , hash = md5sum.update(email.trim().toLowerCase()).digest('hex')
+  , hash = md5sum.update((email || '').trim().toLowerCase()).digest('hex')
   size = size || '50'
   return 'https://secure.gravatar.com/avatar/' + hash + '?s=' + size
 }
