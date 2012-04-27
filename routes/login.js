@@ -7,28 +7,34 @@ function login (req, res) {
   switch (req.method) {
     case 'POST':
       return req.on('form', function (data) {
-        if (!data.user || !data.pass) return loginFail(req, res)
+        if (!data.name || !data.password) return loginFail(req, res)
 
-        // verify the data in couch by looking up the user record
-        var u = url.parse( config.registryCouch
-                         + "/_users/org.couchdb.user:"
-                         + data.user )
-        u.auth = data.user + ":" + data.pass
-
-        // verify the login
-        request({ url: u, json: true }, function (er, r, data) {
-          if (er) {
-            er.statusCode = r && r.statusCode || 500
-            return res.error(er)
+        req.couch.login(data, function (er, cr, data) {
+          if (er) return res.error(er)
+          if (cr.statusCode !== 200) {
+            // XXX Should just render the login form
+            // with an error about a bad login or something.
+            // Something like:
+            // res.template('login.ejs', {message:'bad login'})
+            return res.error(er, cr.statusCode)
           }
 
-          if (r.statusCode !== 200 || data.error) {
-            req.session.set("auth", data)
-            return res.redirect("/login", 302)
-          }
+          // now we have a couchdb session, save it in redis.
+          req.session.set('couchdb_token', req.couch.token)
+          req.session.set('auth', data)
+          // look up the profile data.  we're gonna need
+          // it anyway.
+          req.couch.get('/_users/org.couchdb.user:'
+                       +data.name, function (er, cr, data) {
 
-          req.session.set("auth", data)
-          return res.redirect("/profile")
+            if (er) return res.error(er, cr && cr.statusCode)
+
+            req.session.set("profile", data)
+
+            // XXX This should be the 'done' session key,
+            // or /profile only if unset
+            return res.redirect("/profile")
+          })
         })
       })
 
@@ -37,8 +43,8 @@ function login (req, res) {
       return req.session.get('auth', function (er, data) {
         if (data && !data.error) return res.redirect("/profile")
         res.sendHTML("<html>login, please: " +
-                  "<form method='post'><label>u: <input name='user'></label>" +
-                  "<label>p: <input type='password' name='pass'></label>" +
+                  "<form method='post'><label>u: <input name='name'></label>" +
+                  "<label>p: <input type='password' name='password'></label>" +
                   "<input type='submit'></form>")
       })
 

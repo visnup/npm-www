@@ -21,6 +21,8 @@ var router = require("./router.js")
 , tplDir = path.resolve(__dirname, 'templates')
 , templateOptions = { engine: ejs, debug: config.debug, folder: tplDir }
 
+, CouchLogin = require('couch-login')
+
 RedSess.createClient(config.redis)
 
 function site (req, res) {
@@ -54,6 +56,10 @@ function site (req, res) {
   req.neg = req.negotiator
   req.session = res.session = new RedSess(req, res)
 
+  // still need to load with the token from the session to
+  // actually use it, though.
+  req.couch = new CouchLogin(config.registryCouch)
+
   res.template = Templar(req, res, templateOptions)
 
   // don't print out that dumb 'cannot send blah blah' message
@@ -73,7 +79,8 @@ function site (req, res) {
     req[k] = u[k]
   })
 
-  res.error = function (er) {
+  res.error = function (er, code) {
+    if (code && typeof code === 'number') er.statusCode = code
     errors(er, req, res)
   }
 

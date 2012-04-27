@@ -1,5 +1,5 @@
 module.exports = function (req, res) {
-  req.session.get("auth", function (er, data) {
+  req.session.get(function (er, data) {
     if (er) return res.error(er)
     res.sendJSON(data)
   })
