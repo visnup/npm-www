@@ -7,7 +7,9 @@ function login (req, res) {
   switch (req.method) {
     case 'POST':
       return req.on('form', function (data) {
-        if (!data.name || !data.password) return loginFail(req, res)
+        if (!data.name || !data.password) {
+          return res.error(new Error('bad login'), 400)
+        }
 
         req.couch.login(data, function (er, cr, data) {
           if (er) return res.error(er)
@@ -19,14 +21,10 @@ function login (req, res) {
             return res.error(er, cr.statusCode)
           }
 
-          // now we have a couchdb session, save it in redis.
-          req.session.set('couchdb_token', req.couch.token)
-          req.session.set('auth', data)
           // look up the profile data.  we're gonna need
           // it anyway.
-          req.couch.get('/_users/org.couchdb.user:'
-                       +data.name, function (er, cr, data) {
-
+          var pu = '/_users/org.couchdb.user:' + data.name
+          req.couch.get(pu, function (er, cr, data) {
             if (er) return res.error(er, cr && cr.statusCode)
 
             req.session.set("profile", data)
@@ -51,5 +49,4 @@ function login (req, res) {
     default:
       return res.error(405)
   }
-
 }

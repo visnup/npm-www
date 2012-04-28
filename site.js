@@ -56,9 +56,9 @@ function site (req, res) {
   req.neg = req.negotiator
   req.session = res.session = new RedSess(req, res)
 
-  // still need to load with the token from the session to
-  // actually use it, though.
-  req.couch = new CouchLogin(config.registryCouch)
+  // set up the CouchLogin to automatically save the token in the
+  // session, and log in on demand.
+  req.couch = CouchLogin(config.registryCouch).decorate(req, res)
 
   res.template = Templar(req, res, templateOptions)
 
