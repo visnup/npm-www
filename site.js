@@ -3,122 +3,21 @@
 module.exports = site
 
 var router = require("./router.js")
-, errors = require("./errors.js")
-, domain = require("domain")
+, decorate = require('./decorate.js')
 , config = require("./config.js")
-, Cookies = require("cookies")
+
 , Keygrip = require("keygrip")
-, keys = new Keygrip(config.keys)
-, Negotiator = require("negotiator")
-, RedSess = require("redsess")
-, url = require("url")
+
 , StringDecoder = require('string_decoder').StringDecoder
 , qs = require("querystring")
+, RedSess = require("redsess")
 
-, path = require('path')
-, Templar = require("templar")
-, ejs = require('ejs')
-, tplDir = path.resolve(__dirname, 'templates')
-, templateOptions = { engine: ejs, debug: config.debug, folder: tplDir }
 
-, CouchLogin = require('couch-login')
-
+config.keys = new Keygrip(config.keys)
 RedSess.createClient(config.redis)
 
 function site (req, res) {
-  // handle unexpected errors relating to this request.
-  var d = domain.create()
-  d.add(req)
-  d.add(res)
-  d.on("error", function (er) {
-    try {
-      res.error(er)
-      // don't destroy before sending the error
-      res.on("close", function () {
-        d.dispose()
-      })
-
-      // don't wait forever, though.
-      setTimeout(function () {
-        d.dispose()
-      }, 1000)
-
-    } catch (er) {
-      d.dispose()
-    }
-  })
-
-  // set up various decorations
-  // TODO: Move some/all of this into a separate module.
-
-  req.cookies = res.cookies = new Cookies(req, res, keys)
-  req.negotiator = new Negotiator(req)
-  req.neg = req.negotiator
-  req.session = res.session = new RedSess(req, res)
-
-  // set up the CouchLogin to automatically save the token in the
-  // session, and log in on demand.
-  req.couch = CouchLogin(config.registryCouch).decorate(req, res)
-
-  res.template = Templar(req, res, templateOptions)
-
-  // don't print out that dumb 'cannot send blah blah' message
-  if (req.method === 'HEAD') {
-    res.write = (function (o) {
-      return function (c) { return o.call(res, '') }
-    })(res.write)
-    res.end = (function (o) {
-      return function (c) { return o.call(res) }
-    })(res.end)
-  }
-
-  // allow stuff like "req.pathname", etc.
-  var u = url.parse(req.url)
-  delete u.auth
-  Object.keys(u, true).forEach(function (k) {
-    req[k] = u[k]
-  })
-
-  res.error = function (er, code) {
-    if (code && typeof code === 'number') er.statusCode = code
-    errors(er, req, res)
-  }
-
-  res.redirect = function (target, code) {
-    res.statusCode = code || 302
-    res.setHeader('location', target)
-    var avail = ['text/html', 'application/json']
-    var mt = req.neg.preferredMediaType(avail)
-    if (mt === 'application/json') {
-      res.sendJSON({ redirect: target, statusCode: code })
-    } else {
-      res.sendHTML('<html><body><h1>Moved'
-                  + (code === 302 ? ' Permanently' : '') + '</h1>'
-                  +'<a href="' + target + '">' + target + '</a>')
-    }
-  }
-
-  res.send = function (data, status, headers) {
-    res.statusCode = res.statusCode || status
-    if (headers) Object.keys(headers).forEach(function (h) {
-      res.setHeader(h, headers[h])
-    })
-    if (!Buffer.isBuffer(data)) data = new Buffer(data)
-    res.setHeader('content-length', data.length)
-    res.end(data)
-  }
-
-
-  res.sendJSON = function (obj, status) {
-    res.send(JSON.stringify(obj), status, {'content-type':'application/json'})
-  }
-
-  res.sendHTML = function (data, status) {
-    res.send(data, status, {'content-type':'text/html'})
-  }
-  // decoration over
-
-
+  decorate(req, res, config)
 
   var route = router.match(req.url)
   if (!route) return res.error(404)
@@ -129,6 +28,7 @@ function site (req, res) {
 
   route.fn(req, res)
 
+  // now check for anything added afterwards.
   if (typeof req.maxLen === 'number') {
     var cl = req.headers['content-length']
     res.setHeader('max-length', ''+req.maxLen)
@@ -172,6 +72,4 @@ function site (req, res) {
       req.emit('body', b)
     })
   }
-
 }
-
