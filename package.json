@@ -22,6 +22,6 @@
     "filed": "0",
     "stylus": "git://github.com/visnup/stylus.git#0.7",
     "nib": "0",
-    "couch-login": "0.0.1"
+    "couch-login": "0"
   }
 }
