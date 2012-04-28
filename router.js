@@ -20,6 +20,7 @@ router.addRoute("/stylus/*?", require("./routes/stylus.js"))
 
 router.addRoute("/login", require("./routes/login.js"))
 router.addRoute("/profile", require("./routes/profile.js"))
+router.addRoute("/session", require("./routes/session-dump.js"))
 router.addRoute("/logout", require("./routes/logout.js"))
 
 
