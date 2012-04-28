@@ -11,7 +11,7 @@ function login (req, res) {
           return res.error(new Error('bad login'), 400)
         }
 
-        req.couch.login(data, function (er, cr, data) {
+        req.couch.login(data, function (er, cr, couchSession) {
           if (er) return res.error(er)
           if (cr.statusCode !== 200) {
             // XXX Should just render the login form
@@ -25,7 +25,9 @@ function login (req, res) {
           // it anyway.
           var pu = '/_users/org.couchdb.user:' + data.name
           req.couch.get(pu, function (er, cr, data) {
-            if (er) return res.error(er, cr && cr.statusCode)
+            if (er || cr.statusCode !== 200) {
+              return res.error(er, cr && cr.statusCode)
+            }
 
             req.session.set("profile", data)
 
