@@ -20,7 +20,7 @@
     "templar": "0",
     "glob": "3",
     "filed": "0",
-    "stylus": "git://github.com/visnup/stylus.git#0.7",
+    "stylus": "git://github.com/LearnBoost/stylus.git",
     "nib": "0",
     "couch-login": "0.x >=0.1",
     "npm": "1.1.x",
