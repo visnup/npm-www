@@ -10,7 +10,8 @@ body, input {
 body {
   background-color: #f4f4f2;
   border-top: solid 6px red;
-  padding: 55px 16px;
+  padding: 72px 16px;
+  text-align: center;
 }
 
 input {
@@ -31,34 +32,45 @@ h1, h2, h3, h4, h5, h6 {
   color: #000;
 }
 
-nav {
-  float: left;
-  width: 120px;
-  font-size: 11px;
-  text-transform: uppercase;
-  &, a {
-    color: #999;
-  }
-  ul {
-    margin: 0;
-    padding: 0;
-    li {
-      padding: 0.5em 0;
-      border-bottom: solid 1px #ccc;
-    }
-  }
-}
 
-aside.login {
-  float: right;
-  width: 220px;
-  background: linear-gradient(top, hsla(0, 0%, 50%, 0.1), transparent);
-  padding: 0.5em;
-  .avatar {
-    width: 25px;
-    height: 25px;
+// layout
+
+#content {
+  max-width: 953px;
+  margin: 0 auto;
+  text-align: left;
+
+  nav {
     float: left;
     margin: 0 5px 0 0;
+    width: 140px;
+    font-size: 11px;
+    text-transform: uppercase;
+    &, a {
+      color: #999;
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      li {
+        border-top: solid 1px #ccc;
+        a {
+          display: inline-block;
+          padding: 0.5em 0 0.5em 35px;
+          background: url('/static/icons-interior.png') no-repeat -156px 3px;
+        }
+      }
+      li:first-child { border-top: none; }
+      for link, i in home download about npm docs blog community logos jobs {
+        li.{link} a {
+          background-position: -156px -24*i+3px;
+        }
+        li.{link} a:hover {
+          background-position: -331px -24*i+3px;
+          color: #000;
+        }
+      }
+    }
   }
   .profile .profsub {
     margin:0;
@@ -67,25 +79,40 @@ aside.login {
   .profile .profsub a:first {
     border-right: 1px solid #999
   }
-}
 
-#page {
-  margin-left 120px + 80px;
-  margin-right: 220px + 40px;
-
-  header {
-    h1 {
-      text-indent: -999em;
-      width: 200px;
-      height: 78px;
-      background: url('/static/npm.png') no-repeat;
-      background-size: 200px 78px;
-      margin: -5px 0 0;
+  aside.login {
+    float: right;
+    width: 220px;
+    background: linear-gradient(top, hsla(0, 0%, 50%, 0.1), transparent);
+    padding: 0.5em;
+    .avatar {
+      width: 25px;
+      height: 25px;
+      float: left;
     }
-    form input {
-      font-size: 18px;
-      width: 50%;
-      float: right;
+    .profile {
+      margin-left: 30px;
+    }
+  }
+
+  #page {
+    margin-left 120px + 80px;
+    margin-right: 220px + 40px;
+
+    header {
+      h1 {
+        text-indent: -999em;
+        width: 200px;
+        height: 78px;
+        background: url('/static/npm.png') no-repeat;
+        background-size: 200px 78px;
+        margin: -5px 0 0;
+      }
+      form input {
+        font-size: 18px;
+        width: 50%;
+        float: right;
+      }
     }
   }
 }
