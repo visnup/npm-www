@@ -22,7 +22,7 @@ function login (req, res) {
           }
 
           // look up the profile data.  we're gonna need
-          // it anyway.
+          // it usually anyway.
           var pu = '/_users/org.couchdb.user:' + data.name
           req.couch.get(pu, function (er, cr, data) {
             if (er || cr.statusCode !== 200) {
@@ -34,9 +34,10 @@ function login (req, res) {
             // just a convenience.
             res.cookies.set('name', data.name)
 
-            // XXX This should be the 'done' session key,
-            // or /profile only if unset
-            return res.redirect("/profile")
+            res.session.get('done', function (er, done) {
+              res.session.del('done')
+              res.redirect(done || '/profile')
+            })
           })
         })
       })
