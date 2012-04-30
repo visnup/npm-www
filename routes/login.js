@@ -31,6 +31,9 @@ function login (req, res) {
 
             req.session.set("profile", data)
 
+            // just a convenience.
+            res.cookies.set('name', data.name)
+
             // XXX This should be the 'done' session key,
             // or /profile only if unset
             return res.redirect("/profile")

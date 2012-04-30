@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+
+  <script>console.log(<%- JSON.stringify(profile, null, 2) %>)</script>
+
+  <h1><%= profile.name %></h1>
+  <%
+  if (profile.isSelf) {
+    %>
+    <p>This is your profile.
+      <a href=/profile/_edit>Edit</a></p>
+    <%
+  }
+  %>
+
+
+<table>
+<%
+
+var fields =
+{ fullname: "Full Name"
+, email: "Email"
+, github: "Github Username"
+, twitter: "Twitter Username"
+, homepage: "Homepage URL"
+, freenode: "IRC Handle"
+}
+
+Object.keys(fields).forEach(function (f) {
+  %>
+  <tr>
+    <th><%= fields[f] %></th>
+    <td><%= profile[f] || '' %></td>
+  </tr>
+  <%
+})
+%>
+</table>
+
+</body></html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+
+  <script>console.log(<%- JSON.stringify(profile, null, 2) %>)</script>
+<form method=post action=/profile/_edit>
+  <input type=hidden name=_id value="<%= profile._id %>">
+  <input type=hidden name=name value="<%= profile.name %>">
+<%
+
+var fields =
+{ fullname: "Full Name"
+, email: "Email"
+, github: "Github Username"
+, twitter: "Twitter Username"
+, homepage: "Homepage URL"
+, freenode: "IRC Handle"
+}
+
+Object.keys(fields).forEach(function (f) {
+  %>
+  <fieldset>
+    <label for="<%= f %>"><%= fields[f] %></label>
+    <input id="<%= f %>" name="<%= f %>" value="<%= profile[f] || '' %>">
+  </fieldset>
+  <%
+})
+%>
+
+<input type=submit value=Save>
+</form>
+
+</body></html>
