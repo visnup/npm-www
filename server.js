@@ -22,13 +22,17 @@ callresp(function (req, cb) {
       var n = req.name
       , v = req.version
       , k = n + "/" + v
+      , ma = req.hasOwnProperty('maxAge') ? req.maxAge : 600
+      , nf = req.hasOwnProperty('nofollow') ? req.nofollow : false
+      , stale = req.hasOwnProperty('stale') ? req.stale : true
       , data = regData.get(k)
 
-      if (data) return cb(null, data)
+      if (data && ma && stale) {
+        return cb(null, data)
+      }
 
-      registry.get(n, v, 60000, false, true, function (er, data, raw, res) {
+      registry.get(n, v, ma, nf, stale, function (er, data, raw, res) {
         if (er) {
-          console.error("error", er)
           er.statusCode = res && res.statusCode || 404
           er.stack = er.stack
           return cb(er, data)
@@ -44,7 +48,6 @@ callresp(function (req, cb) {
 })
 
 var npmconf = config.npm || {}
-npmconf["cache-min"] = 60000
 npmconf["node-version"] = null
 npm.load(npmconf, function (er) {
   if (er) throw er
