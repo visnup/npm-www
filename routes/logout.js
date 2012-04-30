@@ -7,8 +7,11 @@ module.exports = function (req, res) {
     // delete the couchdb session, if we have one.
     req.session.del('profile', function (er) {
       if (er) return res.error(er)
-      // XXX redirect to session.done
-      res.sendHTML("<html><body>you are logged out")
+      req.session.get('done', function (er, done) {
+        if (!done) done = req.query.done
+        if (!done) return res.template('logged-out.ejs')
+        res.redirect(done)
+      })
     })
   }
 }

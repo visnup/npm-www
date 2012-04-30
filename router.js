@@ -25,7 +25,7 @@ router.addRoute("/profile/:name", require("./routes/profile.js"))
 router.addRoute("/profile", require("./routes/profile.js"))
 
 router.addRoute("/session", require("./routes/session-dump.js"))
-router.addRoute("/logout", require("./routes/logout.js"))
+router.addRoute("/logout/*?", require("./routes/logout.js"))
 
 
 // The package details page

@@ -37,4 +37,10 @@ Object.keys(fields).forEach(function (f) {
 %>
 </table>
 
+<% if (self) {
+  %>
+  <a href='/logout/?done=/profile/<%= profile.name %>'>log out</a>
+  <%
+}
+%>
 </body></html>

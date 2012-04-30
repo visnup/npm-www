@@ -35,6 +35,6 @@ function showProfile (req, res) {
            }, function (er, data) {
     if (er) return res.error(er)
     data.isSelf = req.profile && name === req.profile.name
-    res.template('profile.ejs', {profile: data})
+    res.template('profile.ejs', {profile: data, self: req.profile })
   })
 }
