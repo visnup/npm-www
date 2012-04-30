@@ -7,18 +7,7 @@
   <link type="text/css" rel="stylesheet" media="all" href="/stylus/index.css" />
   <body>
 
-    <nav>
-      <ul>
-        <li class="home"><a href="http://nodejs.org/">Node.js Home</a></li>
-        <li class="download">Download</li>
-        <li class="about">About</li>
-        <li class="npm">NPM Registry</li>
-        <li class="docs">Docs</li>
-        <li class="blog">Blog</li>
-        <li class="community">Community</li>
-        <li class="jobs">Jobs</li>
-      </ul>
-    </nav>
+  <%- include('nav.ejs') %>
 
     <aside class="login">
       <img src="<%= gravatar('visnupx@gmail.com') %>" class="avatar" />
