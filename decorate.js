@@ -66,9 +66,9 @@ function decorate (req, res, config) {
   }
 
   // allow stuff like "req.pathname", etc.
-  var u = url.parse(req.url)
+  var u = url.parse(req.url, true)
   delete u.auth
-  Object.keys(u, true).forEach(function (k) {
+  Object.keys(u).forEach(function (k) {
     req[k] = u[k]
   })
 
