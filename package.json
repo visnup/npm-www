@@ -23,7 +23,10 @@
     "stylus": "git://github.com/visnup/stylus.git#0.7",
     "nib": "0",
     "couch-login": "0",
-    "npm": "1.1.x"
+    "npm": "1.1.x",
+    "error-page": "0"
   },
-  "engines": { "node": ">=0.7.7" }
+  "engines": {
+    "node": ">=0.7.7"
+  }
 }
