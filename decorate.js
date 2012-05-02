@@ -1,7 +1,7 @@
 
 module.exports = decorate
 
-var errors = require("./errors.js")
+var ErrorPage = require("error-page")
 , domain = require("domain")
 , Cookies = require("cookies")
 , Negotiator = require("negotiator")
@@ -15,6 +15,10 @@ var errors = require("./errors.js")
 , url = require('url')
 
 , CouchLogin = require('couch-login')
+
+// TODO: Error page configs
+, errorPageConf = {}
+
 
 function decorate (req, res, config) {
   templateOptions.debug = config.debug
@@ -72,13 +76,7 @@ function decorate (req, res, config) {
     req[k] = u[k]
   })
 
-  res.error = function (er, code) {
-    if (code && typeof code === 'number') {
-      if (er) er.statusCode = code
-      else er = code
-    }
-    errors(er, req, res)
-  }
+  res.error = ErrorPage(req, res, errorPageConf)
 
   res.redirect = function (target, code) {
     res.statusCode = code || 302
@@ -86,11 +84,11 @@ function decorate (req, res, config) {
     var avail = ['text/html', 'application/json']
     var mt = req.neg.preferredMediaType(avail)
     if (mt === 'application/json') {
-      res.sendJSON({ redirect: target, statusCode: code })
+      res.json({ redirect: target, statusCode: code })
     } else {
-      res.sendHTML('<html><body><h1>Moved'
-                  + (code === 302 ? ' Permanently' : '') + '</h1>'
-                  +'<a href="' + target + '">' + target + '</a>')
+      res.html( '<html><body><h1>Moved'
+              + (code === 302 ? ' Permanently' : '') + '</h1>'
+              + '<a href="' + target + '">' + target + '</a>')
     }
   }
 
@@ -105,11 +103,11 @@ function decorate (req, res, config) {
   }
 
 
-  res.sendJSON = function (obj, status) {
+  res.json = res.sendJSON = function (obj, status) {
     res.send(JSON.stringify(obj), status, {'content-type':'application/json'})
   }
 
-  res.sendHTML = function (data, status) {
+  res.html = res.sendHTML = function (data, status) {
     res.send(data, status, {'content-type':'text/html'})
   }
 }
