@@ -18,6 +18,10 @@ var config = require("./config.js")
 , site = require("./site.js")
 , server
 , RedSess = require('redsess')
+, bunyan = require('bunyan')
+
+config.log.worker = cluster.worker.uniqueID
+var logger = bunyan.createLogger(config.log)
 
 RedSess.createClient(config.redis)
 
@@ -28,10 +32,10 @@ if (config.https) {
 }
 
 server.listen(config.port, function () {
-  console.log("Listening on %d", config.port)
+  logger.info("Listening on %d", config.port)
 })
 
 server.on('close', function () {
   RedSess.close()
-  console.log('Worker closing')
+  logger.info('Worker closing')
 })

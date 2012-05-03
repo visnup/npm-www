@@ -11,6 +11,11 @@ var clusterMaster = require("cluster-master")
 , LRU = require("lru-cache")
 , regData = new LRU(10000)
 
+config.log.master = true
+var logger = require('bunyan').createLogger(config.log)
+
+console.error = logger.info.bind(logger)
+console.log = logger.info.bind(logger)
 
 // This is where the workers make requests to npm.
 // It happens here so that multiple parallel requests
