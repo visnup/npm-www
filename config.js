@@ -7,12 +7,12 @@ exports.cluster = { size : require("os").cpus().length }
 // redis auth 
 exports.redis = { host: '127.0.0.1', port: 6379 }
 
-exports.registryCouch = "https://isaacs-staging.iriscouch.net/"
+exports.registryCouch = "https://isaacs.iriscouch.net/"
 
 // npm config settings
 exports.npm =
   { loglevel: "warn"
-  , registry: "http://staging.npmjs.org/"
+  , registry: "http://registry.npmjs.org/"
   , "strict-ssl": false
   }
 
@@ -23,3 +23,7 @@ exports.log =
   }
 
 exports.package = require('./package.json')
+
+exports.errorPage = { debug: true }
+
+exports.debug = true
