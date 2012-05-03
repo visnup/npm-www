@@ -58,5 +58,26 @@ npm.load(npmconf, function (er) {
   if (er) throw er
 
   // Ok, we're ready!  Spin up the cluster.
+  clusterConf.signals = false
   clusterMaster(clusterConf)
+  // process.removeAllListeners('SIGHUP')
+  process.on('SIGHUP', function () {
+    // reload configuration
+    var sb = config.cluster.size
+    delete require.cache[require.resolve('./config.js')]
+    try {
+      config = require('./config.js')
+    } catch (er) {
+      log.error("config error", er)
+      return
+    }
+
+    if (config.cluster && config.cluster.size !== sb) {
+      clusterMaster.resize(config.cluster.size, function () {
+        clusterMaster.restart()
+      })
+    } else {
+      clusterMaster.restart()
+    }
+  })
 })
