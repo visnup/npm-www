@@ -10,11 +10,9 @@ var router = require("./router.js")
 
 , StringDecoder = require('string_decoder').StringDecoder
 , qs = require("querystring")
-, RedSess = require("redsess")
 
 
 config.keys = new Keygrip(config.keys)
-RedSess.createClient(config.redis)
 
 function site (req, res) {
   decorate(req, res, config)
