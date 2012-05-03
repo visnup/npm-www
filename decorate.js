@@ -13,6 +13,9 @@ var ErrorPage = require("error-page")
 , tplDir = path.resolve(__dirname, 'templates')
 , templateOptions = { engine: ejs, folder: tplDir }
 , url = require('url')
+, bunyan = require('bunyan')
+, crypto = require('crypto')
+, logger
 
 , CouchLogin = require('couch-login')
 
@@ -22,6 +25,12 @@ var ErrorPage = require("error-page")
 
 function decorate (req, res, config) {
   templateOptions.debug = config.debug
+
+  if (!logger) {
+    var logOpts = config.log ||
+      { name: 'npm-www', level: 'trace' }
+    logger = bunyan.createLogger(logOpts)
+  }
 
   // handle unexpected errors relating to this request.
   var d = domain.create()
@@ -58,6 +67,19 @@ function decorate (req, res, config) {
   req.couch = CouchLogin(config.registryCouch).decorate(req, res)
 
   res.template = Templar(req, res, templateOptions)
+
+  req.log = res.log = logger.child(
+    { serializers: bunyan.stdSerializers
+    , req_id: crypto.randomBytes(4).toString('hex')
+    , session: req.sessionToken })
+
+  // more debugging info.
+  var remoteAddr = req.socket.remoteAddress + ':'
+                 + req.socket.remotePort
+  , address = req.socket.address()
+  address = address.address + ':' + address.port
+
+  req.log.info({req: req, res: res, remote: remoteAddr, address: address})
 
   // don't print out that dumb 'cannot send blah blah' message
   if (req.method === 'HEAD') {
