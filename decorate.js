@@ -26,6 +26,8 @@ var ErrorPage = require("error-page")
 function decorate (req, res, config) {
   templateOptions.debug = config.debug
 
+  if (config.errorPage) errorPageConf = config.errorPage
+
   if (!logger) {
     var logOpts = config.log ||
       { name: 'npm-www', level: 'trace' }
@@ -73,13 +75,17 @@ function decorate (req, res, config) {
     , req_id: crypto.randomBytes(4).toString('hex')
     , session: req.sessionToken })
 
+  res.on('finish', function () {
+    req.log.info({ res: res })
+  })
+
   // more debugging info.
   var remoteAddr = req.socket.remoteAddress + ':'
                  + req.socket.remotePort
   , address = req.socket.address()
   address = address.address + ':' + address.port
 
-  req.log.info({req: req, res: res, remote: remoteAddr, address: address})
+  req.log.info({req: req, remote: remoteAddr, address: address})
 
   // don't print out that dumb 'cannot send blah blah' message
   if (req.method === 'HEAD') {
