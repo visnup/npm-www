@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<title>About</title>
+<body>
+<h1><%= package.name %></h1>
+
+<p>Version <%= package.version %></p>
+
+<p>This site reflects the data in the 
+npm registry at <%= npm.registry %>, available in a couchdb
+living at <%= registryCouch %>.</p>
+
+<p>Using the following packages:</p>
+<ul>
+<% Object.keys(package.dependencies).forEach(function (d) {
+  var u = "/package/" + d
+  var n = d + "@" + package.dependencies[d]
+  %><li><a href="<%= u %>"><%= n %></a></li>
+  <%
+}) %>
+</ul>
+
+Running on <a href="http://nodejs.org/">Node.js</a>, version
+<%= package.version %>.

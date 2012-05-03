@@ -6,7 +6,6 @@ var routes = require("routes")
 , Route = routes.Route
 , filed = require("filed")
 , router = new Router()
-, errors = require("./errors.js")
 , config = require("./config.js")
 
 
@@ -27,6 +26,7 @@ router.addRoute("/profile", require("./routes/profile.js"))
 router.addRoute("/session", require("./routes/session-dump.js"))
 router.addRoute("/logout/*?", require("./routes/logout.js"))
 
+router.addRoute("/about", require("./routes/about.js"))
 
 // The package details page
 // Definitely ought to be its own module.
