@@ -23,6 +23,9 @@ var config = require("./config.js")
 config.log.worker = cluster.worker.uniqueID
 var logger = bunyan.createLogger(config.log)
 
+console.error = logger.info.bind(logger)
+console.log = logger.info.bind(logger)
+
 RedSess.createClient(config.redis)
 
 if (config.https) {
