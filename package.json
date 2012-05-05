@@ -25,7 +25,8 @@
     "couch-login": "0.x >=0.1",
     "npm": "1.1.x",
     "error-page": "0",
-    "bunyan": "~0.7.0"
+    "bunyan": "~0.7.0",
+    "nodemailer": "~0.3.19"
   },
   "engines": {
     "node": ">=0.7.7"
