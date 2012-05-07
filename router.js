@@ -41,3 +41,5 @@ router.addRoute("/about", require("./routes/about.js"))
 var packagePage = require("./routes/package-page.js")
 router.addRoute("/package/:name/:version", packagePage)
 router.addRoute("/package/:name", packagePage)
+
+router.addRoute("/keyword/:keyword", require("./routes/keyword.js"))
