@@ -11,16 +11,6 @@
   <input type=hidden name=_id value="<%= profile._id %>">
   <input type=hidden name=name value="<%= profile.name %>">
 <%
-
-var fields =
-{ fullname: "Full Name"
-, email: "Email"
-, github: "Github Username"
-, twitter: "Twitter Username"
-, homepage: "Homepage URL"
-, freenode: "IRC Handle"
-}
-
 Object.keys(fields).forEach(function (f) {
   %>
   <fieldset>

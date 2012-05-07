@@ -1,6 +1,7 @@
 module.exports = profile
 
 var callresp = require("cluster-callresp")
+, config = require('../config.js')
 
 // thing for editing bits of your profile.
 // gets saved back to couchdb.
@@ -35,6 +36,9 @@ function showProfile (req, res) {
            }, function (er, data) {
     if (er) return res.error(er)
     data.isSelf = req.profile && name === req.profile.name
-    res.template('profile.ejs', {profile: data, self: req.profile })
+    var td = { profile: data
+             , self: req.profile
+             , fields: config.profileFields }
+    res.template('profile.ejs', td)
   })
 }

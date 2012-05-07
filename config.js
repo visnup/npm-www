@@ -27,6 +27,16 @@ exports.errorPage = { debug: true }
 
 exports.debug = true
 
+// probably don't need to change these.
+// extra fields we hang on the profile.
+exports.profileFields =
+{ fullname: "Full Name"
+, email: "Email"
+, github: "Github Username"
+, twitter: "Twitter Username"
+, homepage: "Homepage URL"
+, freenode: "IRC Handle"
+}
 
 
 /*****************/

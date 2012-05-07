@@ -1,4 +1,5 @@
 module.exports = profileEdit
+var config = require('../config.js')
 
 // thing for editing bits of your profile.
 // gets saved back to couchdb.
@@ -84,6 +85,8 @@ function show_ (name, req, res) {
   var u = '/_users/org.couchdb.user:' + name
   req.couch.get(u, function (er, cr, data) {
     if (er || data.error) return res.error(er)
-    res.template('profile-edit.ejs', {profile: data})
+    var td = { profile: data
+             , fields: config.profileFields }
+    res.template('profile-edit.ejs', td)
   })
 }
