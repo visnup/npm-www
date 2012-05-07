@@ -28,8 +28,27 @@ console.log = logger.info.bind(logger)
 
 RedSess.createClient(config.redis)
 
+var httpServer = null
 if (config.https) {
   server = https.createServer(config.https, site)
+  if (config.httpPort) {
+    var url = require('url')
+    // redirect to the appropriate
+    httpServer = http.createServer(function (req, res) {
+      if (!req.headers.host) {
+        res.writeHead(400)
+        return res.end('No host header.')
+      }
+      var u = url.parse('https://' + req.headers.host + req.url)
+      u.host = null
+      u.href = null
+      u.port = (config.port === 443) ? null : config.port
+      u = url.format(u)
+      res.writeHead(301, { location: u })
+      res.end('moved: ' + u)
+    })
+    httpServer.listen(config.httpPort)
+  }
 } else {
   server = http.createServer(site)
 }
@@ -39,6 +58,8 @@ server.listen(config.port, function () {
 })
 
 server.on('close', function () {
+  // usually the cluster disconnect will close this one, too.
+  try { httpServer.close() } catch (e) {}
   RedSess.close()
   logger.info('Worker closing')
 })
