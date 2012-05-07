@@ -2,6 +2,11 @@
 <html>
 
   <script>console.log(<%- JSON.stringify(profile, null, 2) %>)</script>
+
+<h1>Edit your Profile</h1>
+
+<p><a href=/password>Change your Password</a></p>
+
 <form method=post action=/profile/_edit>
   <input type=hidden name=_id value="<%= profile._id %>">
   <input type=hidden name=name value="<%= profile.name %>">
