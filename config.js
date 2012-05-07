@@ -1,4 +1,5 @@
 exports.port = 15443
+exports.httpPort = 15080
 
 exports.cluster = { size : require("os").cpus().length }
 
