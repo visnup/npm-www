@@ -27,6 +27,7 @@ router.addRoute("/session", require("./routes/session-dump.js"))
 var logout = require("./routes/logout.js")
 router.addRoute("/logout", logout)
 router.addRoute("/logout/*?", logout)
+router.addRoute("/password", require('./routes/password.js'))
 
 router.addRoute("/about", require("./routes/about.js"))
 
