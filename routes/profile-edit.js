@@ -62,8 +62,8 @@ function saveThenShow (data, req, res) {
       // and save into the redis session
       req.couch.get(pu, function (er, cr, data) {
         res.session.set('profile', data)
+        res.redirect('/profile')
       })
-      res.redirect('/profile')
     })
   })
 }
