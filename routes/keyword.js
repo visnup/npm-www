@@ -8,16 +8,22 @@ function keyword (req, res) {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     return res.error(405)
   }
-console.log('here');
-  showPackages(req,res);
+  
+  var keyword = encodeURIComponent(req.params.keyword);
+
+  var path = '/registry/_design/app/_view/byKeyword?startkey=[%22' + keyword + '%22]&endkey=[%22' + keyword + '%22,{}]&group_level=2';
+  
+  // list of packages for a given keyword
+  req.couch.get(path, function (er, cr, data) {
+    // data format: {"rows":[{"key":[keyword,packagename],"value":1}]}
+    showPackages(req,res,data.rows);
+  })
 
 }
 
-function showPackages (req, res) {
+function showPackages (req, res, data) {
 
-  var keyword = req.params.keyword;  
+  var keyword = req.params.keyword;
 
-  //TODO search registry for packages with keyword `keyword`
-
-  res.template('keyword.ejs', {packages: [],keyword:keyword})
+  res.template('keyword.ejs', {packages: data,keyword:keyword})
 }

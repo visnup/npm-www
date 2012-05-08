@@ -20,7 +20,11 @@
 
       <div id="package">
         <h1>Keyword: &quot;<%= keyword %>&quot;</h1>
-        <p>Not Implemented</p>
+        <% if (packages.length) { %>
+          <p class="description"><%- packages.length %> packages found.</p>
+          <div class="row"><%- packages.map(function(obj) { return '<a href="/package/' + obj.key[1] + '">' + obj.key[1] + '</a>' }).join('</div><div class="row">') %>
+          </div>
+        <% } %>
       </div>
     </div>
   </body>
