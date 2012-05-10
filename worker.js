@@ -33,10 +33,17 @@ if (config.couchAuth) {
   , password = ca.join(':')
   , auth = { name: name, password: password }
   , CouchLogin = require('couch-login')
+
   config.adminCouch = new CouchLogin(config.registryCouch)
   config.adminCouch.login(auth, function (er, cr, data) {
     if (er) throw er
   })
+  config.adminCouch.getToken = function (cb) {
+    config.adminCouch.login(auth, function () {
+      if (er) throw er
+      cb(this.token)
+    })
+  }
 }
 
 RedSess.createClient(config.redis)
