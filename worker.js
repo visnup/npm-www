@@ -26,7 +26,27 @@ var logger = bunyan.createLogger(config.log)
 console.error = logger.info.bind(logger)
 console.log = logger.info.bind(logger)
 
+// if there's an admin couchdb user, then set that up now.
+if (config.couchAuth) {
+  var ca = config.couchAuth.split(':')
+  , name = ca.shift()
+  , password = ca.join(':')
+  , auth = { name: name, password: password }
+  , CouchLogin = require('couch-login')
+  config.adminCouch = new CouchLogin(config.registryCouch)
+  config.adminCouch.login(auth, function (er, cr, data) {
+    if (er) throw er
+  })
+}
+
 RedSess.createClient(config.redis)
+
+// a general purpose redis thing.
+// Note: for sessions, use req.session, not this!
+var r = config.redis
+, redis = require('redis')
+config.redis.client = redis.createClient(r.port, r.host, r)
+if (r.auth) config.redis.client.auth(r.auth)
 
 var httpServer = null
 if (config.https) {
@@ -40,8 +60,7 @@ if (config.https) {
         return res.end('No host header.')
       }
       var u = url.parse('https://' + req.headers.host + req.url)
-      u.host = null
-      u.href = null
+      delete u.host
       u.port = (config.port === 443) ? null : config.port
       u = url.format(u)
       res.writeHead(301, { location: u })
@@ -61,5 +80,6 @@ server.on('close', function () {
   // usually the cluster disconnect will close this one, too.
   try { httpServer.close() } catch (e) {}
   RedSess.close()
+  config.redis.client.quit()
   logger.info('Worker closing')
 })
