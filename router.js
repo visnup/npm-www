@@ -30,6 +30,10 @@ router.addRoute("/logout/*?", logout)
 router.addRoute("/password", require('./routes/password.js'))
 router.addRoute("/signup", require('./routes/signup.js'))
 
+var forgot = require('./routes/forgot-password.js')
+router.addRoute("/forgot", forgot)
+router.addRoute("/forgot/:token", forgot)
+
 router.addRoute("/about", require("./routes/about.js"))
 
 // The package details page
