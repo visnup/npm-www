@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+
+  <h1>Sign all the way up</h1>
+
+<%
+if (error) {
+  %><p>There was a problem!  The server said: <%= error %></p><%
+}
+%>
+
+<form method=post>
+<fieldset>
+<label for=name>Name</label>
+<input id=name name=name>
+<p>Must be all lower-case, and not have any non-urlsafe chars.</p>
+</fieldset>
+
+<fieldset>
+<label for=password>Password</label>
+<input id=password name=password type=password>
+</fieldset>
+
+<fieldset>
+<label for=verify>Verify Password</label>
+<input id=verify name=verify type=password>
+</fieldset>
+
+<fieldset>
+<label for=email>Email Address</label>
+<input id=email name=email type=email>
+<p>Must be a valid email address.  It <strong>will<strong>
+be shown on the site, and on all packages you publish.</p>
+<p>Accounts without valid email addresses may be deleted
+without notice.</p>
+</fieldset>
+
+
+<input type="submit" value="Make it so.">
+</form>
+
+</body></html>
