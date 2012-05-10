@@ -43,7 +43,7 @@ exports.profileFields =
 /* don't delete! */
 /*****************/
 if (process.env.NODE_ENV === 'production') {
-  var admin = require('./couch.admin.js')
+  var admin = require('./config.admin.js')
 } else try {
   var admin = require('./config.admin.js')
 } catch (er) {
