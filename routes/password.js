@@ -66,10 +66,15 @@ function handleData (req, res, data) {
   req.log.info('Changing password', {name: prof.name})
 
   var newAuth = { name: prof.name, password: data.new }
+  // don't have to change it, we're changing it now!
+  newAuth.mustChangePass = false
+
   req.couch.changePass(newAuth, function (er, cr, data) {
     if (er || cr.statusCode >= 400) {
+      return res.error(er, cr && cr.statusCode,
+                       JSON.stringify(data))
       td.error = 'Failed setting the password: '
-               + (data && data.message || er.message)
+               + (data && data.message || er && er.message)
       return res.template('password.ejs', td, cr.statusCode)
     }
 

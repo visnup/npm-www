@@ -34,6 +34,10 @@ function login (req, res) {
             // just a convenience.
             res.cookies.set('name', data.name)
 
+            if (data.mustChangePass) {
+              return res.redirect('/password')
+            }
+
             res.session.get('done', function (er, done) {
               res.session.del('done')
               res.redirect(done || '/profile')
