@@ -1,4 +1,5 @@
 exports.port = 15443
+exports.host = 'localhost'
 exports.httpPort = 15080
 
 exports.cluster = { size : require("os").cpus().length }
@@ -38,6 +39,7 @@ exports.profileFields =
 , freenode: "IRC Handle"
 }
 
+exports.emailFrom = '"The npm Website Robot" <webmaster@npmjs.org>'
 
 /*****************/
 /* don't delete! */
