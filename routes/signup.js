@@ -45,7 +45,7 @@ function handle (req, res) {
       if (er) return res.error(er)
       req.couch.signup(acct, function (er, cr, data) {
         if (er || cr && cr.statusCode >= 400) {
-          td.error = er.message || (data && data.error) ||
+          td.error = (er && er.message) || (data && data.error) ||
                      "Failed creating account"
           return res.template('signup-form.ejs', td, 400)
         }
