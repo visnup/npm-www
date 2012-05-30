@@ -34,6 +34,11 @@ function packagePage (req, res) {
 
 function render (data, req, res) {
   var locals = { package: data }
+  // readme should not contain raw html
+  if (data.readme) {
+    data.readme = data.readme.replace(/</g, '&lt;')
+  }
+
   Object.keys(helpers).forEach(function (i) { locals[i] = helpers[i] })
 
   res.template("package-page.ejs", locals)

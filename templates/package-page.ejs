@@ -70,7 +70,11 @@
           <tr>
             <th>Dependencies:</th>
             <td>
-              <%- Object.keys(package.dependencies || {}).map(function(pkg) { return '<a href="/package/' + pkg + '">' + pkg + '</a>' }).join(', ') || 'None' %>
+              <%-
+              Object.keys(package.dependencies || {}).map(function(pkg) {
+                return '<a href="/package/' + pkg + '">' + pkg + '</a>'
+              }).join(', ') || 'None'
+              %>
             </td>
           </tr>
           <% if (package.dependents) { %>
