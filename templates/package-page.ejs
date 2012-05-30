@@ -8,15 +8,7 @@
   <body>
 
   <%- include('nav.ejs') %>
-
-    <aside class="login">
-      <img src="<%= gravatar('visnupx@gmail.com') %>" class="avatar" />
-      <div class="profile">
-        Visnu Pitiyanuvath
-      </div>
-      <ul class="menu">
-      </ul>
-    </aside>
+  <%- include('login-aside.ejs', locals) %>
 
     <div id="page">
 

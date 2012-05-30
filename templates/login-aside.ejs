@@ -1,0 +1,24 @@
+<aside class="login">
+  <%
+  if (!profile) {
+    %>
+    <div class=profile>
+      <a href=/login>Login</a>
+    </div>
+    <%
+  } else {
+    %>
+    <div class="profile">
+      <img src="<%= gravatar(profile.email) %>" class="avatar">
+      <a href="/profile"><%= profile.fullname %></a>
+      <p class=profsub>
+        <a class=profsub href=/profile/edit>Edit Profile</a>
+        <a class=profsub href=/logout>Log out</a>
+      </p>
+    </div>
+    <ul class="menu">
+    </ul>
+    <%
+  }
+  %>
+</aside>

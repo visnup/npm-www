@@ -15,31 +15,47 @@ function packagePage (req, res) {
   var name = req.params.name
   , version = req.params.version || 'latest'
 
+  // get the user's profile.
+  if (req.profile) next()
+  else req.session.get('profile', function (er, data) {
+    if (er) return res.error(er)
+    req.profile = data
+    next()
+  })
+
+  // get the package data.
   var k = name + '/' + (version || '')
-  , data = regData.get(k)
+  , pkgData = regData.get(k)
 
-  if (data) return render(data, req, res)
-
-  // go get the package.
-  callresp({ cmd: 'registry.get'
+  if (pkgData) next()
+  else callresp({ cmd: 'registry.get'
            , name: name
            , version: version }, function (er, data) {
     if (er) return res.error(er)
 
     regData.set(k, data)
+    pkgData = data
 
-    return render(data, req, res)
+    return next()
   })
+
+  function next () {
+    if (!pkgData) return
+    if (!req.hasOwnProperty('profile')) return
+    render(pkgData, req, res)
+  }
 }
 
 function render (data, req, res) {
-  var locals = { package: data }
+  var locals = { package: data, profile: req.profile }
   // readme should not contain raw html
   if (data.readme) {
     data.readme = data.readme.replace(/</g, '&lt;')
   }
 
-  Object.keys(helpers).forEach(function (i) { locals[i] = helpers[i] })
+  Object.keys(helpers).forEach(function (i) {
+    locals[i] = helpers[i]
+  })
 
   res.template("package-page.ejs", locals)
 }
