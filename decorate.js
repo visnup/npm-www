@@ -35,12 +35,19 @@ function decorate (req, res, config) {
   }
 
   // handle unexpected errors relating to this request.
+  // TODO: make this a separate module.
   var d = domain.create()
   d.add(req)
   d.add(res)
   d.on("error", function (er) {
     try {
-      res.error(er)
+      if (res.error) res.error(er)
+      else {
+        res.statusCode = 500
+        res.setHeader('content-type', 'text/plain')
+        res.end('Server Error\n' + er.message)
+      }
+
       // don't destroy before sending the error
       res.on("close", function () {
         d.dispose()
@@ -50,6 +57,9 @@ function decorate (req, res, config) {
       setTimeout(function () {
         d.dispose()
       }, 1000)
+ii
+      // disconnect after errors so that a fresh worker can come up.
+      req.client.server.close()
 
     } catch (er) {
       d.dispose()
