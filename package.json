@@ -26,7 +26,8 @@
     "npm": "1.1.x",
     "error-page": "0",
     "bunyan": "~0.7.0",
-    "nodemailer": "~0.3.19"
+    "nodemailer": "~0.3.19",
+    "emcee": "0"
   },
   "engines": {
     "node": ">=0.7.7"
