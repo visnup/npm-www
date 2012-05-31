@@ -24,7 +24,6 @@ function profileEdit (req, res) {
 
 
 function saveThenShow (data, req, res) {
-  console.error('data', data)
   if (!data.name) {
     return res.error(new Error('name is required'), 400)
   }
@@ -84,7 +83,13 @@ function show (req, res) {
 function show_ (name, req, res) {
   var u = '/_users/org.couchdb.user:' + name
   req.couch.get(u, function (er, cr, data) {
-    if (er || data.error) return res.error(er)
+    if (er &&
+        er.message.match(/auth token expired or invalid/)) {
+      req.session.set('done', req.url)
+      return res.redirect('/login')
+    }
+
+    if (er || data.error) return res.error(er || data.error)
     var td = { profile: data
              , fields: config.profileFields }
     res.template('profile-edit.ejs', td)
