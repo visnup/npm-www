@@ -22,8 +22,12 @@ var ErrorPage = require("error-page")
 // TODO: Error page configs
 , errorPageConf = {}
 
+, MC = require('./models.js')
+
 
 function decorate (req, res, config) {
+  req.model = res.model = new MC
+
   templateOptions.debug = config.debug
 
   if (config.errorPage) errorPageConf = config.errorPage
