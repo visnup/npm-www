@@ -14,7 +14,7 @@
 
       <header>
         <form>
-          <input type="search" placeholder="Search Packages" />
+          <input type="search" placeholder="Search Packages">
         </form>
         <h1>npm</h1>
       </header>
@@ -24,25 +24,29 @@
         <p class="description"><%= package.description || 'No description' %></p>
 
         <table class="metadata">
-          <tr>
-            <th>Author:</th>
-            <% if (package.author) { %>
-              <td class="with-avatar">
-                <img src="<%= gravatar(package.author.email) %>" class="avatar" />
-                <%= package.author.name %>
-              </td>
-            <% } else { %>
-              <td>None</td>
-            <% } %>
-          </tr>
+          <% if (package.author) { %>
+            <tr>
+              <th>Author:</th>
+                <td class="with-avatar">
+                  <% if (package.author.gravatar) { %>
+                  <img src="<%= package.author.gravatar %>" class="avatar">
+                  <% } %>
+                  <%= package.author.name %>
+                </td>
+            </tr>
+          <% } %>
           <tr>
             <th>Version:</th>
             <td><%= package.version %></td>
           </tr>
-          <% if (package.tags) { %>
+          <% if (package.keywords) { %>
             <tr>
-              <th>Tags:</th>
-              <td><%- package.tags.map(function(tag) { return '<a href="/tags/' + tag + '">' + tag + '</a>' }).join(', ') %></td>
+              <th>Keywords:</th>
+              <td><%-
+                package.keywords.map(function(tag) {
+                  return '<a href="/tags/' + tag + '">' + tag + '</a>'
+                }).join(', ')
+              %></td>
             </tr>
           <% } %>
           <% if (package.repository) { %>
@@ -95,7 +99,7 @@
 
           <% if (package.readme) { %>
             <section id="readme">
-              <%- marked.parse(package.readme) %>
+              <%- package.readme %>
             </section>
           <% } %>
         <div>
