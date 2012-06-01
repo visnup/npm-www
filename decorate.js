@@ -61,7 +61,7 @@ function decorate (req, res, config) {
       setTimeout(function () {
         d.dispose()
       }, 1000)
-ii
+
       // disconnect after errors so that a fresh worker can come up.
       req.client.server.close()
 
