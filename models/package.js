@@ -7,8 +7,17 @@ var LRU = require("lru-cache")
 , gravatar = require('gravatar').url
 
 function package (params, cb) {
-  var name = params.name
-  , version = params.version || 'latest'
+  var name, version
+
+  if (typeof params === 'object') {
+    name = params.name
+    version = params.version
+  } else {
+    var p = params.split('@')
+    name = p.shift()
+    version = p.join('@')
+  }
+  version = version || 'latest'
 
   var k = name + '/' + version
   , data = regData.get(k)
@@ -40,6 +49,7 @@ function package (params, cb) {
 
 function parseReadme (readme) {
   // allow <url>, but not arbitrary html tags.
+  // any < must be the start of a <url> or <email@address>
   var e = /^<(?![^ >]+(@|:\/)[^ >]+>)/g
   readme = readme.replace(e, '&lt;')
   return marked.parse(readme)
