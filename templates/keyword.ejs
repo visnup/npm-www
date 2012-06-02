@@ -6,6 +6,7 @@
   <link type="text/css" rel="stylesheet" media="all" href="/static/normalize.css" />
   <link type="text/css" rel="stylesheet" media="all" href="/stylus/index.css" />
   <body>
+  <div id=content>
 
   <%- include('nav.ejs') %>
 
@@ -22,10 +23,16 @@
         <h1>Keyword: &quot;<%= keyword %>&quot;</h1>
         <% if (packages.length) { %>
           <p class="description"><%- packages.length %> packages found.</p>
-          <div class="row"><%- packages.map(function(obj) { return '<a href="/package/' + obj.key[1] + '">' + obj.key[1] + '</a>' }).join('</div><div class="row">') %>
+          <div class="row">
+            <%-
+            packages.map(function (p) {
+              return '<a href="/package/' + p + '">' + p + '</a>'
+            }).join('</div><div class="row">')
+            %>
           </div>
         <% } %>
       </div>
     </div>
+  </div>
   </body>
 </html>
