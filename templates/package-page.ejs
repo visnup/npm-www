@@ -43,7 +43,12 @@
           <% if (package.keywords) { %>
             <tr>
               <th>Keywords:</th>
-              <td><%- package.keywords.map(function(keyword) { return '<a href="/keyword/' + keyword + '">' + keyword + '</a>' }).join(', ') %></td>
+              <td><%-
+                package.keywords.map(function (kw) {
+                  kw = kw.replace(/</g, '&gt;').replace(/"/g, '&quot;')
+                  return '<a href="/keyword/' + kw + '">' + kw + '</a>'
+                }).join(', ')
+              %></td>
             </tr>
           <% } %>
           <% if (package.repository) { %>
