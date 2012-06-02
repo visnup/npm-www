@@ -1,13 +1,5 @@
 module.exports = packagePage
 
-var LRU = require("lru-cache")
-, regData = new LRU(10000)
-, marked = require("marked")
-, callresp = require("cluster-callresp")
-, crypto = require("crypto")
-, fs = require('fs')
-
-
 function packagePage (req, res) {
   var name = req.params.name
   , version = req.params.version || 'latest'
