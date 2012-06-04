@@ -15,7 +15,7 @@ var path = require("path")
 glob.sync('static/**/*.*').forEach(function (s) {
   fs.readFile(s, function (er, raw) {
     if (er) throw er
-    render(s, raw, function (er, css) {
+    render(s, raw, function (er) {
       if (er) throw er
     })
   })
@@ -52,7 +52,7 @@ function send (req, res, cache) {
     res.setHeader('content-encoding', 'gzip')
     res.end(z)
   } else {
-    res.end(css)
+    res.end(raw)
   }
 }
 
