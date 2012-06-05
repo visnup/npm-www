@@ -27,7 +27,8 @@
           <div class="row">
             <%-
             packages.map(function (p) {
-              return '<a href="/package/' + p + '">' + p + '</a>'
+              return ('<p><a href="' + p.url + '">' + p.name + '</a> '
+                     + p.description + '</p>')
             }).join('</div><div class="row">')
             %>
           </div>

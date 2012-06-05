@@ -17,7 +17,7 @@ function keyword (kw, couch, cb) {
 
   var sk = JSON.stringify([kw])
   , ek = JSON.stringify([kw, {}])
-  , query = { startkey: sk, endkey: ek, group_level: 2 }
+  , query = { startkey: sk, endkey: ek, group: true }
   , qs = querystring.encode(query)
   , u = '/registry/_design/app/_view/byKeyword?' + qs
 
@@ -27,7 +27,10 @@ function keyword (kw, couch, cb) {
     }
 
     data = data.rows.map(function (row) {
-      return row.key[1]
+      return { name: row.key[1]
+             , description: row.key[2].replace(/</g, '&lt;')
+             , url: "/package/" + row.key[1]
+             }
     })
     data.time = Date.now()
     cache.set(kw, data)
