@@ -11,10 +11,7 @@ function login (req, res) {
     case 'GET':
       return req.session.get('auth', function (er, data) {
         if (data && !data.error) return res.redirect("/profile")
-        res.sendHTML("<html>login, please: " +
-                  "<form method='post'><label>u: <input name='name'></label>" +
-                  "<label>p: <input type='password' name='password'></label>" +
-                  "<input type='submit'></form>")
+        res.template('login.ejs')
       })
 
     default:
