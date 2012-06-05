@@ -69,5 +69,5 @@ function gravatarPerson (p) {
   if (!p || typeof p !== 'object' || !p.email) {
     return
   }
-  p.gravatar = gravatar(p.email, {s:50, d:'retro'})
+  p.gravatar = gravatar(p.email, {s:50, d:'retro'}, true)
 }
