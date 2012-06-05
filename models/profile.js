@@ -1,7 +1,7 @@
 module.exports = profile
 
 var callresp = require('cluster-callresp')
-, gravatar = require('gravatar')
+, gravatar = require('gravatar').url
 
 function profile (name, cb) {
   // get the most recent data for this req.
