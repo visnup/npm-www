@@ -12,7 +12,7 @@ function profile (name, cb) {
            }, function (er, data) {
     if (er || !data) return cb(er, data)
     if (data.email) {
-      data.gravatar = gravatar(data.email, {s:50, d:'retro'})
+      data.gravatar = gravatar(data.email, {s:50, d:'retro'}, true)
     }
     cb(er, data)
   })

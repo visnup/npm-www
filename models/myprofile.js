@@ -5,7 +5,7 @@ var gravatar = require('gravatar').url
 function myprofile (req, cb) {
   req.session.get('profile', function (er, data) {
     if (data && data.email) {
-      data.gravatar = gravatar(data.email, {s:50, d:'retro'})
+      data.gravatar = gravatar(data.email, {s:50, d:'retro'}, true)
     }
     if (er || data) return cb(er, data)
 
@@ -20,7 +20,7 @@ function myprofile (req, cb) {
         return cb(er)
       }
       if (data.email) {
-        data.gravatar = gravatar(data.email, {s:50, d:'retro'})
+        data.gravatar = gravatar(data.email, {s:50, d:'retro'}, true)
       }
       req.session.set('profile', data)
       return cb(null, data)
