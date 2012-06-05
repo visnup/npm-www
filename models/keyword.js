@@ -27,9 +27,12 @@ function keyword (kw, couch, cb) {
     }
 
     data = data.rows.map(function (row) {
-      return { name: row.key[1]
-             , description: row.key[2].replace(/</g, '&lt;')
-             , url: "/package/" + row.key[1]
+      var name = row.key[1]
+        , desc = row.key[2] || ''
+        , url = "/package/" + name
+      return { name: name
+             , description: desc.replace(/</g, '&lt;')
+             , url: url
              }
     })
     data.time = Date.now()
