@@ -90,8 +90,11 @@ function show_ (name, req, res) {
     }
 
     if (er || data.error) return res.error(er || data.error)
-    var td = { profile: data
-             , fields: config.profileFields }
-    res.template('profile-edit.ejs', td)
+    var locals = {
+      content: "profile-edit.ejs",
+      profile: data,
+      fields: config.profileFields
+    }
+    res.template("layout.ejs", locals)
   })
 }

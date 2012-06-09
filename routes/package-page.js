@@ -9,7 +9,11 @@ function packagePage (req, res) {
   req.model.end(function (er, m) {
     if (er) return res.error(er)
     if (!m.package) return res.error(404)
-    var locals = { package: m.package, profile: m.myprofile }
-    res.template("package-page.ejs", locals)
+    var locals = {
+      content: "package-page.ejs",
+      package: m.package,
+      profile: m.myprofile
+    }
+    res.template("layout.ejs", locals)
   })
 }

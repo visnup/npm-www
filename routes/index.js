@@ -7,7 +7,11 @@ function indexPage (req, res) {
   req.model.load('myprofile', req)
   req.model.end(function (er, m) {
     if (er) return res.error(er)
-    var locals = { index: m.index, profile: m.myprofile }
-    res.template("index.ejs", locals)
+    var locals = {
+      content: "index.ejs",
+      index: m.index,
+      profile: m.myprofile
+    }
+    res.template("layout.ejs", locals)
   })
 }

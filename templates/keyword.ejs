@@ -1,40 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Results for &quot;<%= keyword %>&quot;</title>
-  <link type="text/css" rel="stylesheet" media="all" href="/static/normalize.css" />
-  <link type="text/css" rel="stylesheet" media="all" href="/stylus/index.css" />
-  <body>
-  <div id=content>
-
-  <%- include('nav.ejs') %>
-  <%- include('login-aside.ejs', locals) %>
-
-    <div id="page">
-
-      <header>
-        <form>
-          <input type="search" placeholder="Search Packages" />
-        </form>
-        <h1>npm</h1>
-      </header>
-
-      <div id="package">
-        <h1>Keyword: &quot;<%= keyword %>&quot;</h1>
-        <% if (packages.length) { %>
-          <p class="description"><%- packages.length %> packages found.</p>
-          <div class="row">
-            <%-
-            packages.map(function (p) {
-              return ('<p><a href="' + p.url + '">' + p.name + '</a> '
-                     + p.description + '</p>')
-            }).join('</div><div class="row">')
-            %>
-          </div>
-        <% } %>
-      </div>
+<div id="package">
+  <h1>Keyword: &quot;<%= keyword %>&quot;</h1>
+  <% if (packages.length) { %>
+    <p class="description"><%- packages.length %> packages found.</p>
+    <div class="row">
+      <%-
+      packages.map(function (p) {
+        return ('<p><a href="' + p.url + '">' + p.name + '</a> '
+                + p.description + '</p>')
+      }).join('</div><div class="row">')
+      %>
     </div>
-  </div>
-  </body>
-</html>
+  <% } %>
+</div>

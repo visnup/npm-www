@@ -15,7 +15,7 @@ function password (req, res) {
 
 function show (req, res) {
   login(req, res, function () {
-    res.template('password.ejs', {profile: req.profile, error: null})
+    res.template('layout.ejs', {content: 'password.ejs', profile: req.profile, error: null})
   })
 }
 
