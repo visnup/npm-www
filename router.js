@@ -35,6 +35,7 @@ router.addRoute("/forgot", forgot)
 router.addRoute("/forgot/:token", forgot)
 
 router.addRoute("/about", require("./routes/about.js"))
+router.addRoute("/", require("./routes/index.js"))
 
 // The package details page
 // Definitely ought to be its own module.
