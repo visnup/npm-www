@@ -5,6 +5,8 @@ module.exports = site
 var router = require("./router.js")
 , decorate = require('./decorate.js')
 , config = require("./config.js")
+, url = require("url")
+, path = require("path")
 
 , Keygrip = require("keygrip")
 
@@ -17,7 +19,10 @@ config.keys = new Keygrip(config.keys)
 function site (req, res) {
   decorate(req, res, config)
 
-  var route = router.match(req.url)
+  var pathname = url.parse(req.url).pathname
+    , normalPathname = path.normalize(pathname);
+
+  var route = router.match(normalPathname);
   if (!route) return res.error(404)
 
   Object.keys(route).forEach(function (k) {
