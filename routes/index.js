@@ -1,17 +1,15 @@
-module.exports = packagePage
+module.exports = indexPage
 
-function packagePage (req, res) {
+function indexPage (req, res) {
   var name = req.params.name
   , version = req.params.version || 'latest'
 
   req.model.load('myprofile', req)
-  req.model.load('package', req.params)
   req.model.end(function (er, m) {
     if (er) return res.error(er)
-    if (!m.package) return res.error(404)
     var locals = {
-      content: "package-page.ejs",
-      package: m.package,
+      content: "index.ejs",
+      index: m.index,
       profile: m.myprofile
     }
     res.template("layout.ejs", locals)

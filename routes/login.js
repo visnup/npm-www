@@ -11,7 +11,16 @@ function login (req, res) {
     case 'GET':
       return req.session.get('auth', function (er, data) {
         if (data && !data.error) return res.redirect("/profile")
-        res.template('login.ejs')
+        req.model.load("myprofile", req);
+        req.model.end(function(er, m) {
+          if(er) return res.error(er);
+          var locals = {
+            content: 'login.ejs',
+            profile: m.myprofile
+          }
+
+          res.template('layout.ejs', locals)
+        })
       })
 
     default:

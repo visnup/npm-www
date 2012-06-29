@@ -14,9 +14,12 @@ function keyword (req, res) {
 
   req.model.end(function (er, m) {
     if (er) return res.error(er)
-    var td = { packages: m.keyword
-             , keyword: kw
-             , profile: m.myprofile }
-    res.template('keyword.ejs', td)
+    var locals = {
+      content: "keyword.ejs",
+      packages: m.keyword,
+      keyword: kw,
+      profile: m.myprofile
+    };
+    res.template('layout.ejs', locals)
   })
 }

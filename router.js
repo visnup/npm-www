@@ -19,6 +19,7 @@ router.addRoute("/stylus/*?", require("./routes/stylus.js"))
 
 router.addRoute("/login", require("./routes/login.js"))
 
+// _edit devalidates the session
 router.addRoute("/profile/_edit", require("./routes/profile-edit.js"))
 router.addRoute("/profile/:name", require("./routes/profile.js"))
 router.addRoute("/profile", require("./routes/profile.js"))
@@ -35,6 +36,8 @@ router.addRoute("/forgot", forgot)
 router.addRoute("/forgot/:token", forgot)
 
 router.addRoute("/about", require("./routes/about.js"))
+
+router.addRoute("/", require("./routes/index.js"))
 
 // The package details page
 // Definitely ought to be its own module.

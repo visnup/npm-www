@@ -1,112 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title><%= package.name %> – npm module</title>
-  <link type="text/css" rel="stylesheet" media="all" href="/static/normalize.css" />
-  <link type="text/css" rel="stylesheet" media="all" href="/stylus/index.css" />
-  <body>
-  <div id="content">
+<div id="package">
+  <h1><%= package.name %></h1>
+  <p class="description"><%= package.description || 'No description' %></p>
 
-  <%- include('nav.ejs') %>
-  <%- include('login-aside.ejs', locals) %>
+  <table class="metadata">
+    <% if (package.author) { %>
+    <tr>
+      <th>Author:</th>
+      <td class="with-avatar">
+        <% if (package.author.gravatar) { %>
+        <img src="<%= package.author.gravatar %>" class="avatar">
+        <% } %>
+        <%= package.author.name %>
+      </td>
+    </tr>
+    <% } %>
+    <tr>
+      <th>Version:</th>
+      <td><%= package.version %></td>
+    </tr>
+    <% if (package.keywords) { %>
+    <tr>
+      <th>Keywords:</th>
+      <td><%-
+        package.keywords.map(function (kw) {
+        kw = kw.replace(/</g, '&lt;').replace(/"/g, '&quot;')
+        return '<a href="/keyword/' + kw + '">' + kw + '</a>'
+        }).join(', ')
+        %></td>
+    </tr>
+    <% } %>
+    <% if (package.repository) { %>
+    <tr>
+      <th>Repository:</td>
+      <td>
+        <%= package.repository.url %> (<%= package.repository.type %>)
+      </td>
+      <% } %>
+      <% if (package.bugs) { %>
+      <tr>
+        <th>Bugs:</td>
+        <td>
+          <a href="<%= package.bugs.url %>"><%= package.bugs.url %></a>
+        </td>
+        <% } %>
+        <tr>
+          <th>Dependencies:</th>
+          <td>
+            <%-
+            Object.keys(package.dependencies || {}).map(function(pkg) {
+            return '<a href="/package/' + pkg + '">' + pkg + '</a>'
+            }).join(', ') || 'None'
+            %>
+          </td>
+        </tr>
+        <% if (package.dependents) { %>
+        <tr>
+          <th>Dependents:</th>
+          <td>
+          </td>
+        </tr>
+        <% } %>
+        <% if (package.users) { %>
+        <tr>
+          <th>Starred by:</th>
+          <td>
+            <%= package.users %>
+          </td>
+        </tr>
+        <% } %>
+      </table>
 
-    <div id="page">
-
-      <header>
-        <form>
-          <input type="search" placeholder="Search Packages">
-        </form>
-        <h1>npm</h1>
-      </header>
-
-      <div id="package">
-        <h1><%= package.name %></h1>
-        <p class="description"><%= package.description || 'No description' %></p>
-
-        <table class="metadata">
-          <% if (package.author) { %>
-            <tr>
-              <th>Author:</th>
-                <td class="with-avatar">
-                  <% if (package.author.gravatar) { %>
-                  <img src="<%= package.author.gravatar %>" class="avatar">
-                  <% } %>
-                  <%= package.author.name %>
-                </td>
-            </tr>
-          <% } %>
-          <tr>
-            <th>Version:</th>
-            <td><%= package.version %></td>
-          </tr>
-          <% if (package.keywords) { %>
-            <tr>
-              <th>Keywords:</th>
-              <td><%-
-                package.keywords.map(function (kw) {
-                  kw = kw.replace(/</g, '&lt;').replace(/"/g, '&quot;')
-                  return '<a href="/keyword/' + kw + '">' + kw + '</a>'
-                }).join(', ')
-              %></td>
-            </tr>
-          <% } %>
-          <% if (package.repository) { %>
-            <tr>
-              <th>Repository:</td>
-              <td>
-                <%= package.repository.url %> (<%= package.repository.type %>)
-              </td>
-          <% } %>
-          <% if (package.bugs) { %>
-            <tr>
-              <th>Bugs:</td>
-              <td>
-                <a href="<%= package.bugs.url %>"><%= package.bugs.url %></a>
-              </td>
-          <% } %>
-          <tr>
-            <th>Dependencies:</th>
-            <td>
-              <%-
-              Object.keys(package.dependencies || {}).map(function(pkg) {
-                return '<a href="/package/' + pkg + '">' + pkg + '</a>'
-              }).join(', ') || 'None'
-              %>
-            </td>
-          </tr>
-          <% if (package.dependents) { %>
-            <tr>
-              <th>Dependents:</th>
-              <td>
-              </td>
-            </tr>
-          <% } %>
-          <% if (package.users) { %>
-            <tr>
-              <th>Starred by:</th>
-              <td>
-                <%= package.users %>
-              </td>
-            </tr>
-          <% } %>
-        </table>
-
-        <div class="details">
-          <ul class="toc">
-            <% if (package.readme) { %>
-              <li><a href="#readme">Read Me</a></li>
-            <% } %>
-          </ul>
-
+      <div class="details">
+        <ul class="toc">
           <% if (package.readme) { %>
-            <section id="readme">
-              <%- package.readme %>
-            </section>
+          <li><a href="#readme">Read Me</a></li>
           <% } %>
-        <div>
+        </ul>
+
+        <% if (package.readme) { %>
+        <section id="readme">
+        <%- package.readme %>
+        </section>
+        <% } %>
       </div>
     </div>
   </div>
-  </body>
-</html>
+</div>
