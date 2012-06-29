@@ -21,5 +21,17 @@ living at <%= registryCouch %>.</p>
 }) %>
 </ul>
 
-Running on <a href="http://nodejs.org/">Node.js</a>, version
-<%= process.version %>.
+<p>Running on <a href="http://nodejs.org/">Node.js</a>, version
+<%= process.version %>.</p>
+
+<h2>Thanks</h2>
+
+<p><a href="https://github.com/isaacs/npm-www">Patches welcome!</a></p>
+
+<p>The following people have helped with this project:</p>
+<ul><%
+  contributors.trim().split('\n').slice(2).forEach(function (c) {
+    %><li><%= c.split('<')[0] %></li>
+    <%
+  })
+%></ul>

@@ -23,6 +23,7 @@ exports.log =
   }
 
 exports.package = require('./package.json')
+exports.contributors = require('fs').readFileSync('AUTHORS', 'utf8')
 
 exports.errorPage = { debug: true }
 
