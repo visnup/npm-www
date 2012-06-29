@@ -25,7 +25,7 @@ function package (params, cb) {
 
   // remove excessively stale data
   // ignore anything over 10 minutes old
-  if (data) {
+  if (data && !params.nocache) {
     var age = Date.now() - data._time
     if (age > 10 * 60 * 1000) {
       regData.del(k)
