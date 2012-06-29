@@ -3,8 +3,8 @@ module.exports = package
 var LRU = require("lru-cache")
 , regData = new LRU(10000)
 , marked = require("marked")
-, callresp = require("cluster-callresp")
 , gravatar = require('gravatar').url
+, npm = require("npm")
 
 function package (params, cb) {
   var name, version
@@ -17,7 +17,8 @@ function package (params, cb) {
     name = p.shift()
     version = p.join('@')
   }
-  version = version || 'latest'
+  // version = version || 'latest'
+  version = version || ''
 
   var k = name + '/' + version
   , data = regData.get(k)
@@ -34,9 +35,9 @@ function package (params, cb) {
 
   if (data) return cb(null, data)
 
-  callresp({ cmd: 'registry.get'
-           , name: name
-           , version: version }, function (er, data) {
+  var uri = name
+  if (version) uri += '/' + version
+  npm.registry.get(uri, 600, false, true, function (er, data) {
     if (er) return cb(er)
 
     data._time = Date.now()

@@ -1,7 +1,6 @@
 module.exports = profile
 
-var callresp = require("cluster-callresp")
-, config = require('../config.js')
+var config = require('../config.js')
 
 // thing for editing bits of your profile.
 // gets saved back to couchdb.

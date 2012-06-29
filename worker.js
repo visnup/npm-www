@@ -19,6 +19,7 @@ var config = require("./config.js")
 , server
 , RedSess = require('redsess')
 , bunyan = require('bunyan')
+, npm = require('npm')
 
 config.log.worker = cluster.worker.uniqueID
 var logger = bunyan.createLogger(config.log)
@@ -79,8 +80,13 @@ if (config.https) {
   server = http.createServer(site)
 }
 
-server.listen(config.port, function () {
-  logger.info("Listening on %d", config.port)
+var npmconf = config.npm || {}
+npmconf["node-version"] = null
+npm.load(npmconf, function (er) {
+  if (er) throw er
+  server.listen(config.port, function () {
+    logger.info("Listening on %d", config.port)
+  })
 })
 
 server.on('close', function () {

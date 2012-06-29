@@ -1,15 +1,12 @@
 module.exports = profile
 
-var callresp = require('cluster-callresp')
-, gravatar = require('gravatar').url
+var gravatar = require('gravatar').url
+, npm = require('npm')
 
 function profile (name, cb) {
   // get the most recent data for this req.
-  callresp({ cmd: 'registry.get'
-           , name: '/-/user/org.couchdb.user:' + name
-           , maxAge: 0
-           , stale: false
-           }, function (er, data) {
+  npm.registry.get('/-/user/org.couchdb.user:' + name, 0, function (er, d) {
+
     if (er || !data) return cb(er, data)
     if (data.email) {
       data.gravatar = gravatar(data.email, {s:50, d:'retro'}, true)
