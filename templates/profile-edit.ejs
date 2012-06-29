@@ -5,16 +5,19 @@
 <form method=post action=/profile/_edit>
   <input type=hidden name=_id value="<%= profile._id %>">
   <input type=hidden name=name value="<%= profile.name %>">
+  <table width=100%>
 <%
 Object.keys(fields).forEach(function (f) {
   %>
-  <fieldset>
-    <label for="<%= f %>"><%= fields[f] %></label>
-    <input id="<%= f %>" name="<%= f %>" value="<%= profile[f] || '' %>">
-  </fieldset>
+  <tr>
+    <th><label for="<%= f %>"><%= fields[f] %></label></th>
+    <td><input style="display:block;width:100%;"
+      id="<%= f %>" name="<%= f %>" value="<%= profile[f] || '' %>"></td>
+  </tr>
   <%
 })
 %>
+  </table>
 
 <input type=submit value=Save>
 </form>
