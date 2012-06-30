@@ -7,11 +7,13 @@
     <% if (package.author) { %>
     <tr>
       <th>Author:</th>
-      <td class="with-avatar">
-        <% if (package.author.avatar) { %>
-        <img src="<%= package.author.avatar %>" class="avatar">
-        <% } %>
-        <%= package.author.name %>
+      <td>
+        <div class="user">
+          <% if (package.author.avatar) { %>
+          <img src="<%= package.author.avatar %>" class="avatar">
+          <% } %>
+          <a class="username" href="#"><%= package.author.name %></a>
+        </div>
       </td>
     </tr>
     <% } %>

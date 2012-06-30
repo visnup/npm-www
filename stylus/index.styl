@@ -82,12 +82,16 @@ h1, h2, h3, h4, h5, h6 {
       }
     }
   }
-  .profile .profsub {
-    margin:0;
-    font-size:11px;
-  }
-  .profile .profsub a:first {
-    border-right: 1px solid #999
+  .profile {
+    margin-top:4px;
+
+    .profsub {
+      margin:0;
+      font-size:11px;
+    }
+    .profsub a:first {
+      border-right: 1px solid #999
+    }
   }
 
   aside.login {
@@ -95,18 +99,6 @@ h1, h2, h3, h4, h5, h6 {
     float: right;
     padding: 1em;
     width: 220px;
-    .avatar {
-      width: 25px;
-      height: 25px;
-      float: left;
-      margin-right: 0.5em;
-    }
-    .profile {
-      border-bottom: 1px solid #CCC;
-      line-height: 25px;
-      padding-bottom: 1em;
-      vertical-align: middle;
-    }
   }
 
   #page {
@@ -143,17 +135,6 @@ h1, h2, h3, h4, h5, h6 {
   }
   p.description {
     font: 18px Georgia, serif;
-  }
-  td.with-avatar {
-    position: relative;
-    padding-left: 30px;
-    .avatar {
-      position: absolute;
-      top: 5px;
-      left: 0;
-      width: 25px;
-      height: 25px;
-    }
   }
   table.metadata {
     margin: 1em 0;
@@ -210,6 +191,23 @@ h1, h2, h3, h4, h5, h6 {
         }
       }
     }
+  }
+}
+
+.user {
+  padding-left: 32px;
+  position: relative;
+
+  .username {
+    font-weight: bold;
+  }
+
+  .avatar {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 25px;
+    height: 25px;
   }
 }
 
