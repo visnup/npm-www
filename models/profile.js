@@ -5,7 +5,7 @@ var gravatar = require('gravatar').url
 
 function profile (name, cb) {
   // get the most recent data for this req.
-  npm.registry.get('/-/user/org.couchdb.user:' + name, 0, function (er, d) {
+  npm.registry.get('/-/user/org.couchdb.user:' + name, 0, function (er, data) {
 
     if (er || !data) return cb(er, data)
     if (data.email) {
