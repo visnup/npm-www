@@ -7,8 +7,9 @@ function myprofile (req, required, cb) {
   req.session.get('profile', function (er, data) {
     if (!required && er) er = null
     if (data && data.email) {
-      data.gravatar = gravatar(data.email, {s:50, d:'retro'}, true)
+      data.avatar = gravatar(data.email || '', {s:50, d:'mm'}, true)
     }
+
     if (er || data) return cb(er, data)
 
     // if we're logged in, try to see if we can get it
@@ -22,9 +23,9 @@ function myprofile (req, required, cb) {
         // Oh well.  Probably the login expired.
         return cb(er)
       }
-      if (data.email) {
-        data.gravatar = gravatar(data.email, {s:50, d:'retro'}, true)
-      }
+
+      data.avatar = gravatar(data.email || '', {s:50, d:'mm'}, true)
+
       req.session.set('profile', data)
       return cb(null, data)
     })

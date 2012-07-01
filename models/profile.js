@@ -8,9 +8,9 @@ function profile (name, cb) {
   npm.registry.get('/-/user/org.couchdb.user:' + name, 0, function (er, data) {
 
     if (er || !data) return cb(er, data)
-    if (data.email) {
-      data.gravatar = gravatar(data.email, {s:50, d:'retro'}, true)
-    }
+
+    data.avatar = gravatar(data.email || '', {s:50, d:'mm'}, true)
+
     cb(er, data)
   })
 }

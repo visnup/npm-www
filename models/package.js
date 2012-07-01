@@ -67,8 +67,8 @@ function gravatarPeople (data) {
 }
 
 function gravatarPerson (p) {
-  if (!p || typeof p !== 'object' || !p.email) {
+  if (!p || typeof p !== 'object') {
     return
   }
-  p.gravatar = gravatar(p.email, {s:50, d:'retro'}, true)
+  p.avatar = gravatar(p.email || '', {s:50, d:'mm'}, true)
 }
