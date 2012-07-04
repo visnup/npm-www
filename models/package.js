@@ -5,6 +5,7 @@ var LRU = require("lru-cache")
 , marked = require("marked")
 , gravatar = require('gravatar').url
 , npm = require("npm")
+, moment = require('moment')
 
 function package (params, cb) {
   var name, version
@@ -39,11 +40,11 @@ function package (params, cb) {
   if (version) uri += '/' + version
   npm.registry.get(uri, 600, false, true, function (er, data) {
     if (er) return cb(er)
-
     data._time = Date.now()
     if (data.readme) data.readme = parseReadme(data.readme)
     gravatarPeople(data)
     regData.set(k, data)
+    data.fromNow = moment(data.time[data['dist-tags'].latest]).fromNow()
     return cb(null, data)
   })
 }

@@ -22,8 +22,8 @@
         <span>
         <%= version %> 
         </span> 
-        last updated on
-        <%= (new Date(date)).toLocaleDateString() %>
+        last updated 
+        <%= package.fromNow %>
       </td>
     </tr>
     <% if (package.keywords) { %>
