@@ -72,7 +72,11 @@
         <tr>
           <th>Starred by:</th>
           <td>
-            <%= package.users %>
+            <%-
+            package.starredBy.map(function(user){
+            return '<a href="/profile/' + user + '">' + user + '</a>'
+            }).join(', ') + package.starredByMsg
+            %>
           </td>
         </tr>
         <% } %>
