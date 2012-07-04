@@ -16,7 +16,15 @@
     <% } %>
     <tr>
       <th>Version:</th>
-      <td><%= package.version %></td>
+      <% var version = package['dist-tags'].latest ||"0.0.0" %>
+      <% var date = package.time[version] || new Date() %>
+      <td>
+        <span>
+        <%= version %> 
+        </span> 
+        last updated on
+        <%= (new Date(date)).toLocaleDateString() %>
+      </td>
     </tr>
     <% if (package.keywords) { %>
     <tr>
