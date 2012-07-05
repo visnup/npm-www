@@ -106,6 +106,52 @@ The new npmjs.org website.
 
 ## Contributing
 
-Contributions welcome!  If you are going to take on some huge part of
-the site, please post an issue first to discuss the direction.  Beyond
-that, just fork and send pull requests, as is the custom of our time.
+Contributions welcome!
+
+If you are going to take on some huge part of the site, please post an
+issue first to discuss the direction.  Beyond that, just fork and send
+pull requests, as is the custom of our time.  Your name will be added to
+the AUTHORS file, and displayed on the `/about` page.
+
+Please follow common sense, and these guidelines:
+
+### Git
+
+Learn to use and love the `rebase` command to make your commits tidy.
+
+1. Commits should be atomic.  One thing = one commit.  Do not send a
+   pull request with 5 commits doing things, and then 4 un-doing them,
+   and then 3 finishing it.  Do not send a pull request with one commit
+   that does 15 different things.
+2. First line of your commit message should be no more than 50
+   characters.  Following the first line, there should be a blank line,
+   then optionally some paragraphs providing further detail, which
+   should wrap at no more than 80 characters.
+3. Please set up your git config so that a real email address appears in
+   your commits.  Be advised that this email address is public.
+
+### Code
+
+The npm-www site follows a slightly less strict JavaScript style than
+npm itself, but it is similar.
+
+1. Use semicolons minimally, only where they are necessary.
+2. Lines should be no more than 70 characters or so.  It's better to be
+   too short than too long.
+3. 2-space indentation.
+
+### Overall Structure
+
+1. Dependencies are checked in.  This is a website, not a library.
+2. There is no `lib` or `utils`.  There is a `node_modules` folder and a
+   package.json file.
+3. There is no framework.  There are dependencies that do a single thing
+   well and are well tested and documented.
+4. Routes go in the `routes` folder.  Data fetching and manipulation
+   goes in the `models` folder.  HTML construction is done in ejs in the
+   `templates` folder.  These concerns must remain separate.
+5. Client-side JavaScript shall be used when it is absolutely necessary.
+   (There are no features yet, or planned, where this is the case.  But
+   that might change, of course, once more of the base functionality is
+   established.)
+6. See also the "Design Philosophy" above.
