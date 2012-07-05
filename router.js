@@ -19,8 +19,7 @@ router.addRoute("/stylus/*?", require("./routes/stylus.js"))
 
 router.addRoute("/login", require("./routes/login.js"))
 
-// _edit devalidates the session
-router.addRoute("/profile/_edit", require("./routes/profile-edit.js"))
+router.addRoute("/profile-edit", require("./routes/profile-edit.js"))
 router.addRoute("/profile/:name", require("./routes/profile.js"))
 router.addRoute("/profile", require("./routes/profile.js"))
 

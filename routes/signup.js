@@ -65,7 +65,7 @@ function handle (req, res) {
             return res.error(er, data && data.error, 500)
           }
           res.session.set('profile', data)
-          res.redirect('/profile/_edit')
+          res.redirect('/profile-edit')
         })
       })
     })
