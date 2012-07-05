@@ -144,7 +144,10 @@ function handle (req, res) {
         return res.error(400, 'Bad user, no email')
       }
 
+      // the token needs to be url-safe.
       var token = crypto.randomBytes(30).toString('base64')
+                  .split('/').join('_')
+                  .split('+').join('-')
       , hash = sha(token)
       , data = { name: name, email: email, token: token }
       , key = 'pwrecover_' + hash
