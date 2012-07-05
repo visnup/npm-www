@@ -153,11 +153,12 @@ function handle (req, res) {
       , key = 'pwrecover_' + hash
 
       config.redis.client.hmset(key, data)
-      var u = 'https://' + req.headers.host + '/forgot/' + token
+      var u = 'https://' + req.headers.host + '/forgot/' + encodeURIComponent(token)
       mailer.sendMail
         ( { to: '"' + name + '" <' + email + '>'
           , from: 'user-account-bot@npmjs.org'
           , subject : "npm Password Reset"
+          , headers: { "X-SMTPAPI": { category: "password-reset" } }
           , text: "You are receiving this because you (or someone else) have "
             + "requested the reset of the '"
             + name

@@ -22,14 +22,17 @@ exports.redisAuth = null
 exports.keys = null
 // exports.keys = [ "super duper secrets go here!" ]
 
-// Authorization settings for Amazon's Simple Email Service.
+// Authorization settings for SendGrid email service.
 // Without this, you can't send email to users to reset their password.
 exports.mailTransportType = null
 exports.mailTransportSettings = null
-// exports.mailTransportType = "SES"
+// exports.mailTransportType = "SMTP"
 // exports.mailTransportSettings = {
-//   AWSAccessKeyID: "XXXXXXXXXXXXXXXXXXXX",
-//   AWSSecretKey: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+//   service: "SendGrid",
+//   auth: {
+//     user: "XXXXXXXXXXXXXXXXXX",
+//     pass: "XXXXXXXXXXXXXXXXXX"
+//   }
 // }
 
 // HTTP keys
