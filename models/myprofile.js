@@ -6,8 +6,9 @@ function myprofile (req, required, cb) {
   if (typeof required === 'function') cb = required, required = false
   req.session.get('profile', function (er, data) {
     if (!required && er) er = null
-    if (data && data.email) {
-      data.avatar = gravatar(data.email || '', {s:50, d:'mm'}, true)
+    if (data) {
+      var gr = data.email ? 'retro' : 'mm'
+      data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
     }
 
     if (er || data) return cb(er, data)
@@ -24,7 +25,8 @@ function myprofile (req, required, cb) {
         return cb(er)
       }
 
-      data.avatar = gravatar(data.email || '', {s:50, d:'mm'}, true)
+      var gr = data.email ? 'retro' : 'mm'
+      data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
 
       req.session.set('profile', data)
       return cb(null, data)

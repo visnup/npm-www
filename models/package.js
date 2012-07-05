@@ -70,5 +70,5 @@ function gravatarPerson (p) {
   if (!p || typeof p !== 'object') {
     return
   }
-  p.avatar = gravatar(p.email || '', {s:50, d:'mm'}, true)
+  p.avatar = gravatar(p.email || '', {s:50, d:'retro'}, true)
 }

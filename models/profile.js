@@ -9,7 +9,8 @@ function profile (name, cb) {
 
     if (er || !data) return cb(er, data)
 
-    data.avatar = gravatar(data.email || '', {s:50, d:'mm'}, true)
+    var gr = data.email ? 'retro' : 'mm'
+    data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
 
     cb(er, data)
   })
