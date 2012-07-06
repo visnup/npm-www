@@ -8,9 +8,8 @@ body, input {
 }
 
 body {
-  background-color: #f4f4f2;
+  background: #C3BDB3;
   border-top: solid 6px red;
-  padding: 72px 16px;
   text-align: center;
 }
 
@@ -36,8 +35,13 @@ h1, h2, h3, h4, h5, h6 {
 
 // layout
 
+#wrap {
+  background-color: #f4f4f2;
+  padding: 72px 16px;
+}
+
 #content {
-  max-width: 953px;
+  width: 953px;
   margin: 0 auto;
   text-align: left;
 
@@ -195,6 +199,91 @@ h1, h2, h3, h4, h5, h6 {
           padding: 16px;
         }
       }
+    }
+  }
+}
+
+#footer {
+  width: 953px;
+  font-size:12px;
+  overflow:hidden;
+  padding:12px 0 60px;
+  margin:12px auto 0;
+  color:#666;
+
+  a.footlogo {
+    float:left;
+    background:url(/favicon.ico) 34px -17px no-repeat;
+    text-indent:-999em;
+    width:160px;
+    height:60px;
+  }
+
+  ul {
+    float:left;
+    margin:0;
+    padding:0;
+  }
+
+  li {
+    float:left;
+    display:block;
+    height:26px;
+    line-height:26px;
+    margin:0;
+    padding:0;
+
+    a {
+      line-height:26px;
+      padding:0 1em;
+      display:block;
+      height:100%;
+      width:100%;
+    }
+  }
+
+  h2 {
+    color:#666;
+    font-weight:normal;
+    padding:0;
+    margin:0;
+    font-size:inherit;
+  }
+
+  .poweredby {
+    float:right;
+
+    h2 {
+      float:left;
+      line-height:26px;
+    }
+
+    li {
+      height:26px;
+      background:1em 0 no-repeat;
+      padding:0 1em;
+
+      a {
+        text-indent:-999em;
+        padding:0;
+      }
+    }
+
+    li.joyent {
+      background-image: url(/static/joyent-footer.png);
+      width:82px;
+    }
+
+    li.iriscouch {
+      /* todo: replace when this logo exists
+      background-image: url(/static/iriscouch-footer.gif);
+      */
+      a {
+        background:#fff;
+        opacity:0.8;
+        text-indent:0;
+      }
+      width:100px;
     }
   }
 }
