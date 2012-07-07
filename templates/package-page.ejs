@@ -16,13 +16,11 @@
     <% } %>
     <tr>
       <th>Version:</th>
-      <% var version = package['dist-tags'].latest ||"0.0.0" %>
-      <% var date = package.time[version] || new Date() %>
       <td>
-        <span>
-        <%= version %> 
-        </span> 
-        last updated 
+        <b>
+        <%= package.version %>
+        </b>
+        last updated
         <%= package.fromNow %>
       </td>
     </tr>
@@ -75,7 +73,7 @@
             <%-
             package.starredBy.map(function(user){
             return '<a href="/profile/' + user + '">' + user + '</a>'
-            }).join(', ') + package.starredByMsg
+            }).join(', ')
             %>
           </td>
         </tr>
