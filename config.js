@@ -42,6 +42,16 @@ exports.profileFields =
 
 exports.emailFrom = '"The npm Website Robot" <webmaster@npmjs.org>'
 
+// For development only!
+// Don't send 304s for templar (still does for styl and some others)
+// npm config set npm-www:nocache 1
+exports.nocache = process.env.npm_package_config_nocache === '1'
+
+exports.templateOptions = {
+  cache: !exports.nocache
+}
+
+
 /*****************/
 /* don't delete! */
 /*****************/
