@@ -22,6 +22,7 @@ var config = require("./config.js")
 , npm = require('npm')
 
 config.log.worker = cluster.worker.uniqueID
+config.log.pid = process.pid
 var logger = bunyan.createLogger(config.log)
 
 console.error = logger.info.bind(logger)
