@@ -44,12 +44,16 @@ function package (params, cb) {
     var len = data.starredBy.length
 
     data._time = Date.now()
-    if (data.readme) data.readme = parseReadme(data.readme)
+    if (data.readme && !data.readmeSrc) {
+      data.readmeSrc = data.readme
+      data.readme = parseReadme(data.readme)
+    }
     gravatarPeople(data)
     regData.set(k, data)
     if (data.time && data['dist-tags']) {
-      var v = data['dist-tags'].version
+      var v = data['dist-tags'].latest
       var t = data.time[v]
+      data.version = v
       data.fromNow = moment(t).fromNow()
     }
 
