@@ -5,6 +5,9 @@ module.exports = function (req, res) {
 
   function next () {
     // delete the couchdb session, if we have one.
+    req.session.del('name')
+    req.session.del('error')
+    res.cookies.set('name', '')
     req.session.del('profile', function (er) {
       if (er) return res.error(er)
       req.session.get('done', function (er, done) {

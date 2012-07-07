@@ -12,7 +12,7 @@ function signup (req, res) {
 function show (req, res) {
   req.model.load("myprofile", req);
   req.model.end(function(er, m) {
-    if(er) return res.error(er);
+    if (er) return res.error(er);
     res.template('layout.ejs', {
       content: 'signup-form.ejs',
       profile: m.myprofile,
