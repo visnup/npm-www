@@ -47,8 +47,11 @@ function package (params, cb) {
     if (data.readme) data.readme = parseReadme(data.readme)
     gravatarPeople(data)
     regData.set(k, data)
-    data.fromNow = moment(data.time[data['dist-tags'].latest]).fromNow()
-
+    if (data.time && data['dist-tags']) {
+      var v = data['dist-tags'].version
+      var t = data.time[v]
+      data.fromNow = moment(t).fromNow()
+    }
 
     return cb(null, data)
   })

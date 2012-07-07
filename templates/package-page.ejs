@@ -20,8 +20,10 @@
         <b>
         <%= package.version %>
         </b>
+        <% if (package.fromNow) { %>
         last updated
         <%= package.fromNow %>
+        <% } %>
       </td>
     </tr>
     <% if (package.keywords) { %>
