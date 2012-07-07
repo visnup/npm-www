@@ -25,7 +25,7 @@ config.log.worker = cluster.worker.uniqueID
 config.log.pid = process.pid
 var logger = bunyan.createLogger(config.log)
 
-console.error = logger.info.bind(logger)
+console.error = logger.warn.bind(logger)
 console.log = logger.info.bind(logger)
 
 // if there's an admin couchdb user, then set that up now.
