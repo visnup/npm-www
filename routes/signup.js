@@ -26,6 +26,7 @@ function handle (req, res) {
   var td = { error: null, data: null }
   req.on('form', function (data) {
     td.data = data
+    td.content = 'signup-form.ejs'
 
     var name = data.name
     , password = data.password
@@ -45,7 +46,7 @@ function handle (req, res) {
     }
 
     if (td.error) {
-      return res.template('signup-form.ejs', td, 400)
+      return res.template('layout.ejs', td, 400)
     }
 
     // ok, looks maybe ok.
@@ -56,7 +57,7 @@ function handle (req, res) {
         if (er || cr && cr.statusCode >= 400) {
           td.error = (er && er.message) || (data && data.error) ||
                      "Failed creating account"
-          return res.template('signup-form.ejs', td, 400)
+          return res.template('layout.ejs', td, 400)
         }
         // it worked!
         var pu = '/_users/org.couchdb.user:' + data.name
