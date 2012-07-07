@@ -28,12 +28,13 @@ function saveThenShow (data, req, res) {
     return res.error(new Error('name is required'), 400)
   }
 
-  var pu = '/_users/' + data._id
+  // get the user's own profile
+  req.model.load('myprofile', req)
+  req.model.end(function (er, m) {
+    var prof = m.myprofile
 
-  // first get all the data, then fold in the new bits.
-  req.couch.get(pu, function (er, cr, prof) {
-    if (er || data.error) {
-      er.response = data
+    if (er || prof.error) {
+      er.response = prof
       er.path = req.url
       res.session.set('error', er)
       res.session.set('done', req.url)
@@ -42,13 +43,22 @@ function saveThenShow (data, req, res) {
 
     var rev = prof._rev
     Object.keys(data).forEach(function (k) {
+      if (k === '_rev' ||
+          k === '_id' ||
+          k === 'name' ||
+          k === 'password_sha' ||
+          k === 'salt') {
+        return
+      }
       prof[k] = data[k]
     })
 
+    var pu = '/_users/' + prof._id
     req.couch.put(pu + '?rev=' + rev, prof
                  , function (er, cr, data) {
 
       if (er || data.error) {
+        er = er || new Error(data.error)
         er.response = data
         er.path = req.url
         res.session.set('error', er)
@@ -69,30 +79,19 @@ function saveThenShow (data, req, res) {
 
 // get the profile and show it on a form, maybe with a message
 function show (req, res) {
-  var name = req.cookies.name
-  if (name) return show_(name, req, res)
-  req.session.get('profile', function (er, profile) {
+  req.model.load('myprofile', req)
+  req.model.end(function (er, m) {
+    var profile = m.myprofile
     if (er || !profile || !profile.name) {
       req.session.set('done', req.url)
       return res.redirect('/login')
     }
-    show_(profile.name, req, res)
-  })
-}
-
-function show_ (name, req, res) {
-  var u = '/_users/org.couchdb.user:' + name
-  req.couch.get(u, function (er, cr, data) {
-    if (er &&
-        er.message.match(/auth token expired or invalid/)) {
-      req.session.set('done', req.url)
-      return res.redirect('/login')
+    if (er || profile.error) {
+      return res.error(er || profile.error)
     }
-
-    if (er || data.error) return res.error(er || data.error)
     var locals = {
       content: "profile-edit.ejs",
-      profile: data,
+      profile: profile,
       fields: config.profileFields
     }
     res.template("layout.ejs", locals)
