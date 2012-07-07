@@ -32,5 +32,9 @@
   },
   "engines": {
     "node": ">=0.7.7"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "show-conf": "node config.js"
   }
 }
