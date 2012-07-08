@@ -1,8 +1,4 @@
-<!doctype html>
-<html>
-<head>
-<title>About</title>
-<body>
+<%- include('header.ejs', locals) %>
 <h1><%= package.name %></h1>
 
 <p>Version <%= package.version %></p>
@@ -35,3 +31,4 @@ living at <%= registryCouch %>.</p>
     <%
   })
 %></ul>
+<%- include('footer.ejs', locals) %>

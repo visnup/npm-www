@@ -33,9 +33,8 @@ function showProfile (req, res, profile) {
     return res.redirect('/login')
   }
 
-  var td = { content: "profile.ejs"
-           , profile: profile
+  var td = { profile: profile
            , self: req.model.myprofile
            , fields: config.profileFields }
-  res.template('layout.ejs', td)
+  res.template('profile.ejs', td)
 }

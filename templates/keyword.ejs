@@ -1,3 +1,4 @@
+<%- include('header.ejs', locals) %>
 <div id="package">
   <h1>Keyword: &quot;<%= keyword %>&quot;</h1>
   <% if (packages.length) { %>
@@ -12,3 +13,4 @@
     </div>
   <% } %>
 </div>
+<%- include('footer.ejs', locals) %>

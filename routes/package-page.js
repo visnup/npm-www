@@ -10,10 +10,9 @@ function packagePage (req, res) {
     if (er) return res.error(er)
     if (!m.package) return res.error(404)
     var locals = {
-      content: "package-page.ejs",
       package: m.package,
       profile: m.myprofile
     }
-    res.template("layout.ejs", locals)
+    res.template("package-page.ejs", locals)
   })
 }

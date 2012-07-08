@@ -1,3 +1,4 @@
+<%- include('header.ejs', locals) %>
 <div id="package">
   <h1><%= package.name %></h1>
   <p class="description"><%= package.description || 'No description' %></p>
@@ -31,8 +32,8 @@
       <th>Keywords:</th>
       <td><%-
         package.keywords.map(function (kw) {
-        kw = kw.replace(/</g, '&lt;').replace(/"/g, '&quot;')
-        return '<a href="/keyword/' + kw + '">' + kw + '</a>'
+          kw = kw.replace(/</g, '&lt;').replace(/"/g, '&quot;')
+          return '<a href="/keyword/' + kw + '">' + kw + '</a>'
         }).join(', ')
         %></td>
     </tr>
@@ -98,3 +99,4 @@
     </div>
   </div>
 </div>
+<%- include('footer.ejs', locals) %>

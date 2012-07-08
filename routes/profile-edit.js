@@ -90,10 +90,9 @@ function show (req, res) {
       return res.error(er || profile.error)
     }
     var locals = {
-      content: "profile-edit.ejs",
       profile: profile,
       fields: config.profileFields
     }
-    res.template("layout.ejs", locals)
+    res.template("profile-edit.ejs", locals)
   })
 }

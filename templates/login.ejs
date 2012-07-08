@@ -1,16 +1,32 @@
-login, please:
+<%- include('header.ejs', locals) %>
+<h1>login, please:</h1>
 
 <form method='post'>
-  <p>
-    <label>username: <input name='name'></label>
-  </p>
-  <p>
-    <label>password: <input type='password' name='password'></label>
-  </p>
-  <p>
+<table>
+<tr>
+  <th>
+    <label for=name>username</label>
+  </th>
+  <td>
+    <input name=name id=name>
+  </td>
+</tr>
+<tr>
+  <th>
+    <label for=password>password</label>
+  </th>
+  <td>
+    <input type=password name=password id=password>
+  </td>
+</tr>
+<tr>
+  <td colspan=2>
     <input type='submit'>
-  </p>
+  </td>
+</tr>
+</table>
 </form>
 
 <p><a href="/signup">sign up</a>
 <p><a href="/forgot">forgot password</a>
+<%- include('footer.ejs', locals) %>

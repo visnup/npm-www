@@ -15,10 +15,7 @@ function password (req, res) {
 
 function show (req, res) {
   login(req, res, function () {
-    res.template('layout.ejs',
-                 { content: 'password.ejs',
-                   profile: req.profile,
-                   error: null })
+    res.template('password.ejs', { profile: req.profile, error: null })
   })
 }
 
@@ -50,21 +47,20 @@ function handleData (req, res, data) {
   , salt = prof.salt
   , hashCurrent = sha(data.current + salt)
   , td = {profile: req.profile, error: null}
-  td.content = 'password.ejs'
 
   if (hashCurrent !== prof.password_sha) {
     td.error = 'Invalid current password'
-    return res.template('layout.ejs', td, 403)
+    return res.template('password.ejs', td, 403)
   }
 
   if (prof.password_sha !== data.password_sha) {
     td.error = 'Corrupted form data'
-    return res.template('layout.ejs', td, 403)
+    return res.template('password.ejs', td, 403)
   }
 
   if (data.new !== data.verify) {
     td.error = 'Failed to verify password'
-    return res.template('layout.ejs', td, 403)
+    return res.template('password.ejs', td, 403)
   }
 
   req.log.info('Changing password', {name: prof.name})
@@ -79,7 +75,7 @@ function handleData (req, res, data) {
                        JSON.stringify(data))
       td.error = 'Failed setting the password: '
                + (data && data.message || er && er.message)
-      return res.template('layout.ejs', td, cr.statusCode)
+      return res.template('password.ejs', td, cr.statusCode)
     }
 
     // now we're logged in with the new profile info.
