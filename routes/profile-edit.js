@@ -46,6 +46,8 @@ function saveThenShow (data, req, res) {
       if (k === '_rev' ||
           k === '_id' ||
           k === 'name' ||
+          k === 'type' ||
+          k === 'roles' ||
           k === 'password_sha' ||
           k === 'salt') {
         return
@@ -53,9 +55,11 @@ function saveThenShow (data, req, res) {
       prof[k] = data[k]
     })
 
+    prof.type = 'user'
+    prof.roles = []
+
     var pu = '/_users/' + prof._id
-    req.couch.put(pu + '?rev=' + rev, prof
-                 , function (er, cr, data) {
+    req.couch.put(pu, prof, function (er, cr, data) {
 
       if (er || data.error) {
         er = er || new Error(data.error)
