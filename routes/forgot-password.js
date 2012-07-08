@@ -63,7 +63,7 @@ function forgotPassword (req, res) {
 }
 
 function form (req, res) {
-  res.template('password-recovery-form.ejs')
+  res.template('layout.ejs', { content: 'password-recovery-form.ejs' })
 }
 
 function token (req, res) {
@@ -103,7 +103,9 @@ function token (req, res) {
         return res.error(er, cr && cr.statusCode, data && data.error)
       }
       config.redis.client.del('pwrecover_' + hash, function () {})
-      res.template('password-changed.ejs', { password: newPass })
+      res.template('layout.ejs', {
+        content: 'password-changed.ejs',
+        password: newPass })
     })
   })
 }
@@ -178,7 +180,9 @@ function handle (req, res) {
       function done (er, result) {
         // now the token is in redis, and the email has been sent.
         if (er) return res.error(er)
-        res.template('password-recovery-submitted.ejs')
+        res.template('layout.ejs', {
+          content: 'password-recovery-submitted.ejs',
+          password: newPass })
       }
     })
   })
