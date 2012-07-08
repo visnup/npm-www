@@ -103,7 +103,7 @@ function token (req, res) {
         return res.error(er, cr && cr.statusCode, data && data.error)
       }
       config.redis.client.del('pwrecover_' + hash, function () {})
-      res.template('password-changed.ejs', { password: newPass })
+      res.template('password-changed.ejs', { password: newPass, profile: null })
     })
   })
 }
@@ -178,7 +178,7 @@ function handle (req, res) {
       function done (er, result) {
         // now the token is in redis, and the email has been sent.
         if (er) return res.error(er)
-        res.template('password-recovery-submitted.ejs')
+        res.template('password-recovery-submitted.ejs', {profile: null})
       }
     })
   })
