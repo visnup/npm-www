@@ -4,14 +4,12 @@ module.exports = function (req, res) {
   req.couch.logout(next)
 
   function next () {
-    // delete the couchdb session, if we have one.
-    req.session.del('name')
-    req.session.del('error')
-    res.cookies.set('name', '')
-    req.session.del('profile', function (er) {
-      if (er) return res.error(er)
-      req.session.get('done', function (er, done) {
-        res.redirect(done || '/')
+    // delete the whole session
+    req.session.get('done', function (er, done) {
+      done = done || '/'
+      req.session.del(function (er) {
+        if (er) return res.error(er)
+        res.redirect(done)
       })
     })
   }
