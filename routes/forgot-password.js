@@ -178,7 +178,7 @@ function handle (req, res) {
       function done (er, result) {
         // now the token is in redis, and the email has been sent.
         if (er) return res.error(er)
-        res.template('password-recovery-submitted.ejs', { password: newPass })
+        res.template('password-recovery-submitted.ejs')
       }
     })
   })
