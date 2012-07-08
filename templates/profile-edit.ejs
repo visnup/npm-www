@@ -1,3 +1,4 @@
+<%- include('header.ejs', locals) %>
 <h1>Edit your Profile</h1>
 
 <p><a href=/password>Change your Password</a></p>
@@ -23,3 +24,4 @@ Object.keys(fields).forEach(function (f) {
 </form>
 
 <a href='/logout/?done=/profile/<%= profile.name %>'>log out</a>
+<%- include('footer.ejs', locals) %>
