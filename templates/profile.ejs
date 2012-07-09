@@ -1,4 +1,4 @@
-
+<%- include('header.ejs', locals) %>
   <h1><%= profile.name %></h1>
   <%
   if (profile.isSelf) {
@@ -30,3 +30,4 @@ Object.keys(fields).forEach(function (f) {
   <%
 }
 %>
+<%- include('footer.ejs', locals) %>
