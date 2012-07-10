@@ -212,7 +212,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 953px;
   font-size:12px;
   overflow:hidden;
-  padding:12px 0 60px;
+  padding:12px 0 40px;
   margin:12px auto 0;
   color:#666;
 
@@ -256,7 +256,8 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .poweredby {
-    float:right;
+    clear:left;
+    margin-left:184px;
 
     h2 {
       float:left;
@@ -264,24 +265,13 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     li {
-      height:26px;
-      background:1em 0 no-repeat;
+      height:32px;
       padding:0 1em;
+      margin-top:-6px;
 
       a {
-        text-indent:-999em;
         padding:0;
       }
-    }
-
-    li.joyent {
-      background-image: url(/static/joyent-footer.png);
-      width:82px;
-    }
-
-    li.iriscouch {
-      background-image: url(/static/iriscouch-footer.png);
-      width:115px;
     }
   }
 }
