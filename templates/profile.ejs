@@ -1,7 +1,7 @@
 <%- include('header.ejs', locals) %>
-  <h1><%= profile.name %></h1>
+  <h1><%= showprofile.name %></h1>
   <%
-  if (profile.isSelf) {
+  if (showprofile.isSelf) {
     %>
     <p>This is your profile.
       <a href=/profile-edit>Edit Profile</a>
@@ -17,16 +17,16 @@ Object.keys(fields).forEach(function (f) {
   %>
   <tr>
     <th><%= fields[f] %></th>
-    <td><%= profile[f] || '' %></td>
+    <td><%= showprofile[f] || '' %></td>
   </tr>
   <%
 })
 %>
 </table>
 
-<% if (self) {
+<% if (profile) {
   %>
-  <a href='/logout/?done=/profile/<%= profile.name %>'>log out</a>
+  <a href='/logout/?done=/profile/<%= showprofile.name %>'>log out</a>
   <%
 }
 %>
