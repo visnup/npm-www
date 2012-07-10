@@ -43,6 +43,15 @@ function package (params, cb) {
     data.starredBy = Object.keys(data.users || {}).sort()
     var len = data.starredBy.length
 
+    if (data.time && data['dist-tags']) {
+      var v = data['dist-tags'].latest
+      var t = data.time[v]
+      data.version = v
+      data.readme = data.versions[v].readme
+      data.readmeSrc = null
+      data.fromNow = moment(t).fromNow()
+    }
+
     data._time = Date.now()
     if (data.readme && !data.readmeSrc) {
       data.readmeSrc = data.readme
@@ -50,13 +59,6 @@ function package (params, cb) {
     }
     gravatarPeople(data)
     regData.set(k, data)
-    if (data.time && data['dist-tags']) {
-      var v = data['dist-tags'].latest
-      var t = data.time[v]
-      data.version = v
-      data.fromNow = moment(t).fromNow()
-    }
-
     return cb(null, data)
   })
 }
