@@ -2,8 +2,12 @@ node_modules/.bin
 node_modules/replicate
 node_modules/touch
 config.admin.js
+config.dev.js
 ssl
 .*.swp
-.delete
 *.couch
+dev/couch/.*
+erl_crash.dump
 couch.log
+redis.log
+dev/redis/dump.rdb
