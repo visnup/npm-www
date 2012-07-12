@@ -1,18 +1,35 @@
 module.exports = profile
 
 var gravatar = require('gravatar').url
-, npm = require('npm')
 
-function profile (name, cb) {
-  // get the most recent data for this req.
-  npm.registry.get('/-/user/org.couchdb.user:' + name, 0, function (er, data) {
+function profile (req, required, cb) {
+  if (typeof required === 'function') cb = required, required = false
+  req.session.get('profile', function (er, data) {
+    if (!required && er) er = null
+    if (data) {
+      var gr = data.email ? 'retro' : 'mm'
+      data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
+    }
 
-    if (er || !data) return cb(er, data)
+    if (er || data) return cb(er, data)
 
-    var gr = data.email ? 'retro' : 'mm'
-    data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
+    // if we're logged in, try to see if we can get it
+    var name = req.cookies.get('name')
+    if (!name) return cb()
 
-    cb(er, data)
+    var pu = '/_users/org.couchdb.user:' + name
+    req.couch.get(pu, function (er, cr, data) {
+      if (!required) er = null
+      if (er || cr && cr.statusCode !== 200 || !data) {
+        // Oh well.  Probably the login expired.
+        return cb(er)
+      }
+
+      var gr = data.email ? 'retro' : 'mm'
+      data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
+
+      req.session.set('profile', data)
+      return cb(null, data)
+    })
   })
 }
-

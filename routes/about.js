@@ -7,10 +7,10 @@ Object.keys(config).forEach(function (k) {
 })
 td.title = 'About'
 function about (req, res) {
-  req.model.load("myprofile", req);
+  req.model.load("profile", req);
   req.model.end(function(er, m) {
     if(er) return res.error(er);
-    td.profile = m.myprofile;
+    td.profile = m.profile;
     res.template('about.ejs', td)
   })
 }

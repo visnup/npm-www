@@ -10,14 +10,14 @@ function keyword (req, res) {
   if (!kw) return res.error(404)
 
   req.model.load('keyword', kw, req.couch.anonymous())
-  req.model.load('myprofile', req)
+  req.model.load('profile', req)
 
   req.model.end(function (er, m) {
     if (er) return res.error(er)
     var locals = {
       packages: m.keyword,
       keyword: kw,
-      profile: m.myprofile
+      profile: m.profile
     };
     res.template('keyword.ejs', locals)
   })

@@ -11,11 +11,11 @@ function login (req, res) {
     case 'GET':
       return req.session.get('auth', function (er, data) {
         if (data && !data.error) return res.redirect("/profile")
-        req.model.load("myprofile", req);
+        req.model.load("profile", req);
         req.model.end(function(er, m) {
           // error just means we're not logged in.
           var locals = {
-            profile: m && m.myprofile
+            profile: m && m.profile
           }
 
           res.template('login.ejs', locals)

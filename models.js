@@ -1,5 +1,5 @@
 var MC = module.exports = require('emcee')
+MC.model('showprofile', require('./models/showprofile.js'))
 MC.model('profile', require('./models/profile.js'))
-MC.model('myprofile', require('./models/myprofile.js'))
 MC.model('package', require('./models/package.js'))
 MC.model('keyword', require('./models/keyword.js'))

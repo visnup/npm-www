@@ -29,9 +29,9 @@ function saveThenShow (data, req, res) {
   }
 
   // get the user's own profile
-  req.model.load('myprofile', req)
+  req.model.load('profile', req)
   req.model.end(function (er, m) {
-    var prof = m.myprofile
+    var prof = m.profile
 
     if (er || prof.error) {
       er.response = prof
@@ -83,9 +83,9 @@ function saveThenShow (data, req, res) {
 
 // get the profile and show it on a form, maybe with a message
 function show (req, res) {
-  req.model.load('myprofile', req)
+  req.model.load('profile', req)
   req.model.end(function (er, m) {
-    var profile = m.myprofile
+    var profile = m.profile
     if (er || !profile || !profile.name) {
       req.session.set('done', req.url)
       return res.redirect('/login')
