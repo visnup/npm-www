@@ -11,3 +11,4 @@ erl_crash.dump
 couch.log
 redis.log
 dev/redis/dump.rdb
+npm-debug.log
