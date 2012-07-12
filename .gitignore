@@ -1,7 +1,9 @@
 node_modules/.bin
 node_modules/replicate
+node_modules/touch
 config.admin.js
 ssl
 .*.swp
 .delete
 *.couch
+couch.log
