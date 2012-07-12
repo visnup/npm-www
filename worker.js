@@ -40,10 +40,10 @@ if (config.couchAuth) {
   config.adminCouch.login(auth, function (er, cr, data) {
     if (er) throw er
   })
-  config.adminCouch.getToken = function (cb) {
-    config.adminCouch.login(auth, function () {
-      if (er) throw er
-      cb(this.token)
+  // automatically re-login the adminCouch when it expires.
+  config.adminCouch.tokenGet = function (cb) {
+    config.adminCouch.login(auth, function (er, cr, data) {
+      cb(er, this.token)
     })
   }
 }

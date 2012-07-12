@@ -93,13 +93,9 @@ function token (req, res) {
                 , mustChangePass: true
                 }
 
-    console.error('couch', couch)
     req.log.warn('About to change password', couch.token)
     couch.changePass(newAuth, function (er, cr, data) {
       if (er || cr.statusCode >= 400) {
-        console.error('bogus response from couch.changePass',
-                      er, cr && cr.headers, data)
-
         return res.error(er, cr && cr.statusCode, data && data.error)
       }
       config.redis.client.del('pwrecover_' + hash, function () {})
