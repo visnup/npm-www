@@ -14,6 +14,9 @@ exports.npm =
   { loglevel: "warn"
   , registry: "http://registry.npmjs.org/"
   , "strict-ssl": false
+  , _auth: ''
+  , username: ''
+  , _password: ''
   }
 
 // bunyan config
@@ -55,14 +58,21 @@ exports.templateOptions = {
 /*****************/
 /* don't delete! */
 /*****************/
-if (process.env.NODE_ENV === 'production') {
-  var admin = require('./config.admin.js')
+var env = process.env.NODE_ENV
+var admin
+if (env === 'production') {
+  admin = require('./config.admin.js')
 } else try {
-  var admin = require('./config.admin.js')
+  if (env !== 'dev') {
+    admin = require('./config.admin.js')
+  } else {
+    admin = require('./config.dev.js')
+  }
 } catch (er) {
   console.error('Warning: No admin configurations.  Not suitable for production use.')
-  return
+  admin = {}
 }
+
 Object.keys(admin).forEach(function (k) {
   if (k === 'redisAuth') exports.redis.auth = admin[k]
   exports[k] = admin[k]
