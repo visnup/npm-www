@@ -1,4 +1,7 @@
 node_modules/.bin
+node_modules/replicate
 config.admin.js
 ssl
 .*.swp
+.delete
+*.couch
