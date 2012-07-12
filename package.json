@@ -40,6 +40,6 @@
   },
   "devDependencies": {
     "replicate": "~0.2.0",
-    "touch": "0.0.1"
+    "touch": "0"
   }
 }
