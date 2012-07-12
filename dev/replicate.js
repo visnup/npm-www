@@ -10,7 +10,7 @@ function hash (id) {
 }
 
 function filterPackage (id, rev) {
-  return !!(hash(id).match(/^00/) || id.match(/^npm(-www)?/))
+  return !!(hash(id).match(/^00/) || id.match(/^npm/))
 }
 
 function filterUser (id, rev) {
@@ -24,7 +24,7 @@ var userTimer
 console.error('replicate 1/256th of packages')
 new Replicator({
   from: 'http://isaacs.iriscouch.com/registry',
-  to: 'http://admin:admin@localhost:5984/registry',
+  to: 'http://admin:admin@localhost:15984/registry',
   filter: filterPackage
 }).push(function () {
   clearTimeout(userTimer)
@@ -38,7 +38,7 @@ function replicateUsers () {
   console.error('replicate users')
   new Replicator({
     from: 'http://isaacs.iriscouch.com/public_users',
-    to: 'http://admin:admin@localhost:5984/public_users',
+    to: 'http://admin:admin@localhost:15984/public_users',
     filter: filterUser
   }).push(function () {
     clearTimeout(doneTimer)
