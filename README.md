@@ -1,11 +1,46 @@
 The new npmjs.org website.
 
-## Visual specs:
+## Visual specs
 
 * http://chrisglass.com/work/npm/specs/
 * http://chrisglass.com/work/npm/
 
-## Design Philosophy:
+## Getting Started
+
+First install couchdb, and redis, and clone the repo.
+
+```bash
+# first grab all the deps, though most of the important ones are
+# already checked in.
+npm install
+
+# to start the dev-node script, which also dumps redis and couchdb
+# logs to stdio, and automatically bunyan-ifies the server logs,
+# and clones 1/256th of the published packages and all of the public
+# user accounts.  This also creates a user named 'admin' with the
+# password 'admin', which you can use to log in and do stuff.
+# This defaults to listening with a highly insecure SSL key, on
+# port 15443.
+npm run dev
+
+# to run the real actual server like in production, copy the
+# config.admin.example.js to config.admin.js, fill in the appropriate
+# fields, and then
+npm start
+```
+
+Data fetcher thingies are in `models`.  They're all defined in
+`models.js`.
+
+Define new URL handlers in the `routes` folder.  They're defined on
+`router.js`.
+
+The templates are all in `templates`.  They are EJS.
+
+Static assets are in the `static` folder.  The main CSS is generated
+using stylus, and it is in the `stylus` folder.
+
+## Design Philosophy
 
 * No frameworks
 
@@ -112,6 +147,11 @@ If you are going to take on some huge part of the site, please post an
 issue first to discuss the direction.  Beyond that, just fork and send
 pull requests, as is the custom of our time.  Your name will be added to
 the AUTHORS file, and displayed on the `/about` page.
+
+See the [issues page](https://github.com/isaacs/npm-www/issues) if you
+are looking for something to help out with.  In general, submissions
+that add new functionality or fix actual bugs will be favored over those
+that are purely stylistic.
 
 Please follow common sense, and these guidelines:
 

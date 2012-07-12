@@ -35,6 +35,11 @@
   },
   "scripts": {
     "start": "node server.js",
-    "show-conf": "node config.js"
+    "show-conf": "node config.js",
+    "dev": "node dev/go.js | bunyan"
+  },
+  "devDependencies": {
+    "replicate": "~0.2.0",
+    "touch": "0.0.1"
   }
 }
