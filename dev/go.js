@@ -32,14 +32,7 @@ function exec (cmd, args, cb) {
     }
   })
   children.push(child)
-  child.unref()
 }
-
-process.on('exit', function () {
-  children.forEach(function (child) {
-    child.kill('SIGKILL')
-  })
-})
 
 queue(function (cb) {
   // first, make sure that we have the databases, or replicate will fail
