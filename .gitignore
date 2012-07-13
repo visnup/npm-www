@@ -1,4 +1,5 @@
-node_modules/.bin
+/node_modules/.bin/*
+!/node_modules/.bin/bunyan*
 node_modules/replicate
 node_modules/touch
 config.admin.js
