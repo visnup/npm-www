@@ -37,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #wrap {
   background-color: #f4f4f2;
-  padding: 72px 16px;
+  padding: 52px 16px 72px;
 }
 
 #content {
@@ -106,19 +106,21 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: 220px + 40px;
 
     header {
-      h1 {
-        text-indent: -999em;
-        width: 200px;
-        height: 78px;
-        background: url('/static/npm.png') no-repeat;
-        background-size: 200px 78px;
-        margin: -5px 0 0;
-      }
       form input {
         font-size: 18px;
         width: 50%;
         float: right;
       }
+    }
+  }
+  #npm-logo {
+    position: relative;
+    top: -10px;
+
+    img {
+      border: 0;
+      width: 200px;
+      height: 78px;
     }
   }
 }
