@@ -101,16 +101,6 @@ function decorate (req, res, config) {
 
   req.log.info({req: req, remote: remoteAddr, address: address})
 
-  // don't print out that dumb 'cannot send blah blah' message
-  if (req.method === 'HEAD') {
-    res.write = (function (o) {
-      return function (c) { return o.call(res, '') }
-    })(res.write)
-    res.end = (function (o) {
-      return function (c) { return o.call(res) }
-    })(res.end)
-  }
-
   // allow stuff like "req.pathname", etc.
   var u = url.parse(req.url, true)
   delete u.auth
