@@ -39,7 +39,16 @@
     "dev": "node dev/go.js | bunyan"
   },
   "devDependencies": {
-    "replicate": "~0.2.0",
+    "replicate": "git://github.com/isaacs/replicate",
     "touch": "0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/isaacs/npm-www.git"
+  },
+  "keywords": [
+    "npm",
+    "website"
+  ],
+  "license": "BSD"
 }
