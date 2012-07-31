@@ -77,7 +77,8 @@ function browse (req, res) {
     if (er) return res.error(er)
     res.template('browse.js', {
       browseby: browseby,
-      title: title,
+      title: title.replace(/<(?:.|\n)*?>/gm, ''),
+      pageTitle: title,
       items: m.browse,
       profile: m.profile,
       pageSize: pageSize,

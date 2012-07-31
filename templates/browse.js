@@ -1,6 +1,6 @@
 <%- include('header.ejs', locals) %>
 <div id="package">
-  <h1><%- title %></h1>
+  <h1><%- pageTitle %></h1>
   <p class="description">
     <% if (page > 0) { %>
       <a href="/browse/<%= browseby %>/<%= page - 1 %>/">&larr; previous</a>
