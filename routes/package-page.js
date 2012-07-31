@@ -10,9 +10,17 @@ function packagePage (req, res) {
   req.model.end(function (er, m) {
     if (er) return res.error(er)
     if (!m.package) return res.error(404)
-    m.package.dependents = m.browse
+    var p = m.package
+    p.dependents = m.browse
+    var l = p['dist-tags'] && p['dist-tags'].latest &&
+            p.versions && p.versions[p['dist-tags'].latest]
+    if (l) {
+      Object.keys(l).forEach(function (k) {
+        p[k] = p[k] || l[k]
+      })
+    }
     var locals = {
-      package: m.package,
+      package: p,
       profile: m.profile,
       title: m.package.name
     }
