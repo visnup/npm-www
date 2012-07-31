@@ -44,4 +44,8 @@ var packagePage = require('./routes/package-page.js')
 router.addRoute('/package/:name/:version', packagePage)
 router.addRoute('/package/:name', packagePage)
 
+router.addRoute('/keyword/:kw', function (q, s) {
+  return s.redirect('/browse/keyword/' + q.params.kw, 301)
+})
+
 router.addRoute('/browse/*?', require('./routes/browse.js'))
