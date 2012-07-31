@@ -1,19 +1,28 @@
 <%- include('header.ejs', locals) %>
+
+<!-- <pre><%- JSON.stringify(package, null, 2) %></pre> -->
+
 <div id="package">
   <h1><%= package.name %></h1>
   <p class="description"><%= package.description || 'No description' %></p>
 
   <table class="metadata">
-    <% if (package.author) { %>
+    <% if (package.maintainers) { %>
     <tr>
-      <th>Author:</th>
+      <th>Maintainers:</th>
       <td>
+      <%
+      package.maintainers.forEach(function (m) {
+        %>
         <div class="user">
-          <% if (package.author.avatar) { %>
-          <img src="<%= package.author.avatar %>" class="avatar">
+          <% if (m.avatar) { %>
+          <img src="<%= m.avatar %>" class="avatar">
           <% } %>
-          <a class="username" href="#"><%= package.author.name %></a>
+          <a class="username" href="/profile/<%= m.name %>"><%= m.name %></a>
         </div>
+        <%
+      })
+      %>
       </td>
     </tr>
     <% } %>
@@ -64,10 +73,30 @@
             %>
           </td>
         </tr>
-        <% if (package.dependents) { %>
+        <%
+        var dependents = package.dependents
+        if (dependents && dependents.length) { %>
         <tr>
           <th>Dependents:</th>
           <td>
+          <%
+          var l = dependents.length
+          var max = 20
+          if (l > max) {
+            // get a random assortment each time.
+            var dependents = dependents.sort(function (a, b) {
+              return Math.random() * 2 - 1
+            }).slice(0, max)
+            dependents.push({
+              url: '/browse/depended/' + package.name,
+              name: '<br>and ' + (l-max) + ' more'
+            })
+          }
+          dependents.forEach(function (d, i) {
+            if (i > 0) { %>, <% }
+            %><a href="<%= d.url %>"><%- d.name %></a><%
+          })
+          %>
           </td>
         </tr>
         <% } %>
@@ -75,10 +104,23 @@
         <tr>
           <th>Starred by:</th>
           <td>
-            <%-
-            package.starredBy.map(function(user){
-            return '<a href="/profile/' + user + '">' + user + '</a>'
-            }).join(', ')
+            <%
+            var starredBy = package.starredBy
+            var l = starredBy.length
+            var max = 20
+            if (l > max) {
+              starredBy = starredBy.sort(function (a, b) {
+                return Math.random() * 2 - 1
+              }).slice(0, max)
+            }
+            starredBy.forEach(function (user, i) {
+              if (i > 0) { %>, <% }
+              %><a href="/browse/userstar/<%= user %>"><%= user %></a><%
+            })
+            if (l > max) {
+              %><br><a href="/browse/star/<%= package.name %>">and
+              <%= (l-max) %> more</a><%
+            }
             %>
           </td>
         </tr>

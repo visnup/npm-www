@@ -6,7 +6,9 @@ var viewNames = {
   keyword: 'byKeyword',
   updated: 'browseUpdated',
   author: 'browseAuthors',
-  depended: 'dependedUpon'
+  depended: 'dependedUpon',
+  star: 'browseStarPackage',
+  userstar: 'browseStarUser'
 }
 
 // the group level when there's no arg
@@ -15,14 +17,18 @@ var groupLevel = {
   keyword: 1,
   author: 1,
   updated: 4,
-  depended: 1
+  depended: 1,
+  star: 2,
+  userstar: 1
 }
 
 // the group level when there's an arg
 var groupLevelArg = {
   keyword: 3,
   author: 3,
-  depended: 2
+  depended: 3,
+  star: 3,
+  userstar: 3
 }
 
 var transformKey = {
@@ -42,7 +48,15 @@ var transformKey = {
 
   keyword: tk,
   author: tk,
-  depended: tk
+  depended: tk,
+  userstar: tk,
+
+  star: function (k, v, type) { return {
+    name: k[0],
+    description: k[1] + ' - ' + v,
+    url: '/browse/' + type + '/' + k[0],
+    value: v
+  }},
 }
 
 function tk (k, v, type) { return {
@@ -55,7 +69,13 @@ function tk (k, v, type) { return {
 var transformKeyArg = {
   keyword: tka,
   author: tka,
-  depended: tka
+  depended: tka,
+  userstar: tka,
+  star: function (k, v) { return {
+    name: k[2],
+    description: '',
+    url: '/browse/userstar/' + k[2]
+  }}
 }
 
 function tka (k, v) { return {

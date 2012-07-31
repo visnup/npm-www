@@ -56,6 +56,17 @@ function browse (req, res) {
               '<a href="/package/' + arg + '">' + arg + '</a>'
             : 'Most Depended-upon Packages'
       break
+    case 'star':
+      title = arg ? 'Users who starred ' +
+              '<a href="/package/' + arg + '">' + arg + '</a>'
+            : 'Most Starred Packages'
+      break
+    case 'userstar':
+      title = arg ? 'Starred Packages By User: ' +
+              '<a href="/profile/' + encodeURIComponent(arg) + '">' +
+              encodeURIComponent(arg) + '</a>'
+            : 'Starred Packages by User'
+      break
     default:
       return res.error(404)
   }
