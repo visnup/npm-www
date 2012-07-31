@@ -4,7 +4,7 @@ function indexPage (req, res) {
   var name = req.params.name
   , version = req.params.version || 'latest'
 
-  req.model.loadAs('browse', 'starred', 'userstar', null, 0, 10)
+  req.model.loadAs('browse', 'starred', 'star', null, 0, 10)
   req.model.loadAs('browse', 'authors', 'author', null, 0, 10)
   req.model.loadAs('browse', 'depended', 'depended', null, 0, 10)
   req.model.loadAs('browse', 'updated', 'updated', null, 0, 10)
