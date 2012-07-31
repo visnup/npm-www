@@ -13,7 +13,8 @@ function packagePage (req, res) {
     m.package.dependents = m.browse
     var locals = {
       package: m.package,
-      profile: m.profile
+      profile: m.profile,
+      title: m.package.name
     }
     res.template("package-page.ejs", locals)
   })

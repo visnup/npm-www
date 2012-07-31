@@ -37,6 +37,8 @@ function showProfile (req, res, showprofile) {
 
   var td = { showprofile: showprofile
            , profile: req.model.profile
-           , fields: config.profileFields }
+           , fields: config.profileFields
+           , title: showprofile.name
+           }
   res.template('profile.ejs', td)
 }

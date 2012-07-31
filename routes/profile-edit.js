@@ -95,7 +95,8 @@ function show (req, res) {
     }
     var locals = {
       profile: profile,
-      fields: config.profileFields
+      fields: config.profileFields,
+      title: 'Edit profile'
     }
     res.template("profile-edit.ejs", locals)
   })
