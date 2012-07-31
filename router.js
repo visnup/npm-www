@@ -15,6 +15,7 @@ module.exports = router
 var static = require('./routes/static.js')
 router.addRoute('/static/*?', static)
 router.addRoute('/favicon.ico', static)
+router.addRoute('/install.sh', static)
 router.addRoute('/stylus/*?', require('./routes/stylus.js'))
 
 // XXX: This is kind of kludgey

@@ -58,7 +58,7 @@ function send (req, res, cache) {
 
 
 function static (req, res) {
-  if (req.url === '/favicon.ico') {
+  if (req.url === '/favicon.ico' || req.url === '/install.sh') {
     req.splats = ["", req.url]
   }
 
