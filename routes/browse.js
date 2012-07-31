@@ -51,6 +51,11 @@ function browse (req, res) {
     case 'updated':
       title = 'All Packages (by updated date)'
       break
+    case 'depended':
+      title = arg ? 'Packages depending on ' +
+              '<a href="/package/' + arg + '">' + arg + '</a>'
+            : 'Most Depended-upon Packages'
+      break
     default:
       return res.error(404)
   }

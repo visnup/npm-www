@@ -5,7 +5,8 @@ var viewNames = {
   all: 'browseAll',
   keyword: 'byKeyword',
   updated: 'browseUpdated',
-  author: 'browseAuthors'
+  author: 'browseAuthors',
+  depended: 'dependedUpon'
 }
 
 // the group level when there's no arg
@@ -13,13 +14,15 @@ var groupLevel = {
   all: 2,
   keyword: 1,
   author: 1,
-  updated: 4
+  updated: 4,
+  depended: 1
 }
 
 // the group level when there's an arg
 var groupLevelArg = {
   keyword: 3,
-  author: 3
+  author: 3,
+  depended: 2
 }
 
 var transformKey = {
@@ -29,38 +32,37 @@ var transformKey = {
     url: '/package/' + k[0],
     value: v
   }},
-  keyword: function (k, v) { return {
-    name: k[0],
-    description: v + ' packages',
-    url: '/browse/keyword/' + k[0],
-    value: v
-  }},
-  author: function (k, v) { return {
-    name: k[0],
-    description: v + ' packages',
-    url: '/browse/author/' + k[0],
-    value: v
-  }},
+
   updated: function (k, v) { return {
     name: k[3],
     description: 'Updated: ' + k[0] + '-' + k[1] + '-' + k[2],
     url: '/package/' + k[3],
     value: v
-  }}
+  }},
+
+  keyword: tk,
+  author: tk,
+  depended: tk
 }
 
+function tk (k, v, type) { return {
+  name: k[0],
+  description: v + ' packages',
+  url: '/browse/' + type + '/' + k[0],
+  value: v
+}}
+
 var transformKeyArg = {
-  keyword: function (k, v) { return {
-    name: k[1],
-    description: k[2] || '',
-    url: '/package/' + k[1]
-  }},
-  author: function (k, v) { return {
-    name: k[1],
-    description: k[2] || '',
-    url: '/package/' + k[1]
-  }}
+  keyword: tka,
+  author: tka,
+  depended: tka
 }
+
+function tka (k, v) { return {
+  name: k[1],
+  description: k[2] || '',
+  url: '/package/' + k[1]
+}}
 
 
 
@@ -96,7 +98,8 @@ function browse (type, arg, skip, limit, cb) {
 
 function transform (type, arg, data, skip, limit) {
   data = data.rows.map(function (row) {
-    return (arg ? transformKeyArg : transformKey)[type](row.key, row.value)
+    var fn = (arg ? transformKeyArg : transformKey)[type]
+    return fn(row.key, row.value, type)
   })
 
   // normally has an arg.  sort, and then manually paginate.
