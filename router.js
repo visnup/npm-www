@@ -45,3 +45,5 @@ router.addRoute("/package/:name/:version", packagePage)
 router.addRoute("/package/:name", packagePage)
 
 router.addRoute("/keyword/:keyword", require("./routes/keyword.js"))
+
+router.addRoute('/browse/*?', require('./routes/browse.js'))
