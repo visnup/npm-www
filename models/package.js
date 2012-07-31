@@ -47,8 +47,10 @@ function package (params, cb) {
       var v = data['dist-tags'].latest
       var t = data.time[v]
       data.version = v
-      data.readme = data.versions[v].readme
-      data.readmeSrc = null
+      if (data.versions[v].readme) {
+        data.readme = data.versions[v].readme
+        data.readmeSrc = null
+      }
       data.fromNow = moment(t).fromNow()
     }
 
