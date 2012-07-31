@@ -2,7 +2,12 @@
 
 <div id="package">
   <h1><%= package.name %></h1>
-  <p class="description"><%= package.description || 'No description' %></p>
+
+  <% if (package.description) { %>
+    <p class="description"><%= package.description %></p>
+  <% } %>
+
+  <pre class="sh"><code>npm install <%= package.name %></code></pre>
 
   <table class="metadata">
     <% if (package.maintainers) { %>
