@@ -14,8 +14,11 @@
 
     <div id="page">
       <header>
-        <form>
-          <input type="search" placeholder="Search Packages">
+        <form action="https://encrypted.google.com/search"
+          method="get">
+          <input name=q type="search" placeholder="Search Packages">
+          <input name=hl type=hidden value=en>
+          <input name=q type=hidden value='site:npmjs.org'>
         </form>
         <h1>
           <a id="npm-logo" href="/">
