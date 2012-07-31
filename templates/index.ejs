@@ -1,34 +1,98 @@
 <%- include('header.ejs', locals) %>
 <h1>The npm Website</h1>
 
-<p>More to come soon.
-  <a href="https://github.com/isaacs/npm-www">Patches welcome!</a></p>
+<p><a href="https://github.com/isaacs/npm-www">Patches welcome!</a></p>
 
-<p>For now, the following functionality is implemented:</p>
+<!-- tables fer layout omigosh! whatever, it works. -->
+<table style="width:100%" border=0 cellpadding=0 cellspacing=0>
+<tr>
 
-<h2>Profile Stuff</h2>
+  <td>
+    <h2>Recently Updated</h2>
+    <ul>
+      <%
+      updated.forEach(function (p) {
+        %><li><a href="<%= p.url %>"><%= p.name %></a></li>
+        <%
+      })
+      %>
+      <li><a href="/browse/updated">More...</a></li>
+    </ul>
+  </td>
 
-<ul>
-  <li><a href="/signup">Create a profile</a></li>
-  <li><a href="/profile">View your profile</a></li>
-  <li><a href="/profile/ry">View someone else's profile</a></li>
-  <li><a href="/profile-edit">Edit your profile</a></li>
-  <li><a href="/password">Change your password</a></li>
-  <li><a href="/forgot">Reset a forgotten password</a></li>
-  <li><a href="/logout">Log out</a></li>
-</ul>
+  <td>
+    <h2>Most Depended Upon</h2>
+    <ul>
+      <%
+      depended.forEach(function (p) {
+        %><li><a href="<%= p.url %>"><%= p.name %></a></li>
+        <%
+      })
+      %>
+      <li><a href="/browse/depended">More...</a></li>
+    </ul>
+  </td>
 
-<h2>Package Data</h2>
+</tr>
+<tr>
 
-<ul>
-  <li><a href="/package/npm/latest">View a package's info</a></li>
-  <li><a href="/keyword/framework">View by keyword</a></li>
-</ul>
+  <td>
+    <h2>Most Starred</h2>
+    <ul>
+      <%
+      starred.forEach(function (p) {
+        %><li><a href="<%= p.url %>"><%= p.name %></a></li>
+        <%
+      })
+      %>
+      <li><a href="/browse/starred">More...</a></li>
+    </ul>
+  </td>
 
-<h2>Other</h2>
+  <td>
+    <h2>Most Prolific Authors</h2>
+    <ul>
+      <%
+      authors.forEach(function (p) {
+        %><li><a href="<%= p.url %>"><%= p.name %></a></li>
+        <%
+      })
+      %>
+      <li><a href="/browse/authors">More...</a></li>
+    </ul>
+  </td>
 
-<ul>
-  <li><a href="/about">More about this site</a></li>
-  <li><a href="/session">Show your session info</a></li>
-</ul>
+</tr>
+<tr>
+
+  <td>
+    <h2>npm Stuff</h2>
+    <ul>
+      <li><a href="http://npmjs.org/doc/faq.html">FAQ</a></li>
+      <li><a href="http://npmjs.org/doc/README.html">Readme</a></li>
+      <li><a href="http://npmjs.org/doc/disputes.html">Handling Disputes</a></li>
+      <li><a href="https://github.com/isaacs/npm/issues">npm Bugs</a></li>
+      <li><a href="https://github.com/isaacs/npm-www/issues">Website Bugs</a></li>
+      <li><a href="https://groups.google.com/group/npm-">Mailing List</a></li>
+      <li><a href="/about">More about this site</a></li>
+    </ul>
+  </td>
+
+  <td>
+    <h2>Profile Stuff</h2>
+
+    <ul>
+      <li><a href="/signup">Create a profile</a></li>
+      <li><a href="/profile">View your profile</a></li>
+      <li><a href="/profile/ry">View someone else's profile</a></li>
+      <li><a href="/profile-edit">Edit your profile</a></li>
+      <li><a href="/password">Change your password</a></li>
+      <li><a href="/forgot">Reset a forgotten password</a></li>
+      <li><a href="/logout">Log out</a></li>
+    </ul>
+  </td>
+
+</tr>
+</table>
+
 <%- include('footer.ejs', locals) %>
