@@ -28,6 +28,7 @@ function load (startup) {
       if (er) return
 
       if (cache[s] && getETag(raw) === cache[s][0]) return
+      delete cache[s]
       render(s, raw, function (er) {
         if (er && startup) throw er
       })
@@ -39,7 +40,6 @@ function render (s, raw, cb) {
   if (cache[s]) return cb()
   var etag = getETag(raw)
   zlib.gzip(raw, function (er, z) {
-
     var ext = path.extname(s).substr(1)
     , type = mimetypes.lookup(ext)
 
@@ -77,14 +77,18 @@ function static (req, res) {
   var p = url.parse(req.url).pathname
   var f = path.join('/', p)
   , d = path.join(__dirname, '..', f)
+  , index = d.replace(/\/+$/, '').replace(/\/+/g, '/') + '/index.html'
 
   if (cache[d]) return send(req, res, cache[d])
+  if (cache[index]) return send(req, res, cache[index])
 
   fs.readFile(d, function (er, raw) {
     if (er && er.code === 'EISDIR') {
-      fs.readFile(d + '/index.html', arguments.callee)
+      d = index
+      return fs.readFile(d, arguments.callee)
     }
-    if (er) return res.error(404)
+
+    if (er) return res.error(er, 404)
     render(d, raw, function (er) {
       send(req, res, cache[d])
     })
