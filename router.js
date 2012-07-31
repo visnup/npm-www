@@ -19,6 +19,7 @@ router.addRoute('/stylus/*?', require('./routes/stylus.js'))
 
 // XXX: This is kind of kludgey
 router.addRoute('/doc/*?', require('./routes/doc.js'))
+router.addRoute('/doc', require('./routes/doc.js'))
 router.addRoute('/api/*?', require('./routes/doc.js'))
 
 router.addRoute('/login', require('./routes/login.js'))
