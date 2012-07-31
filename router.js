@@ -17,6 +17,10 @@ router.addRoute('/static/*?', static)
 router.addRoute('/favicon.ico', static)
 router.addRoute('/stylus/*?', require('./routes/stylus.js'))
 
+// XXX: This is kind of kludgey
+router.addRoute('/doc/*?', require('./routes/doc.js'))
+router.addRoute('/api/*?', require('./routes/doc.js'))
+
 router.addRoute('/login', require('./routes/login.js'))
 
 router.addRoute('/profile-edit', require('./routes/profile-edit.js'))

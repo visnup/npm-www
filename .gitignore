@@ -13,3 +13,7 @@ couch.log
 redis.log
 dev/redis/dump.rdb
 npm-debug.log
+doc/
+api/
+static/style.css
+static/webfonts/
