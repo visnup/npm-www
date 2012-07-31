@@ -15,6 +15,7 @@ function profile (req, res) {
   // get the profile of the specified account, if there is one.
   if (req.params && req.params.name) {
     req.model.load('showprofile', req.params.name)
+    loadPackages(req, req.params.name)
   }
 
   req.model.end(function (er, m) {
@@ -23,8 +24,20 @@ function profile (req, res) {
     if (m.profile && req.showprofile) {
       req.showprofile.isSelf = req.showprofile.name === m.profile.name
     }
+    if (req.showprofile && !(m.starred && m.packages)) {
+      loadPackages(req, req.showprofile.name)
+      return req.model.end(function (er, m) {
+        if (er) return res.error(er)
+        showProfile(req, res, req.showprofile)
+      })
+    }
     showProfile(req, res, req.showprofile)
   })
+}
+
+function loadPackages (req, name) {
+  req.model.loadAs('browse', 'starred', 'userstar', name, 0, 1000)
+  req.model.loadAs('browse', 'packages', 'author', name, 0, 1000)
 }
 
 function showProfile (req, res, showprofile) {
@@ -39,6 +52,8 @@ function showProfile (req, res, showprofile) {
            , profile: req.model.profile
            , fields: config.profileFields
            , title: showprofile.name
+           , packages: req.model.packages
+           , starred: req.model.starred
            }
   res.template('profile.ejs', td)
 }
