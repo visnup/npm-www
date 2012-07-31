@@ -44,7 +44,7 @@
       <td><%-
         package.keywords.map(function (kw) {
           kw = kw.replace(/</g, '&lt;').replace(/"/g, '&quot;')
-          return '<a href="/keyword/' + kw + '">' + kw + '</a>'
+          return '<a href="/browse/keyword/' + kw + '">' + kw + '</a>'
         }).join(', ')
         %></td>
     </tr>
