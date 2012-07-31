@@ -16,7 +16,7 @@ var groupLevel = {
   all: 2,
   keyword: 1,
   author: 1,
-  updated: 4,
+  updated: 3,
   depended: 1,
   star: 2,
   userstar: 1
@@ -40,10 +40,10 @@ var transformKey = {
   }},
 
   updated: function (k, v) { return {
-    name: k[3],
-    description: 'Updated: ' + k[0] + '-' + k[1] + '-' + k[2],
-    url: '/package/' + k[3],
-    value: v
+    name: k[1],
+    description: k[2] + ' - ' + k[0].substr(0, 10),
+    url: '/package/' + k[1],
+    value: k[0]
   }},
 
   keyword: tk,
