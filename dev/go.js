@@ -16,17 +16,21 @@ function queue () {
 }
 
 var children = []
-function exec (cmd, args, cb) {
+function exec (cmd, args, wait, cb) {
+  if (typeof wait === 'function') cb = wait, wait = 200
   var child = spawn(cmd, args, {stdio:'inherit'})
   var called = false
+
   var timer = setTimeout(function () {
     called = true
     cb()
-  }, 200)
+  }, wait)
+
   child.on('exit', function (code) {
+    if (wait) return cb(code)
     clearTimeout(timer)
-    msg = cmd + ' ' + args.join(' ') + ' fell over: '+code
     if (code) {
+      msg = cmd + ' ' + args.join(' ') + ' fell over: '+code
       console.error(msg)
       if (!called) cb(new Error(msg))
     }
@@ -50,10 +54,14 @@ queue(function (cb) {
   exec('redis-server', ['dev/redis/redis.conf'], cb)
 
 }, function (cb) {
-  exec(process.execPath, [require.resolve('./replicate.js')], cb)
+  // give it a few seconds to download some interesting data.
+  // otherwise the site is pretty empty.
+  exec(process.execPath, [require.resolve('./replicate.js')], 10000, cb)
 
 }, function (er) {
   if (er) throw er
+
+  console.error('\n\n\nSTARTING DEV SITE NOW\n\n\n')
 
   // force the configs to be pointed at our local redis and couchdb.
   var config = {}
