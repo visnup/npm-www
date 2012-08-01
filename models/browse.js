@@ -66,7 +66,7 @@ var transformKey = {
     description: k[1] + ' - ' + v,
     url: '/package/' + k[0],
     value: v
-  }},
+  }}
 }
 
 function tk (k, v, type) { return {
