@@ -23,7 +23,36 @@ var ErrorPage = require("error-page")
 , errorPageConf = {}
 
 , MC = require('./models.js')
+, http = require('http')
 
+function errorHandler (req, res, data) {
+  if (!req.profile) {
+    req.model.load('profile', req)
+    req.model.end(thenShow)
+  } else {
+    thenShow()
+  }
+
+  function thenShow () {
+    data.profile = req.profile
+    data.title = data.message
+    data.statusMessage = http.STATUS_CODES[data.statusCode]
+    var tpl = 'error.ejs'
+    var tplSpecial = 'error-' + data.statusCode + '.ejs'
+    if (res.template.has(tplSpecial)) tpl = tplSpecial
+
+    data.headers = Object.keys(data.headers || {}).filter(function (h) {
+      return h !== 'cookie'
+    }).reduce(function (set, h) {
+      set[h] = data.headers[h]
+      return set
+    }, {})
+
+    delete data.options
+
+    res.template(tpl, data, data.statusCode || 500)
+  }
+}
 
 function decorate (req, res, config) {
   req.model = res.model = new MC
@@ -31,6 +60,7 @@ function decorate (req, res, config) {
   templateOptions.debug = config.debug
 
   if (config.errorPage) errorPageConf = config.errorPage
+  errorPageConf['*'] = errorHandler
 
   if (!logger) {
     var logOpts = config.log ||
@@ -44,6 +74,7 @@ function decorate (req, res, config) {
   d.add(req)
   d.add(res)
   d.on("error", function (er) {
+    logger.error({ error: er })
     try {
       if (res.error) res.error(er)
       else {

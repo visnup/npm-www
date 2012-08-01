@@ -1,6 +1,12 @@
 <%- include('header.ejs', locals) %>
 <h1>Login, please</h1>
 
+<% if (locals.failed) { %>
+  <p>The information you entered was rejected for reasons.</p>
+  <p>You may try again, or <a href=/forgot>reset your password</a>
+  if you have forgotten it.</p>
+<% } %>
+
 <form action='' method='post' class=form>
   <fieldset>
     <label for=name>Username</label>
