@@ -17,6 +17,7 @@ router.addRoute('/static/*?', static)
 router.addRoute('/favicon.ico', static)
 router.addRoute('/install.sh', static)
 router.addRoute('/stylus/*?', require('./routes/stylus.js'))
+router.addRoute('/search', require('./routes/search.js'))
 
 // XXX: This is kind of kludgey
 router.addRoute('/doc/*?', require('./routes/doc.js'))
