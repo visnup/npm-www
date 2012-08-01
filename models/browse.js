@@ -1,6 +1,9 @@
 module.exports = browse
 var qs = require('querystring')
 
+var LRU = require('lru-cache')
+var cache = new LRU(10000, function (n) { return n.length }, 1000 * 60)
+
 var viewNames = {
   all: 'browseAll',
   keyword: 'byKeyword',
@@ -95,7 +98,19 @@ function tka (k, v) { return {
 
 var npm = require('npm')
 
+var fetching = {}
 function browse (type, arg, skip, limit, cb) {
+  var key = [type, arg, skip, limit].join(',')
+  var cached = cache.get(key)
+  if (cached) return process.nextTick(cb.bind(null, null, cached))
+
+  if (fetching[key]) {
+    fetching[key].push(cb)
+    return
+  }
+
+  fetching[key] = [cb]
+
   var u = '/-/_view/' + viewNames[type]
   var query = {}
   query.group_level = (arg ? groupLevelArg : groupLevel)[type]
@@ -118,8 +133,15 @@ function browse (type, arg, skip, limit, cb) {
   u += '?' + qs.stringify(query)
 
   npm.registry.get(u, function (er, data, res) {
-    if (data) data = transform(type, arg, data, skip, limit)
-    return cb(er, data)
+    if (data) {
+      data = transform(type, arg, data, skip, limit)
+      cache.set(key, data)
+    }
+    var cbs = fetching[key]
+    delete fetching[key]
+    cbs.forEach(function (cb) {
+      cb(er, data)
+    })
   })
 }
 
