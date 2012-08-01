@@ -21,15 +21,20 @@ function update () {
   updating = true
 
   // log the search queries we've gotten so far.
-  var write = searches.join('\n')
+  var write = searches.slice(0)
+  var now = Date.now()
+  var out = write.map(function (s) {
+    return now + ' ' + s + '\n'
+  }).join('')
   searches.length = 0
-  fs.appendFile(logFile, write + '\n', 'utf8', function (er, c) {
+
+  fs.appendFile(logFile, out, 'utf8', function (er, c) {
     updating = false
     if (er) {
-      searches = write.split('\n').concat(searches)
+      searches = write.concat(searches)
       return
     }
-    lastUpdated = Date.now()
+    lastUpdated = now
   })
 }
 
