@@ -8,8 +8,10 @@ function packagePage (req, res) {
   req.model.load('package', req.params)
   req.model.load('browse', 'depended', req.params.name, 0, 1000)
   req.model.end(function (er, m) {
+    if (er && er.code === 'E404') return res.error(404, er)
     if (er) return res.error(er)
     if (!m.package) return res.error(404)
+
     var p = m.package
     p.dependents = m.browse
     var l = p['dist-tags'] && p['dist-tags'].latest &&
