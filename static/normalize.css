@@ -212,8 +212,12 @@ samp {
 
 pre {
     white-space: pre;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    word-wrap: normal;
+    display: block;
+    width: auto;
+    _width: 100%;
+    max-width: 100%;
+    overflow: auto;
 }
 
 /*
