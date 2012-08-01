@@ -28,7 +28,8 @@
     <ul>
       <%
       depended.forEach(function (p) {
-        %><li><a href="<%= p.url %>"><%= p.value + ' ' + p.name %></a></li>
+        %><li><%= p.value %> <a href="/package/<%= p.name
+          %>"><%= p.name %></a></li>
         <%
       })
       %>
@@ -44,7 +45,8 @@
     <ul>
       <%
       starred.forEach(function (p) {
-        %><li><a href="<%= p.url %>"><%= p.value + ' ' + p.name %></a></li>
+        %><li><%= p.value %> <a href="/package/<%= p.name
+        %>"><%= p.name %></a></li>
         <%
       })
       %>
@@ -57,7 +59,8 @@
     <ul>
       <%
       authors.forEach(function (p) {
-        %><li><a href="<%= p.url %>"><%= p.value + ' ' + p.name %></a></li>
+        %><li><%= p.value %> <a href="/profile/<%= p.name
+        %>"><%= p.name %></a></li>
         <%
       })
       %>

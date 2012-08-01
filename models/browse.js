@@ -49,12 +49,19 @@ var transformKey = {
   keyword: tk,
   author: tk,
   depended: tk,
-  userstar: tk,
 
+  // usernames should always link to a profile, and
+  // package names should always link to a package.
+  userstar: function (k, v, type) { return {
+    name: k[0],
+    description: v + ' packages',
+    url: '/profile/' + k[0],
+    value: v
+  }},
   star: function (k, v, type) { return {
     name: k[0],
     description: k[1] + ' - ' + v,
-    url: '/browse/' + type + '/' + k[0],
+    url: '/package/' + k[0],
     value: v
   }},
 }
@@ -74,7 +81,7 @@ var transformKeyArg = {
   star: function (k, v) { return {
     name: k[2],
     description: '',
-    url: '/browse/userstar/' + k[2]
+    url: '/profile/' + k[2]
   }}
 }
 
