@@ -1,32 +1,20 @@
 <%- include('header.ejs', locals) %>
-<h1>login, please:</h1>
+<h1>Login, please</h1>
 
-<form method='post'>
-<table>
-<tr>
-  <th>
-    <label for=name>username</label>
-  </th>
-  <td>
+<form action='' method='post' class=form>
+  <fieldset>
+    <label for=name>Username</label>
     <input name=name id=name>
-  </td>
-</tr>
-<tr>
-  <th>
-    <label for=password>password</label>
-  </th>
-  <td>
+  </fieldset>
+  <fieldset>
+    <label for=password>Password</label>
     <input type=password name=password id=password>
-  </td>
-</tr>
-<tr>
-  <td colspan=2>
-    <input type='submit'>
-  </td>
-</tr>
-</table>
+  </fieldset>
+  <fieldset class='buttons'>
+    <button class='btn' type='submit'>Login!</button>
+    <a href="/forgot">Forgot password?</a>
+  </fieldset>
 </form>
 
-<p><a href="/signup">sign up</a>
-<p><a href="/forgot">forgot password</a>
+<p>Don't have an account? <a href="/signup">Sign up.</a>
 <%- include('footer.ejs', locals) %>

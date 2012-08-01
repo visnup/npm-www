@@ -31,11 +31,11 @@ body {
 
 input {
   font-family: Georgia, serif;
-  border: solid 1px transparent;
+  border: solid 1px #ddd;
   padding: 0.5em;
   outline: none;
-  &:hover { border-color: #ccc; }
-  &:focus { border-color: #000; }
+  &:hover { border-color: #bbb; }
+  &:focus { border-color: #333; }
 }
 
 a {
@@ -48,6 +48,58 @@ h1, h2, h3, h4, h5, h6 {
   color: #000;
 }
 
+
+// utilities
+
+.btn {
+  display: inline-block;
+  padding: 0.5em 1.5em;
+  background: red;
+  border-radius: 5px;
+  border:0;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  &:hover, &:focus, &:active {
+    background: #89221B;
+  }
+  &:focus {
+    outline: thin dotted #666;
+  }
+}
+
+.form {
+  label {
+    display: inline-block;
+    width: 30%;
+    font-weight:bold;
+  }
+  input {
+    display: inline-block;
+    width: 65%;
+  }
+  fieldset {
+    border-width:0;
+    margin-bottom:5px;
+  }
+  fieldset.buttons {
+    border-top-width: 1px;
+    padding-top: 1em;
+    .btn {
+      margin-right: 0.5em;
+    }
+  }
+  .form-help {
+    font-style: italic;
+    font-size:0.9em;
+    color:#777;
+  }
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
 
 // layout
 
