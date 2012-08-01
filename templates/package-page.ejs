@@ -68,7 +68,7 @@
         (<%= package.repository.type %>)
       </td>
       <% } %>
-      <% if (package.bugs) { %>
+      <% if (package.bugs && package.bugs.url) { %>
       <tr>
         <th>Bugs:</td>
         <td>
