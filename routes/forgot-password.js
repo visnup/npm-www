@@ -53,6 +53,8 @@ function forgotPassword (req, res) {
   switch (req.method) {
     case 'POST': return handle(req, res)
     case 'GET': case 'HEAD':
+      // don't accidentally expose the token in error reports.
+      req.url = '/forgot'
       if (req.params && req.params.token) {
         return token(req, res)
       } else {
