@@ -11,7 +11,7 @@ function profile (req, required, cb) {
       data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
     }
 
-    if (er || data) return cb(er, data)
+    if (er || data) return cb(er, req.profile = data)
 
     // if we're logged in, try to see if we can get it
     var name = req.cookies.get('name')
@@ -29,7 +29,7 @@ function profile (req, required, cb) {
       data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
 
       req.session.set('profile', data)
-      return cb(null, data)
+      return cb(null, req.profile = data)
     })
   })
 }
