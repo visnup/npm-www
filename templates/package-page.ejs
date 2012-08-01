@@ -127,7 +127,7 @@
             }
             starredBy.forEach(function (user, i) {
               if (i > 0) { %>, <% }
-              %><a href="/browse/userstar/<%= user %>"><%= user %></a><%
+              %><a href="/profile/<%= user %>"><%= user %></a><%
             })
             if (l > max) {
               %><br><a href="/browse/star/<%= package.name %>">and
