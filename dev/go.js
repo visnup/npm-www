@@ -18,7 +18,14 @@ function queue () {
 var children = []
 function exec (cmd, args, wait, cb) {
   if (typeof wait === 'function') cb = wait, wait = 200
-  var child = spawn(cmd, args, {stdio:'inherit'})
+  var opts = {stdio:'inherit'}
+  // windows is kind of a jerk sometimes.
+  if (process.platform === 'win32') {
+    args = ['/c', '/s', '"' + args.map(JSON.stringify).join(' ') + '"']
+    cmd = 'cmd'
+    opts.windowsVerbatimArguments = true
+  }
+  var child = spawn(cmd, args, opts)
   var called = false
 
   var timer = setTimeout(function () {
