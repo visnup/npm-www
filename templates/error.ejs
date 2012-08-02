@@ -20,7 +20,10 @@
                      (message ? 'Message:\n```\n' +
                       message + '\n```\n\n'
                       : '') +
-                     (locals.profile ? 'User: ' + profile.name : ''))
+                     (locals.profile ? 'User: ' + profile.name + '\n'
+                      : '') +
+                     ('Stamp: ' + stamp + '\n')
+                    )
   %>">submit an issue</a> so that it can be addressed.</p>
 
 <p>If you have ideas about how this could have been handled better,
@@ -35,6 +38,8 @@ headers = <%= JSON.stringify(locals.headers, null, 2) %>
 error = <%= JSON.stringify(locals.error, null, 2) %>
 
 statusCode = <%= statusCode %>
+
+stamp = <%= stamp %>
 </pre>
 
 <%- include('footer.ejs', locals) %>
