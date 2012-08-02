@@ -17,7 +17,16 @@ router.addRoute('/static/*?', static)
 router.addRoute('/favicon.ico', static)
 router.addRoute('/install.sh', static)
 router.addRoute('/stylus/*?', require('./routes/stylus.js'))
+// legacy
+router.addRoute('/dist/*?', distRedirect)
+router.addRoute('/dist', distRedirect)
+function distRedirect (req, res) {
+  var s = req.splats && req.splats[0] || ''
+  return res.redirect('http://nodejs.org/dist/npm/' + s, 301)
+}
+
 router.addRoute('/search', require('./routes/search.js'))
+
 
 // XXX: This is kind of kludgey
 router.addRoute('/doc/*?', require('./routes/doc.js'))
