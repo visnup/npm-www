@@ -30,17 +30,19 @@ function login (req, res) {
 function handleForm (req, res) {
   req.on('form', function (data) {
     if (!data.name || !data.password) {
-      return res.error(new Error('bad login'), 400)
+      var er = new Error('Name or password not provided')
+      return res.error(er, 400, 'login.ejs')
     }
 
     req.couch.login(data, function (er, cr, couchSession) {
-      if (er) return res.error(er)
+      if (er) return res.error(er, 'login.ejs')
       if (cr.statusCode !== 200) {
         // XXX Should just render the login form
         // with an error about a bad login or something.
         // Something like:
         // res.template('login.ejs', {message:'bad login'})
-        return res.error(er, cr.statusCode)
+        er = er || new Error('Username and/or password is wrong')
+        return res.error(er, cr.statusCode, 'login.ejs')
       }
 
       // look up the profile data.  we're gonna need
@@ -48,7 +50,7 @@ function handleForm (req, res) {
       var pu = '/_users/org.couchdb.user:' + data.name
       req.couch.get(pu, function (er, cr, data) {
         if (er || cr.statusCode !== 200) {
-          return res.error(er, cr && cr.statusCode)
+          return res.error(er, 401, 'login.ejs')
         }
 
         req.session.set("profile", data)
