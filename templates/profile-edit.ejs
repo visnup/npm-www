@@ -6,22 +6,20 @@
 <form method=post action=/profile-edit>
   <input type=hidden name=_id value="<%= profile._id %>">
   <input type=hidden name=name value="<%= profile.name %>">
-  <table width=100%>
 <%
 Object.keys(fields).forEach(function (f) {
   %>
-  <tr>
-    <th><label for="<%= f %>"><%= fields[f] %></label></th>
-    <td><input style="display:block;width:100%;"
-      id="<%= f %>" name="<%= f %>" value="<%= profile[f] || '' %>"></td>
-  </tr>
+  <fieldset>
+    <label for="<%= f %>"><%= fields[f] %></label>
+    <input id="<%= f %>" name="<%= f %>" value="<%= profile[f] || '' %>">
+  </fieldset>
   <%
 })
 %>
-  </table>
 
-<input type=submit value=Save>
+  <fieldset class=buttons>
+    <button class=btn type=submit>Save</button>
+  </fieldset>
 </form>
 
-<a href='/logout/?done=/profile/<%= profile.name %>'>log out</a>
 <%- include('footer.ejs', locals) %>

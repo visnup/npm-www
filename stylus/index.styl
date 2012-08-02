@@ -48,31 +48,13 @@ h1, h2, h3, h4, h5, h6 {
   color: #000;
 }
 
-
-// utilities
-
-.btn {
-  display: inline-block;
-  padding: 0.5em 1.5em;
-  background: red;
-  border-radius: 5px;
-  border:0;
-  color: #fff;
-  font-weight: bold;
-  text-decoration: none;
-  &:hover, &:focus, &:active {
-    background: #89221B;
-  }
-  &:focus {
-    outline: thin dotted #666;
-  }
-}
-
-.form {
+form {
   label {
     display: inline-block;
     width: 30%;
     font-weight:bold;
+    vertical-align: top;
+    line-height: 30px;
   }
   input {
     display: inline-block;
@@ -93,6 +75,25 @@ h1, h2, h3, h4, h5, h6 {
     font-style: italic;
     font-size:0.9em;
     color:#777;
+  }
+}
+
+// utilities
+
+.btn {
+  display: inline-block;
+  padding: 0.5em 1.5em;
+  background: red;
+  border-radius: 5px;
+  border:0;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  &:hover, &:focus, &:active {
+    background: #89221B;
+  }
+  &:focus {
+    outline: thin dotted #666;
   }
 }
 
