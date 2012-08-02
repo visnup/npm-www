@@ -25,11 +25,9 @@ var config = require("./config.js")
 
 try {
   gitHead = fs.readFileSync('.git/HEAD', 'utf8').trim()
-  console.error('gitHead=%s', gitHead)
   if (gitHead.match(/^ref: /)) {
     gitHead = gitHead.replace(/^ref: /, '').trim()
     gitHead = fs.readFileSync('.git/' + gitHead, 'utf8').trim()
-    console.error('gitHead=%s', gitHead)
   }
 } catch (_) {
   gitHead = '(not a git repo) ' + _.message
