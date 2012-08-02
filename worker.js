@@ -20,8 +20,25 @@ var config = require("./config.js")
 , RedSess = require('redsess')
 , bunyan = require('bunyan')
 , npm = require('npm')
+, fs = require('fs')
+, gitHead
 
-config.log.worker = cluster.worker.uniqueID
+try {
+  gitHead = fs.readFileSync('.git/HEAD', 'utf8').trim()
+  console.error('gitHead=%s', gitHead)
+  if (gitHead.match(/^ref: /)) {
+    gitHead = gitHead.replace(/^ref: /, '').trim()
+    gitHead = fs.readFileSync('.git/' + gitHead, 'utf8').trim()
+    console.error('gitHead=%s', gitHead)
+  }
+} catch (_) {
+  gitHead = '(not a git repo) ' + _.message
+}
+
+config.stamp = 'pid=' + process.pid + ' ' +
+               'worker=' + cluster.worker.id + ' ' + gitHead
+
+config.log.worker = cluster.worker.id
 config.log.pid = process.pid
 var logger = bunyan.createLogger(config.log)
 

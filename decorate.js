@@ -58,6 +58,7 @@ function decorate (req, res, config) {
   req.model = res.model = new MC
 
   templateOptions.debug = config.debug
+  templateOptions.stamp = config.stamp
 
   if (config.errorPage) errorPageConf = config.errorPage
   errorPageConf['*'] = errorHandler
