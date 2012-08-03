@@ -41,7 +41,12 @@
         <% } %>
       </td>
     </tr>
-    <% if (package.keywords) { %>
+    <%
+    if (typeof package.keywords === 'string') {
+      package.keywords = package.keywords.split(/\s*,?\s*/)
+    }
+    if (Array.isArray(package.keywords)) {
+    %>
     <tr>
       <th>Keywords:</th>
       <td><%-
