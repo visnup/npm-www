@@ -33,6 +33,13 @@ try {
   gitHead = '(not a git repo) ' + _.message
 }
 
+var h = config.host
+if (!h) throw new Error('Must set a host in config file')
+var canon
+if (config.https) h = 'https://' + h
+if (config.port && config.port !== 443) h += ':' + config.port
+var canon = config.canon = require('canonical-host')(h, 301)
+
 config.stamp = 'pid=' + process.pid + ' ' +
                'worker=' + cluster.worker.id + ' ' + gitHead
 
@@ -76,19 +83,12 @@ var httpServer = null
 if (config.https) {
   server = https.createServer(config.https, site)
   if (config.httpPort) {
-    var url = require('url')
     // redirect to the appropriate
     httpServer = http.createServer(function (req, res) {
-      if (!req.headers.host) {
-        res.writeHead(400)
-        return res.end('No host header.')
-      }
-      var u = url.parse('https://' + req.headers.host + req.url)
-      delete u.host
-      u.port = (config.port === 443) ? null : config.port
-      u = url.format(u)
-      res.writeHead(301, { location: u })
-      res.end('moved: ' + u)
+      if (canon(req, res)) return
+      // wtf?
+      res.statusCode = 400
+      res.end('bad')
     })
     httpServer.listen(config.httpPort)
   }

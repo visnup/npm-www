@@ -17,19 +17,10 @@ var router = require("./router.js")
 config.keys = new Keygrip(config.keys)
 
 function site (req, res) {
+  // only allow access via the canonical hostname
+  if (config.canon(req, res)) return
+
   decorate(req, res, config)
-
-  // if there is a host header, then it must be either
-  // the config.host value (if set), or config.host:#### for the port
-  if (config.host && req.headers.host &&
-      req.headers.host.split(':')[0] !== config.host) {
-    var h = config.host
-    var p = url.parse(req.url).path
-    if (config.port !== 443) h += ':' + config.port
-
-    return res.redirect('https://' + h + p, 301)
-  }
-
 
   var pathname = url.parse(req.url).pathname
     , normalPathname = path.normalize(pathname);
