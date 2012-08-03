@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+<script>(function(){
+if (location.pathname === '/') {
+var m = location.hash.match(/^#\/[^\/]*$/)
+if (m) location.replace('/package' + m[0].substr(1))
+}})()</script>
   <title><%= (typeof title !== 'undefined' ? title : 'npm') %></title>
   <link type="text/css" rel="stylesheet" media="all"
     href="/static/normalize.css">
