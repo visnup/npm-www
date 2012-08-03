@@ -1,15 +1,28 @@
 <%- include('header.ejs', locals) %>
-  <h1><%= showprofile.name %></h1>
+<div class="showprofile">
+
+  <% if (showprofile.isSelf) { %>
+  <a href="http://en.gravatar.com/emails/"
+    title="edit avatar at gravatar.com">
+  <% } %>
+  <img src="<%= showprofile.avatarLarge %>"
+    class="avatar-large" height=248 width=248 alt="">
+  <% if (showprofile.isSelf) { %>
+    </a>
+  <% } %>
+
+  <h1>
+  <%= showprofile.name %></h1>
   <%
   if (showprofile.isSelf) {
     %>
-    <p>This is your profile.
-      <a href=/profile-edit>Edit Profile</a>
-      <a href=/password>Change Password</a></p>
+    <p><a href=/profile-edit>Edit Profile</a> -
+      <a href=/password>Change Password</a> -
+      <a href="http://gravatar.com/emails/">Change Picture</a>
+    </p>
     <%
   }
   %>
-
 
 <table width="100%">
 <%
@@ -23,6 +36,8 @@ Object.keys(fields).forEach(function (f) {
 })
 %>
 </table>
+
+</div>
 
 <% if (packages && packages.length) {
   %><h2>Packages by <%= showprofile.name %></h2>

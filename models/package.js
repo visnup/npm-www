@@ -88,4 +88,5 @@ function gravatarPerson (p) {
     return
   }
   p.avatar = gravatar(p.email || '', {s:50, d:'retro'}, true)
+  p.avatarLarge = gravatar(p.email || '', {s:496, d:'retro'}, true)
 }

@@ -18,10 +18,11 @@
       package.maintainers.forEach(function (m) {
         %>
         <div class="user">
-          <% if (m.avatar) { %>
-          <img src="<%= m.avatar %>" class="avatar">
-          <% } %>
-          <a class="username" href="/profile/<%= m.name %>"><%= m.name %></a>
+          <a class="username" href="/profile/<%= m.name %>">
+            <% if (m.avatar) { %>
+            <img src="<%= m.avatar %>" class="avatar">
+            <% } %>
+            <%= m.name %></a>
         </div>
         <%
       })

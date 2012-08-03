@@ -11,6 +11,7 @@ function showprofile (name, cb) {
 
     var gr = data.email ? 'retro' : 'mm'
     data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
+    data.avatarLarge = gravatar(data.email || '', {s:496, d:gr}, true)
 
     cb(er, data)
   })

@@ -9,6 +9,7 @@ function profile (req, required, cb) {
     if (data) {
       var gr = data.email ? 'retro' : 'mm'
       data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
+      data.avatarLarge = gravatar(data.email || '', {s:496, d:gr}, true)
     }
 
     if (er || data) return cb(er, req.profile = data)
@@ -27,6 +28,7 @@ function profile (req, required, cb) {
 
       var gr = data.email ? 'retro' : 'mm'
       data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
+      data.avatarLarge = gravatar(data.email || '', {s:496, d:gr}, true)
 
       req.session.set('profile', data)
       return cb(null, req.profile = data)
