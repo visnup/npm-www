@@ -5,6 +5,7 @@ node_modules/touch
 config.admin.js
 config.dev.js
 ssl
+!dev/ssl
 .*.swp
 *.couch
 dev/couch/.*
