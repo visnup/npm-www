@@ -37,7 +37,8 @@
   "scripts": {
     "start": "node server.js",
     "show-conf": "node config.js",
-    "dev": "node dev/go.js | bunyan"
+    "dev": "node dev/go.js | bunyan",
+    "repl": "node repl.js"
   },
   "devDependencies": {
     "replicate": "git://github.com/isaacs/replicate",
