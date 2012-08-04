@@ -22,7 +22,7 @@ function exec (cmd, args, wait, cb) {
   // windows is kind of a jerk sometimes.
   if (process.platform === 'win32') {
     args = [cmd].concat(args)
-    args = ['/c', '/s', '"' + args.map(JSON.stringify).join(' ') + '"']
+    args = ['/c', '/s', '"' + args.join(' ') + '"']
     cmd = 'cmd'
     opts.windowsVerbatimArguments = true
   }
