@@ -23,7 +23,7 @@ function site (req, res) {
   decorate(req, res, config)
 
   var pathname = url.parse(req.url).pathname
-    , normalPathname = path.normalize(pathname);
+    , normalPathname = path.normalize(pathname).replace(/\\/g, '/');
 
   var route = router.match(normalPathname);
   if (!route) return res.error(404)
