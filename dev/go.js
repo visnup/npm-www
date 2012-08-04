@@ -21,8 +21,7 @@ function exec (cmd, args, wait, cb) {
   var opts = {stdio:'inherit'}
   // windows is kind of a jerk sometimes.
   if (process.platform === 'win32') {
-    args = [cmd].concat(args)
-    args = ['/c', '/s', '"' + args.join(' ') + '"']
+    args = ['/c', '"' + cmd + '"'].concat(args)
     cmd = 'cmd'
     opts.windowsVerbatimArguments = true
   }
