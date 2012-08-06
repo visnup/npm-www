@@ -55,7 +55,6 @@ router.addRoute('/about', require('./routes/about.js'))
 router.addRoute('/', require('./routes/index.js'))
 
 // The package details page
-// Definitely ought to be its own module.
 var packagePage = require('./routes/package-page.js')
 router.addRoute('/package/:name/:version', packagePage)
 router.addRoute('/package/:name', packagePage)
@@ -65,3 +64,7 @@ router.addRoute('/keyword/:kw', function (q, s) {
 })
 
 router.addRoute('/browse/*?', require('./routes/browse.js'))
+
+// npmjs.org/npm -> npmjs.org/package/npm
+// if nothing else matches.
+router.addRoute('/:name', require('./routes/maybe-package.js'))
