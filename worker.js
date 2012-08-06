@@ -17,6 +17,7 @@ var config = require("./config.js")
 , https = require("https")
 , site = require("./site.js")
 , server
+, loneServer
 , RedSess = require('redsess')
 , bunyan = require('bunyan')
 , npm = require('npm')
@@ -35,13 +36,16 @@ try {
 
 var h = config.host
 if (!h) throw new Error('Must set a host in config file')
-var canon
 if (config.https) h = 'https://' + h
+
+var lonePort = 10000 + (cluster.worker.id % 100)
+var lh = h + ':' + lonePort
 if (config.port && config.port !== 443) h += ':' + config.port
-var canon = config.canon = require('canonical-host')(h, 301)
+
+var canon = config.canon = require('canonical-host')(h, lh, 301)
 
 config.stamp = 'pid=' + process.pid + ' ' +
-               'worker=' + cluster.worker.id + ' ' + gitHead
+               'worker=' + cluster.worker.id + ' ' + gitHead + ' ' + lh
 
 config.log.worker = cluster.worker.id
 config.log.pid = process.pid
@@ -82,6 +86,10 @@ if (r.auth) config.redis.client.auth(r.auth)
 var httpServer = null
 if (config.https) {
   server = https.createServer(config.https, site)
+
+  // also listen on a port that is unique to this worker, for debugging.
+  loneServer = https.createServer(config.https, site)
+
   if (config.httpPort) {
     // redirect to the appropriate
     httpServer = http.createServer(function (req, res) {
@@ -94,6 +102,7 @@ if (config.https) {
   }
 } else {
   server = http.createServer(site)
+  loneServer = http.createServer(site)
 }
 
 var npmconf = config.npm || {}
@@ -103,12 +112,24 @@ npm.load(npmconf, function (er) {
   server.listen(config.port, function () {
     logger.info("Listening on %d", config.port)
   })
+
+  loneServer.listen(lonePort, function () {
+    logger.info("Listening on %d", lonePort)
+  })
 })
 
-server.on('close', function () {
-  // usually the cluster disconnect will close this one, too.
-  try { httpServer.close() } catch (e) {}
-  RedSess.close()
-  config.redis.client.quit()
-  logger.info('Worker closing')
-})
+var didCloseMsg
+function closeAll () {
+  ;[server, httpServer, loneServer, RedSess ].forEach(function (s) {
+    try { s.close() } catch (e) {}
+  })
+  try { config.redis.client.quit() } catch (e) {}
+  if (!didCloseMsg) {
+    didCloseMsg = true
+    logger.info('Worker closing')
+  }
+}
+
+loneServer.on('close', closeAll)
+server.on('close', closeAll)
+httpServer && httpServer.on('close', closeAll)
