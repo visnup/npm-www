@@ -112,6 +112,7 @@ queue(function (cb) {
                    'utf8')
 
   process.env.NODE_ENV = 'dev'
+  process.env.CLUSTER_MASTER_REPL = 15337
 
   // now we've replicated everything, and set up the configs,
   // and it worked, so start up the master http server.

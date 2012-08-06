@@ -1,7 +1,11 @@
 var net = require('net')
-
 var path = require('path')
-var sock = net.connect(path.resolve(__dirname, 'cluster-master-socket'))
+
+var r = process.env.CLUSTER_MASTER_REPL ||
+        path.resolve(__dirname, 'cluster-master-socket')
+if (!isNaN(r)) r = +r
+
+var sock = net.connect(r)
 
 process.stdin.pipe(sock)
 sock.pipe(process.stdout)

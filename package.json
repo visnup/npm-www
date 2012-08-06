@@ -38,7 +38,8 @@
     "start": "node server.js",
     "show-conf": "node config.js",
     "dev": "node dev/go.js | bunyan",
-    "repl": "node repl.js"
+    "repl": "node repl.js",
+    "dev-repl": "CLUSTER_MASTER_REPL=15337 node repl.js"
   },
   "devDependencies": {
     "replicate": "git://github.com/isaacs/replicate",
