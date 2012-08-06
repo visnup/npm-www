@@ -19,8 +19,11 @@
     <h2>Recently Updated</h2>
     <ul>
       <%
+      var now = Date.now()
       updated.forEach(function (p) {
-        %><li><a href="<%= p.url %>"><%= p.name %></a></li>
+        var m = now - (new Date(p.value).getTime())
+        m = Math.floor(m / (1000 * 60))
+        %><li><%= m %>m <a href="<%= p.url %>"><%= p.name %></a></li>
         <%
       })
       %>
