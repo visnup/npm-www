@@ -43,6 +43,7 @@ function indexPage (req, res) {
 
   if (!loading && (Date.now() - lastUpdated > interval)) load()
 
+  req.model.load('root')
   req.model.load('profile', req)
 
   req.model.end(function (er, m) {
@@ -52,7 +53,8 @@ function indexPage (req, res) {
       updated: cache.updated || [],
       authors: cache.authors || [],
       starred: cache.starred || [],
-      depended: cache.depended || []
+      depended: cache.depended || [],
+      totalPackages: m.root.doc_count - 3 // design docs
     }
     res.template("index.ejs", locals)
   })
