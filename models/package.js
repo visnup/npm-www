@@ -46,13 +46,14 @@ function package (params, cb) {
     if (data.time && data['dist-tags']) {
       var v = data['dist-tags'].latest
       var t = data.time[v]
-      if (data.versions[v]) {
-        req.log.error('invalid package data: %s', data._id)
-        data.version = v
-        if (data.versions[v].readme) {
-          data.readme = data.versions[v].readme
-          data.readmeSrc = null
-        }
+      if (!data.versions[v]) {
+        console.error('invalid package data: %s', data._id)
+        return new Error('invalid package: '+ data._id)
+      }
+      data.version = v
+      if (data.versions[v].readme) {
+        data.readme = data.versions[v].readme
+        data.readmeSrc = null
       }
       data.fromNow = moment(t).fromNow()
     }
