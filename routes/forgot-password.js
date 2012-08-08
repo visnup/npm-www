@@ -129,7 +129,33 @@ function handle (req, res) {
     // look up this user.
     var couch = config.adminCouch
     , pu = '/_users/org.couchdb.user:' + name
-    couch.get(pu, function (er, cr, data) {
+    , ppu = '/public_users/org.couchdb.user:' + name
+    , didReLogin = false
+
+    couch.get(pu, function PU (er, cr, data) {
+      if (!er && cr.statusCode === 404) {
+        if (!didReLogin) {
+          // *maybe* the user doesn't exist, but maybe couchdb is just lying
+          // because our admin login expired.
+          return couch.get(ppu, function PPU (er2, cr2, data) {
+            if (!er2 && (cr2.statusCode === 200 || cr.statusCode === 401)) {
+              // fetching the public user worked fine.
+              // admin login failed.
+              // re-login and try again.
+              return config.adminCouch.tokenGet(function (er3, tok) {
+                if (er3) return res.error(500, er)
+                didReLogin = true
+                couch.get(pu, PU)
+              })
+            }
+            // actually doesn't exist.
+            return res.error(404, er)
+          })
+        }
+        // actually doesn't exist.
+        return res.error(404, er)
+      }
+
       if (er || cr.statusCode >= 400) {
         if (er) return res.error(er)
         return res.error(cr.statusCode, data.error)
