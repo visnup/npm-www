@@ -95,7 +95,7 @@ function token (req, res) {
                 , mustChangePass: true
                 }
 
-    req.log.warn('About to change password', couch.token)
+    req.log.warn('About to change password', { name: name })
     couch.changePass(newAuth, function (er, cr, data) {
       if (er || cr.statusCode >= 400) {
         return res.error(er, cr && cr.statusCode, data && data.error)
