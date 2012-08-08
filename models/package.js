@@ -82,9 +82,11 @@ function gravatarPeople (data) {
   if (data.maintainers) data.maintainers.forEach(function (m) {
     gravatarPerson(m)
   })
-  if (data.contributors) data.contributors.forEach(function (m) {
-    gravatarPerson(m)
-  })
+  if (Array.isArray(data.contributors)) {
+    data.contributors.forEach(function (m) {
+      gravatarPerson(m)
+    })
+  }
 }
 
 function gravatarPerson (p) {
