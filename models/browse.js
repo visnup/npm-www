@@ -146,6 +146,11 @@ function browse (type, arg, skip, limit, cb) {
 }
 
 function transform (type, arg, data, skip, limit) {
+  if (!data.rows) {
+    console.warn('no rows?', type, arg, data, skip, limit)
+    return []
+  }
+
   data = data.rows.map(function (row) {
     var fn = (arg ? transformKeyArg : transformKey)[type]
     return fn(row.key, row.value, type)
