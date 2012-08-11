@@ -85,8 +85,6 @@ if (r.auth) config.redis.client.auth(r.auth)
 
 if (config.https) {
   server = https.createServer(config.https, site)
-
-  // also listen on a port that is unique to this worker, for debugging.
   loneServer = https.createServer(config.https, site)
 } else {
   server = http.createServer(site)
@@ -100,33 +98,49 @@ npm.load(npmconf, function (er) {
 
   server.listen(config.port, function () {
     logger.info("Listening on %d", config.port)
-  })
 
-  loneServer.listen(lonePort, function () {
-    logger.info("Listening on %d", lonePort)
+    // https://github.com/joyent/node/issues/3856
+    cluster.isWorker = false
+    cluster.isMaster = true
+    loneServer.listen(lonePort, function () {
+      cluster.isMaster = false
+      cluster.isWorker = true
+      logger.info("Listening on %d", lonePort)
+    })
   })
 })
 
-var didCloseMsg = 0
 function closeAll () {
-  logger.warn('Worker closing %d', didCloseMsg++)
-  ;[server, loneServer, RedSess ].forEach(function (s, i) {
-    if (s.CLOSED) return
-    s.CLOSED = true
+  logger.warn('Worker closing')
 
-    try { s.close() } catch (e) {
-      logger.error('error closing server %d', i, e)
-    }
+  // at this point, we don't care about errors.  we're quitting anyway.
+  process.on('uncaughtException', function (e) {
+    console.error('shutdown error', e)
   })
+
+  if (this === loneServer) {
+    server.removeListener('close', closeAll)
+    server.close()
+  } else if (this === server) {
+    loneServer.removeListener('close', closeAll)
+    loneServer.close()
+  }
+  RedSess.close()
 
   try { config.redis.client.quit() } catch (e) {
     logger.error('error quitting redis client', e)
   }
 
-  if (!cluster.worker.DISCONNECTED) {
-    cluster.worker.disconnect()
-    cluster.worker.DISCONNECTED = true
-  }
+  // race condition.  it's possible that we're closing because the
+  // master did worker.disconnect(), in which case the IPC channel
+  // will be in the process of closing right now.  give it a tick
+  // to accomplish that.
+  var t = setTimeout(function () {
+    if (process.connected) process.disconnect()
+  }, 100)
+  process.on('disconnect', function () {
+    clearTimeout(t)
+  })
 }
 
 loneServer.on('close', closeAll)
