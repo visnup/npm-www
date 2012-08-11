@@ -12,8 +12,6 @@ process.stdout.on('error', function (er) {
 // set up the server cluster.
 var clusterMaster = require("cluster-master")
 , npm = require("npm")
-, LRU = require("lru-cache")
-, regData = new LRU(10000)
 
 config.log.master = true
 var logger = require('bunyan').createLogger(config.log)

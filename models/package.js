@@ -1,7 +1,10 @@
 module.exports = package
 
 var LRU = require("lru-cache")
-, regData = new LRU(10000)
+, regData = new LRU({
+    max: 10000,
+    maxAge: 1000 * 60 * 10
+  })
 , marked = require("marked")
 , gravatar = require('gravatar').url
 , npm = require("npm")
@@ -23,16 +26,6 @@ function package (params, cb) {
 
   var k = name + '/' + version
   , data = regData.get(k)
-
-  // remove excessively stale data
-  // ignore anything over 10 minutes old
-  if (data && !params.nocache) {
-    var age = Date.now() - data._time
-    if (age > 10 * 60 * 1000) {
-      regData.del(k)
-      data = null
-    }
-  }
 
   if (data) return cb(null, data)
 
@@ -58,7 +51,6 @@ function package (params, cb) {
       data.fromNow = moment(t).fromNow()
     }
 
-    data._time = Date.now()
     if (data.readme && !data.readmeSrc) {
       data.readmeSrc = data.readme
       data.readme = parseReadme(data.readme)

@@ -2,7 +2,11 @@ module.exports = browse
 var qs = require('querystring')
 
 var LRU = require('lru-cache')
-var cache = new LRU(10000, function (n) { return n.length }, 1000 * 60)
+var cache = new LRU({
+  max: 10000,
+  length: function (n) { return n.length },
+  maxAge: 1000 * 60
+})
 
 var viewNames = {
   all: 'browseAll',
