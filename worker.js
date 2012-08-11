@@ -83,23 +83,11 @@ var r = config.redis
 config.redis.client = redis.createClient(r.port, r.host, r)
 if (r.auth) config.redis.client.auth(r.auth)
 
-var httpServer = null
 if (config.https) {
   server = https.createServer(config.https, site)
 
   // also listen on a port that is unique to this worker, for debugging.
   loneServer = https.createServer(config.https, site)
-
-  if (config.httpPort) {
-    // redirect to the appropriate
-    httpServer = http.createServer(function (req, res) {
-      if (canon(req, res)) return
-      // wtf?
-      res.statusCode = 400
-      res.end('bad')
-    })
-    httpServer.listen(config.httpPort)
-  }
 } else {
   server = http.createServer(site)
   loneServer = http.createServer(site)
@@ -122,7 +110,7 @@ npm.load(npmconf, function (er) {
 var didCloseMsg = 0
 function closeAll () {
   logger.warn('Worker closing %d', didCloseMsg++)
-  ;[server, httpServer, loneServer, RedSess ].forEach(function (s, i) {
+  ;[server, loneServer, RedSess ].forEach(function (s, i) {
     if (s.CLOSED) return
     s.CLOSED = true
 
@@ -143,4 +131,3 @@ function closeAll () {
 
 loneServer.on('close', closeAll)
 server.on('close', closeAll)
-httpServer && httpServer.on('close', closeAll)
