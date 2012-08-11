@@ -85,7 +85,7 @@ function decorate (req, res, config) {
       }
 
       // don't destroy before sending the error
-      res.on("close", function () {
+      res.on("finish", function () {
         d.dispose()
       })
 

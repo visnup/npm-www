@@ -120,14 +120,14 @@ npm.load(npmconf, function (er) {
 
 var didCloseMsg
 function closeAll () {
+  if (!didCloseMsg) {
+    logger.warn('Worker closing')
+    didCloseMsg = true
+  }
   ;[server, httpServer, loneServer, RedSess ].forEach(function (s) {
     try { s.close() } catch (e) {}
   })
   try { config.redis.client.quit() } catch (e) {}
-  if (!didCloseMsg) {
-    didCloseMsg = true
-    logger.info('Worker closing')
-  }
 }
 
 loneServer.on('close', closeAll)
