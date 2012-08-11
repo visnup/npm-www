@@ -108,15 +108,14 @@ if (config.https) {
 var npmconf = config.npm || {}
 npmconf["node-version"] = null
 npm.load(npmconf, function (er) {
-  logger.warn('back from npm load, about to start listening')
   if (er) throw er
 
   server.listen(config.port, function () {
-    logger.warn("Listening on %d", config.port)
+    logger.info("Listening on %d", config.port)
   })
 
   loneServer.listen(lonePort, function () {
-    logger.warn("Listening on %d", lonePort)
+    logger.info("Listening on %d", lonePort)
   })
 })
 
@@ -135,6 +134,7 @@ function closeAll () {
   try { config.redis.client.quit() } catch (e) {
     logger.error('error quitting redis client', e)
   }
+  if (process.connected) process.disconnect()
 }
 
 loneServer.on('close', closeAll)
