@@ -7,6 +7,7 @@ function packagePage (req, res) {
   req.model.load('profile', req)
   req.model.load('package', req.params)
   req.model.load('browse', 'depended', req.params.name, 0, 1000)
+
   req.model.end(function (er, m) {
     if (er && er.code === 'E404') return res.error(404, er)
     if (er) return res.error(er)
@@ -20,7 +21,12 @@ function packagePage (req, res) {
       Object.keys(l).forEach(function (k) {
         p[k] = p[k] || l[k]
       })
+    } else {
+      // no latest version.  this is not valid.  treat as a 404
+      res.log.error('Invalid package', req.params.name)
+      return res.error(404)
     }
+
     var locals = {
       package: p,
       profile: m.profile,
