@@ -134,7 +134,12 @@ function closeAll () {
   try { config.redis.client.quit() } catch (e) {
     logger.error('error quitting redis client', e)
   }
-  if (process.connected) process.disconnect()
+
+  if (process.connected) {
+    try { process.disconnect() } catch (e) {
+      logger.error('error calling process.disconnect()', e)
+    }
+  }
 }
 
 loneServer.on('close', closeAll)
