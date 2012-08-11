@@ -16,6 +16,17 @@ var static = require('./routes/static.js')
 router.addRoute('/static/*?', static)
 router.addRoute('/favicon.ico', static)
 router.addRoute('/install.sh', static)
+router.addRoute('/api/*?', static)
+router.addRoute('/api', static)
+// st should really just let you do either index.html OR autoindex
+router.addRoute('/doc/?', function (req, res) {
+  req.url = require('url').parse(req.url).pathname
+  if (!req.url.match(/\/$/)) return res.redirect(req.url+'/')
+  req.url += 'index.html'
+  static(req, res)
+})
+router.addRoute('/doc/*', static)
+
 router.addRoute('/stylus/*?', require('./routes/stylus.js'))
 // legacy
 router.addRoute('/dist/*?', distRedirect)
@@ -26,12 +37,6 @@ function distRedirect (req, res) {
 }
 
 router.addRoute('/search', require('./routes/search.js'))
-
-
-// XXX: This is kind of kludgey
-router.addRoute('/doc/*?', require('./routes/doc.js'))
-router.addRoute('/doc', require('./routes/doc.js'))
-router.addRoute('/api/*?', require('./routes/doc.js'))
 
 router.addRoute('/login', require('./routes/login.js'))
 
