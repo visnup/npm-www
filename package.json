@@ -29,7 +29,8 @@
     "emcee": "0",
     "gravatar": "~1.0.6",
     "moment": "~1.6.2",
-    "canonical-host": "0"
+    "canonical-host": "0",
+    "st": "0.0.4"
   },
   "engines": {
     "node": ">=0.7.7"
