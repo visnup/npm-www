@@ -122,10 +122,14 @@ var didCloseMsg = 0
 function closeAll () {
   logger.warn('Worker closing %d', didCloseMsg++)
   ;[server, httpServer, loneServer, RedSess ].forEach(function (s, i) {
+    if (s.CLOSED) return
+    s.CLOSED = true
+
     try { s.close() } catch (e) {
       logger.error('error closing server %d', i, e)
     }
   })
+
   try { config.redis.client.quit() } catch (e) {
     logger.error('error quitting redis client', e)
   }
