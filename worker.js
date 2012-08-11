@@ -135,10 +135,9 @@ function closeAll () {
     logger.error('error quitting redis client', e)
   }
 
-  if (process.connected) {
-    try { process.disconnect() } catch (e) {
-      logger.error('error calling process.disconnect()', e)
-    }
+  if (!cluster.worker.DISCONNECTED) {
+    cluster.worker.disconnect()
+    cluster.worker.DISCONNECTED = true
   }
 }
 
