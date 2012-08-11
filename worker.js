@@ -108,13 +108,15 @@ if (config.https) {
 var npmconf = config.npm || {}
 npmconf["node-version"] = null
 npm.load(npmconf, function (er) {
+  logger.warn('back from npm load, about to start listening')
   if (er) throw er
+
   server.listen(config.port, function () {
-    logger.info("Listening on %d", config.port)
+    logger.warn("Listening on %d", config.port)
   })
 
   loneServer.listen(lonePort, function () {
-    logger.info("Listening on %d", lonePort)
+    logger.warn("Listening on %d", lonePort)
   })
 })
 
