@@ -118,16 +118,17 @@ npm.load(npmconf, function (er) {
   })
 })
 
-var didCloseMsg
+var didCloseMsg = 0
 function closeAll () {
-  if (!didCloseMsg) {
-    logger.warn('Worker closing')
-    didCloseMsg = true
-  }
-  ;[server, httpServer, loneServer, RedSess ].forEach(function (s) {
-    try { s.close() } catch (e) {}
+  logger.warn('Worker closing %d', didCloseMsg++)
+  ;[server, httpServer, loneServer, RedSess ].forEach(function (s, i) {
+    try { s.close() } catch (e) {
+      logger.error('error closing server %d', i, e)
+    }
   })
-  try { config.redis.client.quit() } catch (e) {}
+  try { config.redis.client.quit() } catch (e) {
+    logger.error('error quitting redis client', e)
+  }
 }
 
 loneServer.on('close', closeAll)
