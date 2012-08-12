@@ -16,6 +16,7 @@ var static = require('./routes/static.js')
 router.addRoute('/static/*?', static)
 router.addRoute('/favicon.ico', static)
 router.addRoute('/install.sh', static)
+router.addRoute('/ca.crt', static)
 router.addRoute('/api/*?', static)
 router.addRoute('/api', static)
 // st should really just let you do either index.html OR autoindex
