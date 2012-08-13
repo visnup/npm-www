@@ -4,7 +4,6 @@ module.exports = decorate
 var ErrorPage = require("error-page")
 , domain = require("domain")
 , Cookies = require("cookies")
-, Negotiator = require("negotiator")
 , RedSess = require("redsess")
 
 , path = require('path')
@@ -106,8 +105,6 @@ function decorate (req, res, config) {
   // TODO: Move some/all of this into a separate module.
 
   req.cookies = res.cookies = new Cookies(req, res, config.keys)
-  req.negotiator = new Negotiator(req)
-  req.neg = req.negotiator
   req.session = res.session = new RedSess(req, res)
 
   // set up the CouchLogin to automatically save the token in the
