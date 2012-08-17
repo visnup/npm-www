@@ -10,14 +10,13 @@
     "redis": "~0.7.1",
     "lru-cache": "~2.0.0",
     "cluster-master": "0",
-    "negotiator": "~0.2.3",
     "routes": "~0.1.1",
     "keygrip": "~0.2.0",
     "cookies": "~0.2.2",
     "redsess": "0",
     "ejs": "~0.7.1",
-    "templar": "0",
-    "glob": "3",
+    "templar": "~0.1.1",
+    "glob": "~3.1.12",
     "filed": "0",
     "stylus": "git://github.com/LearnBoost/stylus.git",
     "nib": "0",
@@ -30,7 +29,8 @@
     "gravatar": "~1.0.6",
     "moment": "~1.6.2",
     "canonical-host": "0",
-    "st": "0.0.4"
+    "st": "0.0",
+    "minimatch": "~0.2.6"
   },
   "engines": {
     "node": ">=0.7.7"
