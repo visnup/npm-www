@@ -30,7 +30,8 @@
     "moment": "~1.6.2",
     "canonical-host": "0",
     "st": "0.0",
-    "minimatch": "~0.2.6"
+    "minimatch": "~0.2.6",
+    "sanitizer": "0.0.15"
   },
   "engines": {
     "node": ">=0.7.7"
