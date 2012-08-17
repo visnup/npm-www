@@ -6,9 +6,21 @@ var LRU = require("lru-cache")
     maxAge: 1000 * 60 * 10
   })
 , marked = require("marked")
+, sanitizer = require('sanitizer')
 , gravatar = require('gravatar').url
 , npm = require("npm")
 , moment = require('moment')
+, url = require('url')
+
+function urlPolicy (u) {
+  u = url.parse(u)
+  if (!u) return null
+  if (u.protocol === 'http:' && u.hostname.match(/gravatar.com$/)) {
+    // use encrypted gravatars
+    return url.format('https://secure.gravatar.com' + u.pathname)
+  }
+  return url.format(u)
+}
 
 function package (params, cb) {
   var name, version
@@ -62,11 +74,7 @@ function package (params, cb) {
 }
 
 function parseReadme (readme) {
-  // allow <url>, but not arbitrary html tags.
-  // any < must be the start of a <url> or <email@address>
-  var e = /<(?![^ >]+(@|:\/)[^ >]+>)/g
-  readme = readme.replace(e, '&lt;')
-  return marked.parse(readme)
+  return sanitizer.sanitize(marked.parse(readme), urlPolicy)
 }
 
 function gravatarPeople (data) {
