@@ -143,14 +143,9 @@ function decorate (req, res, config) {
     res.statusCode = code || 302
     res.setHeader('location', target)
     var avail = ['text/html', 'application/json']
-    var mt = req.neg.preferredMediaType(avail)
-    if (mt === 'application/json') {
-      res.json({ redirect: target, statusCode: code })
-    } else {
-      res.html( '<html><body><h1>Moved'
-              + (code === 302 ? ' Permanently' : '') + '</h1>'
-              + '<a href="' + target + '">' + target + '</a>')
-    }
+    res.html( '<html><body><h1>Moved'
+            + (code === 302 ? ' Permanently' : '') + '</h1>'
+            + '<a href="' + target + '">' + target + '</a>')
   }
 
   res.send = function (data, status, headers) {
