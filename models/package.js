@@ -41,7 +41,7 @@ function package (params, cb) {
       var t = data.time[v]
       if (!data.versions[v]) {
         console.error('invalid package data: %s', data._id)
-        return new Error('invalid package: '+ data._id)
+        return cb(new Error('invalid package: '+ data._id))
       }
       data.version = v
       if (data.versions[v].readme) {
