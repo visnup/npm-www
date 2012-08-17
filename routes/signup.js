@@ -49,17 +49,21 @@ function handle (req, res) {
 
     // ok, looks maybe ok.
     var acct = { name: name, password: password, email: email }
-    req.couch.signup(acct, function (er, cr, data) {
-      if (er || cr && cr.statusCode >= 400 || data && data.error) {
-        td.error = "Failed creating account.  CouchDB said: "
-                 + ((er && er.message) || (data && data.error))
-        return res.template('signup-form.ejs', td, 400)
-      }
+    req.session.del(function (er) {
+      if (er) return res.error(er)
 
-      req.session.set('profile', data, function (er) {
-        if (er) return res.error(er, 500)
-        // it worked!  now let them add some details
-        return res.redirect('/profile-edit')
+      req.couch.signup(acct, function (er, cr, data) {
+        if (er || cr && cr.statusCode >= 400 || data && data.error) {
+          td.error = "Failed creating account.  CouchDB said: "
+                   + ((er && er.message) || (data && data.error))
+          return res.template('signup-form.ejs', td, 400)
+        }
+
+        req.session.set('profile', data, function (er) {
+          if (er) return res.error(er, 500)
+          // it worked!  now let them add some details
+          return res.redirect('/profile-edit')
+        })
       })
     })
   })
