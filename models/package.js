@@ -64,7 +64,7 @@ function package (params, cb) {
 function parseReadme (readme) {
   // allow <url>, but not arbitrary html tags.
   // any < must be the start of a <url> or <email@address>
-  var e = /^<(?![^ >]+(@|:\/)[^ >]+>)/g
+  var e = /<(?![^ >]+(@|:\/)[^ >]+>)/g
   readme = readme.replace(e, '&lt;')
   return marked.parse(readme)
 }
