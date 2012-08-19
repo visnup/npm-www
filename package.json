@@ -31,7 +31,8 @@
     "canonical-host": "0",
     "st": "0.0",
     "minimatch": "~0.2.6",
-    "sanitizer": "0.0.15"
+    "sanitizer": "0.0.15",
+    "npm-registry-client": "~0.2.2"
   },
   "engines": {
     "node": ">=0.7.7"
