@@ -42,8 +42,16 @@ router.addRoute('/search', require('./routes/search.js'))
 router.addRoute('/login', require('./routes/login.js'))
 
 router.addRoute('/profile-edit', require('./routes/profile-edit.js'))
-router.addRoute('/profile/:name', require('./routes/profile.js'))
-router.addRoute('/profile', require('./routes/profile.js'))
+router.addRoute('/profile/:name', profRedir)
+router.addRoute('/profile', profRedir)
+router.addRoute('/~/:name', profRedir)
+function profRedir (req, res) {
+  var n = req.params && req.params.name || ''
+  res.redirect('/~' + n, 301)
+}
+router.addRoute('/~:name', require('./routes/profile.js'))
+router.addRoute('/~', require('./routes/profile.js'))
+
 
 router.addRoute('/session', require('./routes/session-dump.js'))
 var logout = require('./routes/logout.js')
