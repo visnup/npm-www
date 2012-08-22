@@ -7,11 +7,12 @@
   <input type=hidden name=_id value="<%= profile._id %>">
   <input type=hidden name=name value="<%= profile.name %>">
 <%
-Object.keys(fields).forEach(function (f) {
+fields.forEach(function (field) {
   %>
   <fieldset>
-    <label for="<%= f %>"><%= fields[f] %></label>
-    <input id="<%= f %>" name="<%= f %>" value="<%= profile[f] || '' %>">
+    <label for="<%= field.name %>"><%= field.title %></label>
+    <input id="<%= field.name %>" name="<%= field.name %>"
+      value="<%= field.value %>">
   </fieldset>
   <%
 })

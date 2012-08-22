@@ -1,7 +1,5 @@
 module.exports = profile
 
-var config = require('../config.js')
-
 // thing for editing bits of your profile.
 // gets saved back to couchdb.
 function profile (req, res) {
@@ -48,9 +46,11 @@ function showProfile (req, res, showprofile) {
     return res.redirect('/login')
   }
 
+  var profile = req.model.profile
+
   var td = { showprofile: showprofile
            , profile: req.model.profile
-           , fields: config.profileFields
+           , fields: showprofile.fields
            , title: showprofile.name
            , packages: req.model.packages
            , starred: req.model.starred

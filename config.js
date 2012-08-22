@@ -32,16 +32,28 @@ exports.errorPage = { debug: true }
 
 exports.debug = true
 
-// probably don't need to change these.
+// probably don't need to change these too often.
 // extra fields we hang on the profile.
+// format: [title, display template, url test]
+// if it doesn't have a url test, then urls are not allowed.
+// The actual value is escaped, so no markup is allowed ever.
 exports.profileFields =
-{ fullname: "Full Name"
-, email: "Email"
-, github: "Github Username"
-, twitter: "Twitter Username"
-, homepage: "Homepage URL"
-, freenode: "IRC Handle"
+{ fullname: [ 'Full Name', '%s' ]
+, email: [ 'Email', '<a href="mailto:%s">%s</a>', function (u) {
+    return u.protocol === 'mailto:'
+  } ]
+, github: [ 'Github', '<a href="https://github.com/%s">%s</a>',
+    hostmatch(/^github.com$/) ]
+, twitter: [ 'Twitter', '<a href="https://twitter.com/%s">@%s</a>',
+    hostmatch(/^twitter.com$/) ]
+, homepage: [ 'Homepage', '<a href="%s">%s</a>',
+    hostmatch(/[^\.]+\.[^\.]+$/) ]
+, freenode: [ 'IRC Handle', '%s' ]
 }
+
+function hostmatch (m) { return function (u) {
+  return u.host && u.host.match(m)
+} }
 
 exports.emailFrom = '"The npm Website Robot" <webmaster@npmjs.org>'
 

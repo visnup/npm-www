@@ -26,11 +26,11 @@
 
 <table width="100%">
 <%
-Object.keys(fields).forEach(function (f) {
+fields.forEach(function (field) {
   %>
   <tr>
-    <th><%= fields[f] %></th>
-    <td><%= showprofile[f] || '' %></td>
+    <th><%= field.title %></th>
+    <td><%- field.show || '' %></td>
   </tr>
   <%
 })

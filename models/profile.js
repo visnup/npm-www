@@ -1,17 +1,11 @@
 module.exports = profile
-
-var gravatar = require('gravatar').url
+var transform = require('./showprofile.js').transform
 
 function profile (req, required, cb) {
   if (typeof required === 'function') cb = required, required = false
   req.session.get('profile', function (er, data) {
     if (!required && er) er = null
-    if (data) {
-      var gr = data.email ? 'retro' : 'mm'
-      data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
-      data.avatarLarge = gravatar(data.email || '', {s:496, d:gr}, true)
-    }
-
+    if (data) transform(data)
     if (er || data) return cb(er, req.profile = data)
 
     // if we're logged in, try to see if we can get it
@@ -25,11 +19,7 @@ function profile (req, required, cb) {
         // Oh well.  Probably the login expired.
         return cb(er)
       }
-
-      var gr = data.email ? 'retro' : 'mm'
-      data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
-      data.avatarLarge = gravatar(data.email || '', {s:496, d:gr}, true)
-
+      transform(data)
       req.session.set('profile', data)
       return cb(null, req.profile = data)
     })
