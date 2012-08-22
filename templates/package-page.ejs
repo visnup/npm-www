@@ -81,20 +81,36 @@
         </td>
         <% } %>
         <tr>
-          <th>Dependencies</th>
+          <%
+            var deps = Object.keys(package.dependencies)
+            var l = deps.length
+          %>
+          <th>Dependencies<%= l > 5 ? ' (' + l + ')' : '' %></th>
           <td>
-            <%-
-            Object.keys(package.dependencies || {}).map(function(pkg) {
-            return '<a href="/package/' + pkg + '">' + pkg + '</a>'
-            }).join(', ') || 'None'
+            <%
+            if (l === 0) {
+              %>None<%
+            } else {
+              var m = 200
+              if (l > m) deps = deps.slice(0, m)
+              deps.forEach(function(pkg, i) {
+                if (i > 0) { %>, <% }
+                %><a href="/package/<%= pkg %>"><%= pkg %></a>
+                <%
+              })
+              if (l > m) {
+                %>, and <%= l-m %> more<%
+              }
+            }
             %>
           </td>
         </tr>
         <%
         var dependents = package.dependents
-        if (dependents && dependents.length) { %>
+        var l = dependents.length
+        if (dependents && l) { %>
         <tr>
-          <th>Dependents</th>
+          <th>Dependents<%= l > 5 ? ' (' + l + ')' : '' %></th>
           <td>
           <%
           var l = dependents.length
@@ -117,13 +133,15 @@
           </td>
         </tr>
         <% } %>
-        <% if (package.users) { %>
+
+        <% if (package.users) {
+          var starredBy = package.starredBy
+          var l = starredBy.length
+        %>
         <tr>
-          <th>Starred by</th>
+          <th>Starred by<%= l > 5 ? ' (' + l + ')' : '' %></th>
           <td>
             <%
-            var starredBy = package.starredBy
-            var l = starredBy.length
             var max = 20
             if (l > max) {
               starredBy = starredBy.sort(function (a, b) {
