@@ -18,7 +18,7 @@
       package.maintainers.forEach(function (m) {
         %>
         <div class="user">
-        <a class="username" href="/profile/<%= m.name %>"><%
+        <a class="username" href="/~<%= m.name %>"><%
           if (m.avatar) {
           %><img src="<%= m.avatar %>" class="avatar">
           <% } %><%= m.name %></a>
@@ -132,7 +132,7 @@
             }
             starredBy.forEach(function (user, i) {
               if (i > 0) { %>, <% }
-              %><a href="/profile/<%= user %>"><%= user %></a><%
+              %><a href="/~<%= user %>"><%= user %></a><%
             })
             if (l > max) {
               %><br><a href="/browse/star/<%= package.name %>">and
