@@ -15,7 +15,8 @@ var LRU = require("lru-cache")
 function urlPolicy (u) {
   u = url.parse(u)
   if (!u) return null
-  if (u.protocol === 'http:' && u.hostname.match(/gravatar.com$/)) {
+  if (u.protocol === 'http:' &&
+      (u.hostname && u.hostname.match(/gravatar.com$/))) {
     // use encrypted gravatars
     return url.format('https://secure.gravatar.com' + u.pathname)
   }
