@@ -3,11 +3,17 @@
 <div id="package">
   <h1><%= package.name %></h1>
 
+  <% if (package.deprecated) { %>
+    <p class="deprecated"><%= package.deprecated %></p>
+  <% } %>
+
   <% if (package.description) { %>
     <p class="description"><%= package.description %></p>
   <% } %>
 
   <pre class="sh"><code>npm install <%= package.name %></code></pre>
+
+  <p class="downloads"><%= downloads %> downloads in the last 7 days</p>
 
   <table class="metadata">
     <% if (package.maintainers) { %>
