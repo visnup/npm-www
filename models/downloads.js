@@ -59,7 +59,7 @@ function load (k, cb) {
   } else {
     view = 'day'
     startkey = [day(start)]
-    endkey = [day(start) || {}, {}]
+    endkey = [day(end) || {}, {}]
   }
   grouplevel = detail ? 2 : 1
   var u = '/downloads/_design/app/_view/' + view
@@ -71,6 +71,7 @@ function load (k, cb) {
   config.anonCouch.get(u + '?' + q, function (er, cr, data) {
     if (er)
       return cb(er)
+
     if (detail)
       data = data.rows.reduce(function (set, row) {
         var k = row.key
@@ -80,12 +81,18 @@ function load (k, cb) {
         set[h][t] = row.value
         return set
       }, {})
-    else
+    else if (pkg)
       data = data.rows.reduce(function (set, row) {
         var h = row.key[0]
         set[h] = row.value
         return set
       }, {})
+    else
+      data = data.rows.map(function (r) {
+        return r.value
+      }).reduce(function (a, b) {
+        return a + b
+      })
 
     if (pkg)
       data = data[pkg]
