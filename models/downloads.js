@@ -8,14 +8,15 @@
 //
 // These only change daily.
 
-var LRU = require('lru-cache')
-var maxAge = 1000 * 60 * 60
-var cache = new LRU({
+module.exports = downloads
+
+var AC = require('async-cache')
+var cache = new AC({
   max: 1000,
-  maxAge: maxAge
+  maxAge: 1000 * 60 * 60,
+  load: load
 })
 
-module.exports = downloads
 var config = require('../config.js')
 var qs = require('querystring')
 
@@ -38,10 +39,16 @@ function downloads (start, end, pkg, detail, cb) {
   if (typeof cb !== 'function')
     cb = start, start = null
 
-  var k = [start, end, pkg, detail].join('/')
-  var cached = cache.get(k)
-  if (cached)
-    return process.nextTick(cb.bind(null, null, cached))
+  var k = JSON.stringify([start, end, pkg, detail])
+  cache.get(k, cb)
+}
+
+function load (k, cb) {
+  k = JSON.parse(k)
+  var start = k[0]
+  var end = k[1]
+  var pkg = k[2]
+  var detail = k[3]
 
   var view, startkey, endkey, grouplevel
   if (start) start = new Date(start).toISOString().split('T')[0]
@@ -83,7 +90,6 @@ function downloads (start, end, pkg, detail, cb) {
     if (pkg)
       data = data[pkg]
 
-    cache.set(k, data)
     return cb(er, data)
   })
 }
