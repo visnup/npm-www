@@ -55,12 +55,12 @@ console.error = logger.warn.bind(logger)
 console.log = logger.info.bind(logger)
 
 // if there's an admin couchdb user, then set that up now.
+var CouchLogin = require('couch-login')
 if (config.couchAuth) {
   var ca = config.couchAuth.split(':')
   , name = ca.shift()
   , password = ca.join(':')
   , auth = { name: name, password: password }
-  , CouchLogin = require('couch-login')
 
   config.adminCouch = new CouchLogin(config.registryCouch)
   config.adminCouch.login(auth, function (er, cr, data) {
@@ -73,6 +73,7 @@ if (config.couchAuth) {
     })
   }
 }
+config.anonCouch = new CouchLogin(config.registryCouch, NaN)
 
 RedSess.createClient(config.redis)
 
