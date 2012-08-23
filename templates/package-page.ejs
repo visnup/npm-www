@@ -13,7 +13,10 @@
 
   <pre class="sh"><code>npm install <%= package.name %></code></pre>
 
-  <p class="downloads"><%= downloads %> downloads in the last 7 days</p>
+  <p class="downloads">
+    <%= dlDay %> downloads in the last day<br>
+    <%= dlWeek %> downloads in the last week<br>
+    <%= dlMonth %> downloads in the last month</p>
 
   <table class="metadata">
     <% if (package.maintainers) { %>
@@ -101,8 +104,8 @@
               if (l > m) deps = deps.slice(0, m)
               deps.forEach(function(pkg, i) {
                 if (i > 0) { %>, <% }
-                %><a href="/package/<%= pkg %>"><%= pkg %></a>
-                <%
+                %>
+                <a href="/package/<%= pkg %>"><%= pkg %></a><%
               })
               if (l > m) {
                 %>, and <%= l-m %> more<%
