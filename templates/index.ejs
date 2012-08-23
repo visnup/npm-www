@@ -68,7 +68,7 @@
     <ul>
       <%
       authors.forEach(function (p) {
-        %><li><%= p.value %> <a href="/profile/<%= p.name
+        %><li><%= p.value %> <a href="/~<%= p.name
         %>"><%= p.name %></a></li>
         <%
       })
@@ -98,8 +98,8 @@
 
     <ul>
       <li><a href="/signup">Create a profile</a></li>
-      <li><a href="/profile">View your profile</a></li>
-      <li><a href="/profile/ry">View someone else's profile</a></li>
+      <li><a href="/~">View your profile</a></li>
+      <li><a href="/~ry">View someone else's profile</a></li>
       <li><a href="/profile-edit">Edit your profile</a></li>
       <li><a href="/password">Change your password</a></li>
       <li><a href="/forgot">Reset a forgotten password</a></li>
