@@ -88,7 +88,7 @@
         <% } %>
         <tr>
           <%
-            var deps = Object.keys(package.dependencies)
+            var deps = Object.keys(package.dependencies || {})
             var l = deps.length
           %>
           <th>Dependencies<%= l > 5 ? ' (' + l + ')' : '' %></th>
