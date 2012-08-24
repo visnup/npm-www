@@ -19,9 +19,11 @@ function profile (req, required, cb) {
         // Oh well.  Probably the login expired.
         return cb(er)
       }
-      transform(data)
-      req.session.set('profile', data)
-      return cb(null, req.profile = data)
+
+      req.session.set('profile', data, function () {
+        transform(data)
+        return cb(null, req.profile = data)
+      })
     })
   })
 }

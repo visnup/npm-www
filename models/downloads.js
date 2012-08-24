@@ -68,7 +68,8 @@ function load (k, cb) {
     endkey: JSON.stringify(endkey),
     group_level: grouplevel
   })
-  config.anonCouch.get(u + '?' + q, function (er, cr, data) {
+
+  config.adminCouch.get(u + '?' + q, function (er, cr, data) {
     if (er)
       return cb(er)
 
@@ -88,14 +89,17 @@ function load (k, cb) {
         return set
       }, {})
     else
-      data = data.rows.map(function (r) {
+      data = (data.rows || []).map(function (r) {
         return r.value
       }).reduce(function (a, b) {
         return a + b
-      })
+      }, 0)
 
     if (pkg)
       data = data[pkg]
+
+    if (data === undefined)
+      data = 0
 
     return cb(er, data)
   })

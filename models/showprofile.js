@@ -15,8 +15,6 @@ function showprofile (name, cb) {
   npm.registry.get('/-/user/org.couchdb.user:' + name, 0, function (er, data) {
     if (er || !data) return cb(er, data)
     cb(er, transform(data))
-
-    cb(er, data)
   })
 }
 
