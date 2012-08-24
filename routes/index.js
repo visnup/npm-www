@@ -44,7 +44,17 @@ function indexPage (req, res) {
   if (!loading && (Date.now() - lastUpdated > interval)) load()
 
   req.model.load('root')
-  req.model.load('downloads', Date.now() - 1000 * 60 * 60 * 24 * 31)
+  // Show download count for the last week and month.
+  // since the current day might not be done loading, back up an extra
+  // day as well.
+  // TODO: Detailed analytics, maybe with some nice client-side chart
+  var month = Date.now() - 1000 * 60 * 60 * 24 * 31
+  var week = Date.now() - 1000 * 60 * 60 * 24 * 8
+  var end = Date.now() - 1000 * 60 * 60 * 24
+  req.model.loadAs('downloads', 'dlDay', end, end, name, false)
+  req.model.loadAs('downloads', 'dlWeek', week, end, name, false)
+  req.model.loadAs('downloads', 'dlMonth', month, end, name, false)
+
   req.model.load('profile', req)
 
   req.model.end(function (er, m) {
@@ -55,7 +65,9 @@ function indexPage (req, res) {
       authors: cache.authors || [],
       starred: cache.starred || [],
       depended: cache.depended || [],
-      downloads: m.downloads,
+      dlDay: m.dlDay,
+      dlMonth: m.dlMonth,
+      dlWeek: m.dlWeek,
       totalPackages: m.root.doc_count - 3 // design docs
     }
     res.template("index.ejs", locals)
