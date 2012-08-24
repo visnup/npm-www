@@ -19,11 +19,18 @@ function showprofile (name, cb) {
 }
 
 function transform (data) {
-  var gr = data.email ? 'retro' : 'mm'
-  data.avatar = gravatar(data.email || '', {s:50, d:gr}, true)
-  data.avatarLarge = gravatar(data.email || '', {s:496, d:gr}, true)
+  if (!data) return data
+  var d = Object.keys(data).reduce(function (s, k) {
+    s[k] = data[k]
+    return s
+  }, {})
 
-  data.fields = loadFields(data)
+  var gr = d.email ? 'retro' : 'mm'
+  d.avatar = gravatar(d.email || '', {s:50, d:gr}, true)
+  d.avatarLarge = gravatar(d.email || '', {s:496, d:gr}, true)
+
+  d.fields = loadFields(d)
+  return d
 }
 
 function loadFields (profile) {

@@ -5,8 +5,7 @@ function profile (req, required, cb) {
   if (typeof required === 'function') cb = required, required = false
   req.session.get('profile', function (er, data) {
     if (!required && er) er = null
-    if (data) transform(data)
-    if (er || data) return cb(er, req.profile = data)
+    if (er || data) return cb(er, req.profile = transform(data))
 
     // if we're logged in, try to see if we can get it
     var name = req.cookies.get('name')
@@ -21,8 +20,7 @@ function profile (req, required, cb) {
       }
 
       req.session.set('profile', data, function () {
-        transform(data)
-        return cb(null, req.profile = data)
+        return cb(null, req.profile = transform(data))
       })
     })
   })
