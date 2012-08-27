@@ -37,10 +37,13 @@ try {
 var h = config.host
 if (!h) throw new Error('Must set a host in config file')
 if (config.https) h = 'https://' + h
+else h = 'http://' + h
 
 var lonePort = 10000 + (cluster.worker.id % 100)
 var lh = h + ':' + lonePort
 if (config.port && config.port !== 443) h += ':' + config.port
+
+config.canonicalHost = h
 
 var canon = config.canon = require('canonical-host')(h, lh, 301)
 

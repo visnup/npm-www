@@ -112,6 +112,8 @@ function decorate (req, res, config) {
   req.couch = CouchLogin(config.registryCouch).decorate(req, res)
 
   res.template = Templar(req, res, templateOptions)
+  res.template.locals.canonicalHref = url.resolve(
+    config.canonicalHost, url.parse(req.url).path)
 
   req.log = res.log = logger.child(
     { serializers: bunyan.stdSerializers
