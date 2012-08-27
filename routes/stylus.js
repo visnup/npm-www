@@ -10,6 +10,7 @@ function styl (req, res) {
   req.url = req.url.replace(/\.css$/, '.styl')
   res.filter = new StylusStream()
   if (!mount(req, res)) return res.error(404)
+  else res.setHeader('content-type', 'text/css')
 }
 
 function StylusStream () {
