@@ -58,6 +58,8 @@ function indexPage (req, res) {
   req.model.load('profile', req)
 
   req.model.end(function (er, m) {
+    var root = m.root || {}
+    var dc = root.doc_count || 3
     var locals = {
       profile: m.profile,
       title: 'npm',
@@ -68,7 +70,7 @@ function indexPage (req, res) {
       dlDay: m.dlDay,
       dlMonth: m.dlMonth,
       dlWeek: m.dlWeek,
-      totalPackages: m.root.doc_count - 3 // design docs
+      totalPackages: dc - 3 // design docs
     }
     res.template("index.ejs", locals)
   })

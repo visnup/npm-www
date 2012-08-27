@@ -1,7 +1,9 @@
 <%- include('header.ejs', locals) %>
 <h1>Node Packaged Modules</h1>
 
+<% if (totalPackages) { %>
 <p>Total Packages: <%= totalPackages %></p>
+<% } %>
 
 <p class="downloads">
   <%= dlDay %> downloads in the last day<br>
