@@ -36,9 +36,19 @@ function site (req, res) {
     clearTimeout(timeout)
   })
 
+  var parsed = url.parse(req.url)
+  var pathname = parsed.pathname
+  var normalPathname = path.normalize(pathname).replace(/\\/g, '/');
 
-  var pathname = url.parse(req.url).pathname
-    , normalPathname = path.normalize(pathname).replace(/\\/g, '/');
+  // multiple //// chars in the path are stupid and should not be,
+  // nor should empty search queries, since that's just dumb.
+  // make things a bit more canonical.
+  if (pathname !== normalPathname || parsed.search === '?') {
+    var tp = normalPathname
+    if (parsed.query)
+      tp += parsed.search
+    return res.redirect(tp, 301)
+  }
 
   var route = router.match(normalPathname);
   if (!route) return res.error(404)
