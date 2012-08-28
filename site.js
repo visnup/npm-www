@@ -24,7 +24,7 @@ function site (req, res) {
 
   // kludge!  remove this once we figure out wtf is going on.
   var timeout = setTimeout(function () {
-    res.log.error('TIMEOUT! %s', req.url)
+    res.log.error('TIMEOUT! %s', req.url, res._header)
     var er = new Error('Request timed out')
     res.error(500, er)
     setTimeout(function () {
