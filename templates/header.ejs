@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-<script>(function(){
-if (location.pathname === '/') {
-var m = location.hash.match(/^#\/[^\/]*$/)
-if (m) location.replace('/package' + m[0].substr(1))
-}})()</script>
   <title><%= (typeof title !== 'undefined' ? title : 'npm') %></title>
   <link rel="canonical" href="<%= canonicalHref %>">
   <link type="text/css" rel="stylesheet" media="all"
     href="/static/normalize.css">
   <link type="text/css" rel="stylesheet" media="all"
     href="/stylus/index.css">
+<script>(function(){
+if (location.pathname === '/') {
+var m = location.hash.match(/^#\/[^\/]*$/)
+if (m) location.replace('/package' + m[0].substr(1))
+}})()</script>
 <body>
   <div id="wrap"><div id="content">
     <%- include('nav.ejs') %>
