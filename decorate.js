@@ -61,6 +61,13 @@ function decorate (req, res, config) {
                   1000 * 60 * 60 * 24 * 30 + '')
   }
 
+  res.setHeader = function (orig) { return function () {
+    if (res._header)
+      return
+    return orig.apply(this, arguments)
+  }}(res.setHeader)
+
+
   req.model = res.model = new MC
 
   templateOptions.debug = config.debug
