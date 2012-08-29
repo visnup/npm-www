@@ -53,7 +53,14 @@ function errorHandler (req, res, data) {
   }
 }
 
+var env = process.env.NODE_ENV
 function decorate (req, res, config) {
+  // production https can only be https ever.
+  if (config.https && env === 'production') {
+    res.setHeader('strict-transport-security',
+                  1000 * 60 * 60 * 24 * 30 + '')
+  }
+
   req.model = res.model = new MC
 
   templateOptions.debug = config.debug
