@@ -20,6 +20,7 @@
       <method_environment>
         <envvar name="HOME" value="/home/node" />
         <envvar name="PATH" value="/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin" />
+        <envvar name="NODE_ENV" value="production" />
       </method_environment>
     </method_context>
     <exec_method type="method" name="start"
