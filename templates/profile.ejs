@@ -1,6 +1,6 @@
 <%- include('header.ejs', locals) %>
-<div class="showprofile">
 
+<div id="profile">
   <% if (showprofile.isSelf) { %>
   <a href="http://en.gravatar.com/emails/"
     title="edit avatar at gravatar.com">
@@ -24,76 +24,78 @@
   }
   %>
 
-<table width="100%">
-<%
-fields.forEach(function (field) {
-  %>
-  <tr>
-    <th><%= field.title %></th>
-    <td><%- field.show || '' %></td>
-  </tr>
+  <table class="metadata">
   <%
-})
-%>
-</table>
+  fields.forEach(function (field) {
+    if (field.show) {
+      %>
+      <tr>
+        <th><%= field.title %></th>
+        <td><%- field.show || '' %></td>
+      </tr>
+      <%
+    }
+  })
+  %>
+  </table>
 
+  <% if (packages && packages.length) {
+    %><h2>Packages by <%= showprofile.name %></h2>
+    <ul><%
+    var l = packages.length;
+    var max = 20;
+    if (l > max) {
+      // get a random assortment each time.
+      packages = packages.sort(function (a, b) {
+        return Math.random() * 2 - 1
+      }).slice(0, max)
+      packages.push({
+        url: '/browse/author/' + showprofile.name,
+        name: 'and ' + (l-max) + ' more',
+        description: ''
+      })
+    }
+    packages.forEach(function (d, i) {
+      %><li><a href="<%= d.url %>"><%= d.name %></a>
+        <%= d.description %></li><%
+    })
+    %></ul><%
+  }
+  %>
+
+
+  <% if (starred && starred.length) {
+    %>
+    <h2>Packages Starred by <%= showprofile.name %></h2>
+    <ul>
+    <%
+    var l = starred.length;
+    var max = 20;
+    if (l > max) {
+      // get a random assortment each time.
+      starred = starred.sort(function (a, b) {
+        return Math.random() * 2 - 1
+      }).slice(0, max)
+      starred.push({
+        url: '/browse/userstar/' + showprofile.name,
+        name: 'and ' + (l-max) + ' more',
+        description: ''
+      })
+    }
+    starred.forEach(function (d, i) {
+      %><li><a href="<%= d.url %>"><%= d.name %></a>
+        <%= d.description %></li><%
+    })
+    %></ul><%
+  }
+  %>
+
+  <% if (profile) {
+    %>
+    <a href='/logout/?done=/profile/<%= showprofile.name %>'>log out</a>
+    <%
+  }
+  %>
 </div>
 
-<% if (packages && packages.length) {
-  %><h2>Packages by <%= showprofile.name %></h2>
-  <ul><%
-  var l = packages.length;
-  var max = 20;
-  if (l > max) {
-    // get a random assortment each time.
-    packages = packages.sort(function (a, b) {
-      return Math.random() * 2 - 1
-    }).slice(0, max)
-    packages.push({
-      url: '/browse/author/' + showprofile.name,
-      name: 'and ' + (l-max) + ' more',
-      description: ''
-    })
-  }
-  packages.forEach(function (d, i) {
-    %><li><a href="<%= d.url %>"><%= d.name %></a>
-      <%= d.description %></li><%
-  })
-  %></ul><%
-}
-%>
-
-
-<% if (starred && starred.length) {
-  %>
-  <h2>Packages Starred by <%= showprofile.name %></h2>
-  <ul>
-  <%
-  var l = starred.length;
-  var max = 20;
-  if (l > max) {
-    // get a random assortment each time.
-    starred = starred.sort(function (a, b) {
-      return Math.random() * 2 - 1
-    }).slice(0, max)
-    starred.push({
-      url: '/browse/userstar/' + showprofile.name,
-      name: 'and ' + (l-max) + ' more',
-      description: ''
-    })
-  }
-  starred.forEach(function (d, i) {
-    %><li><a href="<%= d.url %>"><%= d.name %></a>
-      <%= d.description %></li><%
-  })
-  %></ul><%
-}
-%>
-
-<% if (profile) {
-  %>
-  <a href='/logout/?done=/profile/<%= showprofile.name %>'>log out</a>
-  <%
-}
-%>
 <%- include('footer.ejs', locals) %>

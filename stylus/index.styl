@@ -194,120 +194,6 @@ form {
   }
 }
 
-#package {
-  width:490px;
-  > h1 {
-    font: 28px Georgia, serif;
-    border-bottom: solid 1px #000;
-  }
-  .row {
-    padding:0.75em 0;
-    border-top: solid 1px #ccc;
-  }
-  p.description {
-    font: 18px Georgia, serif;
-  }
-  table.metadata {
-    margin: 1em 0;
-    width: 100%;
-  }
-  tr {
-    border-top: solid 1px #ccc;
-  }
-  th, td {
-    padding: 0.75em 0;
-    vertical-align: baseline;
-  }
-  th {
-    color: #000;
-    font-weight: normal;
-    text-align: left;
-    width: 120px;
-  }
-  b {
-    color: #000;
-    font-weight: bold;
-    font-size: 14px;
-  }
-  .details {
-    ul.toc {
-      padding: 0;
-      margin-bottom: 0;
-      font-size: 16px;
-      li {
-        display: inline-block;
-        padding: 0.5em 32px 0.5em 16px;
-        &:first-child {
-          background-color: #fff;
-        }
-      }
-    }
-
-    section {
-      padding: 16px;
-      background-color: #fff;
-      margin-right: -260px;
-
-      &#readme {
-        h1 { font-size: 24px; }
-        img {
-          max-width:100%;
-        }
-        pre {
-          max-width:100%;
-          overflow:auto;
-          font-family: Monaco, monospace;
-          background-color: #f9f9f8;
-          padding: 16px;
-        }
-      }
-    }
-  }
-}
-
-.user {
-  padding-left: 32px;
-  position: relative;
-
-  .username {
-    font-weight: bold;
-  }
-
-  .avatar {
-    position: absolute;
-    top: -4px;
-    left: 0;
-    width: 25px;
-    height: 25px;
-  }
-}
-
-#package .user {
-  padding: 1px;
-
-  .avatar {
-    position:relative;
-    top:0;
-    display:inline-block;
-    vertical-align:middle;
-    width: 32px;
-    height: 32px;
-  }
-}
-
-.showprofile {
-  position: relative;
-
-  .avatar-large {
-    display:block;
-    position:absolute;
-    width:248px;
-    height:248px;
-    top:0;
-    right:-260px;
-  }
-}
-
 #footer {
   width: 953px;
   font-size:12px;
@@ -373,5 +259,134 @@ form {
         padding:0;
       }
     }
+  }
+}
+
+.user {
+  padding-left: 32px;
+  position: relative;
+
+  .username {
+    font-weight: bold;
+  }
+
+  .avatar {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 25px;
+    height: 25px;
+  }
+}
+
+#index {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    tr {
+      vertical-align: top;
+    }
+    h2 {
+      white-space: nowrap;
+    }
+  }
+}
+
+#package, #profile {
+  width:490px;
+  > h1 {
+    font: 28px Georgia, serif;
+    border-bottom: solid 1px #000;
+  }
+  .row {
+    padding:0.75em 0;
+    border-top: solid 1px #ccc;
+  }
+  p.description {
+    font: 18px Georgia, serif;
+  }
+  table.metadata {
+    margin: 1em 0;
+    width: 100%;
+    tr {
+      border-top: solid 1px #ccc;
+    }
+    th, td {
+      padding: 0.75em 0;
+      vertical-align: baseline;
+    }
+    th {
+      color: #000;
+      font-weight: normal;
+      text-align: left;
+      width: 120px;
+    }
+    b {
+      color: #000;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+  .details {
+    ul.toc {
+      padding: 0;
+      margin-bottom: 0;
+      font-size: 16px;
+      li {
+        display: inline-block;
+        padding: 0.5em 32px 0.5em 16px;
+        &:first-child {
+          background-color: #fff;
+        }
+      }
+    }
+
+    section {
+      padding: 16px;
+      background-color: #fff;
+      margin-right: -260px;
+
+      &#readme {
+        h1 { font-size: 24px; }
+        img {
+          max-width:100%;
+        }
+        pre {
+          max-width:100%;
+          overflow:auto;
+          font-family: Monaco, monospace;
+          background-color: #f9f9f8;
+          padding: 16px;
+        }
+      }
+    }
+  }
+  .user {
+    padding: 1px;
+
+    .avatar {
+      position:relative;
+      top:0;
+      display:inline-block;
+      vertical-align:middle;
+      width: 32px;
+      height: 32px;
+    }
+  }
+}
+
+#profile {
+  position: relative;
+
+  .avatar-large {
+    display:block;
+    position:absolute;
+    width:248px;
+    height:248px;
+    top:0;
+    right:-260px;
+  }
+  table.metadata tr:first-child {
+    border-top: none;
   }
 }
