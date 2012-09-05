@@ -1,119 +1,122 @@
 <%- include('header.ejs', locals) %>
-<h1>Node Packaged Modules</h1>
 
-<% if (totalPackages) { %>
-<p>Total Packages: <%= totalPackages %></p>
-<% } %>
+<div id="index">
+  <h1>Node Packaged Modules</h1>
 
-<p class="downloads">
-  <%= dlDay %> downloads in the last day<br>
-  <%= dlWeek %> downloads in the last week<br>
-  <%= dlMonth %> downloads in the last month</p>
+  <% if (totalPackages) { %>
+  <p>Total Packages: <%= totalPackages %></p>
+  <% } %>
 
-<p><a href="https://github.com/isaacs/npm-www">Patches welcome!</a></p>
+  <p class="downloads">
+    <%= dlDay %> downloads in the last day<br>
+    <%= dlWeek %> downloads in the last week<br>
+    <%= dlMonth %> downloads in the last month</p>
 
-<p>Any package can be installed by using <code>
-  <a href="/doc/install.html">npm install</a></code>.</p>
+  <p><a href="https://github.com/isaacs/npm-www">Patches welcome!</a></p>
 
-<p>Add your programs to this index by using <code>
-  <a href="/doc/publish.html">npm publish</a></code>.</p>
+  <p>Any package can be installed by using <code>
+    <a href="/doc/install.html">npm install</a></code>.</p>
 
-<!-- tables fer layout omigosh! whatever, it works. -->
-<table style="width:100%" border=0 cellpadding=0 cellspacing=0>
-<tr>
+  <p>Add your programs to this index by using <code>
+    <a href="/doc/publish.html">npm publish</a></code>.</p>
 
-  <td>
-    <h2>Recently Updated</h2>
-    <ul>
-      <%
-      var now = Date.now()
-      updated.forEach(function (p) {
-        var m = now - (new Date(p.value).getTime())
-        m = Math.floor(m / (1000 * 60))
-        %><li><%= m %>m <a href="<%= p.url %>"><%= p.name %></a></li>
+  <!-- tables fer layout omigosh! whatever, it works. -->
+  <table>
+  <tr>
+
+    <td>
+      <h2>Recently Updated</h2>
+      <ul>
         <%
-      })
-      %>
-      <li><a href="/browse/updated">More...</a></li>
-    </ul>
-  </td>
+        var now = Date.now()
+        updated.forEach(function (p) {
+          var m = now - (new Date(p.value).getTime())
+          m = Math.floor(m / (1000 * 60))
+          %><li><%= m %>m <a href="<%= p.url %>"><%= p.name %></a></li>
+          <%
+        })
+        %>
+        <li><a href="/browse/updated">More...</a></li>
+      </ul>
+    </td>
 
-  <td>
-    <h2>Most Depended Upon</h2>
-    <ul>
-      <%
-      depended.forEach(function (p) {
-        %><li><%= p.value %> <a href="/package/<%= p.name
+    <td>
+      <h2>Most Depended Upon</h2>
+      <ul>
+        <%
+        depended.forEach(function (p) {
+          %><li><%= p.value %> <a href="/package/<%= p.name
+            %>"><%= p.name %></a></li>
+          <%
+        })
+        %>
+        <li><a href="/browse/depended">More...</a></li>
+      </ul>
+    </td>
+
+  </tr>
+  <tr>
+
+    <td>
+      <h2>Most Starred</h2>
+      <ul>
+        <%
+        starred.forEach(function (p) {
+          %><li><%= p.value %> <a href="/package/<%= p.name
           %>"><%= p.name %></a></li>
+          <%
+        })
+        %>
+        <li><a href="/browse/star">More...</a></li>
+      </ul>
+    </td>
+
+    <td>
+      <h2>Most Prolific Authors</h2>
+      <ul>
         <%
-      })
-      %>
-      <li><a href="/browse/depended">More...</a></li>
-    </ul>
-  </td>
+        authors.forEach(function (p) {
+          %><li><%= p.value %> <a href="/~<%= p.name
+          %>"><%= p.name %></a></li>
+          <%
+        })
+        %>
+        <li><a href="/browse/author">More...</a></li>
+      </ul>
+    </td>
 
-</tr>
-<tr>
+  </tr>
+  <tr>
 
-  <td>
-    <h2>Most Starred</h2>
-    <ul>
-      <%
-      starred.forEach(function (p) {
-        %><li><%= p.value %> <a href="/package/<%= p.name
-        %>"><%= p.name %></a></li>
-        <%
-      })
-      %>
-      <li><a href="/browse/star">More...</a></li>
-    </ul>
-  </td>
+    <td>
+      <h2>npm Stuff</h2>
+      <ul>
+        <li><a href="/doc/faq.html">FAQ</a></li>
+        <li><a href="/doc/README.html">Readme</a></li>
+        <li><a href="/doc/disputes.html">Handling Disputes</a></li>
+        <li><a href="https://github.com/isaacs/npm/issues">npm Bugs</a></li>
+        <li><a href="https://github.com/isaacs/npm-www/issues">Website Bugs</a></li>
+        <li><a href="https://groups.google.com/group/npm-">Mailing List</a></li>
+        <li><a href="/about">More about this site</a></li>
+      </ul>
+    </td>
 
-  <td>
-    <h2>Most Prolific Authors</h2>
-    <ul>
-      <%
-      authors.forEach(function (p) {
-        %><li><%= p.value %> <a href="/~<%= p.name
-        %>"><%= p.name %></a></li>
-        <%
-      })
-      %>
-      <li><a href="/browse/author">More...</a></li>
-    </ul>
-  </td>
+    <td>
+      <h2>Profile Stuff</h2>
 
-</tr>
-<tr>
+      <ul>
+        <li><a href="/signup">Create a profile</a></li>
+        <li><a href="/~">View your profile</a></li>
+        <li><a href="/~ry">View someone else's profile</a></li>
+        <li><a href="/profile-edit">Edit your profile</a></li>
+        <li><a href="/password">Change your password</a></li>
+        <li><a href="/forgot">Reset a forgotten password</a></li>
+        <li><a href="/logout">Log out</a></li>
+      </ul>
+    </td>
 
-  <td>
-    <h2>npm Stuff</h2>
-    <ul>
-      <li><a href="/doc/faq.html">FAQ</a></li>
-      <li><a href="/doc/README.html">Readme</a></li>
-      <li><a href="/doc/disputes.html">Handling Disputes</a></li>
-      <li><a href="https://github.com/isaacs/npm/issues">npm Bugs</a></li>
-      <li><a href="https://github.com/isaacs/npm-www/issues">Website Bugs</a></li>
-      <li><a href="https://groups.google.com/group/npm-">Mailing List</a></li>
-      <li><a href="/about">More about this site</a></li>
-    </ul>
-  </td>
-
-  <td>
-    <h2>Profile Stuff</h2>
-
-    <ul>
-      <li><a href="/signup">Create a profile</a></li>
-      <li><a href="/~">View your profile</a></li>
-      <li><a href="/~ry">View someone else's profile</a></li>
-      <li><a href="/profile-edit">Edit your profile</a></li>
-      <li><a href="/password">Change your password</a></li>
-      <li><a href="/forgot">Reset a forgotten password</a></li>
-      <li><a href="/logout">Log out</a></li>
-    </ul>
-  </td>
-
-</tr>
-</table>
+  </tr>
+  </table>
+</div>
 
 <%- include('footer.ejs', locals) %>
