@@ -83,7 +83,7 @@ function load (k, cb) {
         return set
       }, {})
     else if (pkg)
-      data = data.rows.reduce(function (set, row) {
+      data = (data.rows || []).reduce(function (set, row) {
         var h = row.key[0]
         set[h] = row.value
         return set
