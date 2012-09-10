@@ -40,5 +40,6 @@ exports.mailTransportSettings = null
 exports.https = null
 // exports.https = {
 //   key: fs.readFileSync('ssl/server.key'),
-//   cert: fs.readFileSync('ssl/server.crt')
+//   cert: fs.readFileSync('ssl/server.crt'),
+//   ca: require('./ca.js')
 // }
