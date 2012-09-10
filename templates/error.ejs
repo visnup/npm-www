@@ -39,7 +39,11 @@
 
 headers = <%= JSON.stringify(locals.headers, null, 2) %>
 
-error = <%= JSON.stringify(locals.error, null, 2) %>
+error = <%= JSON.stringify(error,function(k,v) {
+              if (k.match(/^domain/) && typeof v === 'object')
+                return '[object ' + v.constructor.name + ']'
+              return v
+            },2) %>
 
 statusCode = <%= statusCode %>
 
