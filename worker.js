@@ -14,7 +14,7 @@ if (cluster.isMaster) {
 
 var config = require("./config.js")
 , http = require("http")
-, https = require("https")
+, https = require("hardhttps")
 , site = require("./site.js")
 , server
 , loneServer
@@ -88,19 +88,13 @@ config.redis.client = redis.createClient(r.port, r.host, r)
 if (r.auth) config.redis.client.auth(r.auth)
 
 if (config.https) {
-  // no beasts
-  config.https.ciphers = 'ECDHE-RSA-AES256-SHA:AES256-SHA:RC4-SHA:RC4:HIGH:'
-                       + '!MD5:!aNULL:!EDH:!AESGCM'
-  config.https.honorCipherOrder = true
-  config.https.ca = require('./ca.js')
-  require('tls').CLIENT_RENEG_LIMIT = 0
-
   server = https.createServer(config.https, site)
   loneServer = https.createServer(config.https, site)
 } else {
   server = http.createServer(site)
   loneServer = http.createServer(site)
 }
+
 
 var npmconf = config.npm || {}
 npmconf["node-version"] = null
