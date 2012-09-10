@@ -65,16 +65,11 @@ if (config.couchAuth) {
   , password = ca.join(':')
   , auth = { name: name, password: password }
 
-  config.adminCouch = new CouchLogin(config.registryCouch)
+  // the admin couch uses basic auth, or couchdb freaks out eventually
+  config.adminCouch = new CouchLogin(config.registryCouch, 'basic')
   config.adminCouch.login(auth, function (er, cr, data) {
     if (er) throw er
   })
-  // automatically re-login the adminCouch when it expires.
-  config.adminCouch.tokenGet = function (cb) {
-    config.adminCouch.login(auth, function (er, cr, data) {
-      cb(er, this.token)
-    })
-  }
 }
 config.anonCouch = new CouchLogin(config.registryCouch, NaN)
 
