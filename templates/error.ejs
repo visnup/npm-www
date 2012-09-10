@@ -17,7 +17,6 @@
                       JSON.stringify(error,function(k,v) {
                         if (k.match(/^domain/) && typeof v === 'object')
                           return '[object ' + v.constructor.name + ']'
-                        }
                         return v
                       },2) +
                       '\n```\n\n'
