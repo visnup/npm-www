@@ -29,7 +29,7 @@ function site (req, res) {
     res.error(500, er)
     setTimeout(function () {
       res.socket.destroy()
-      res.emit('error')
+      res.emit('error', er)
     }, 5000)
   }, 30*1000) // nothing should take 30s ever.
 
