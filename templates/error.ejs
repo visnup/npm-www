@@ -14,7 +14,12 @@
                       '\n```\n\n'
                       : '') +
                      (locals.error ? 'Error:\n```\n' +
-                      JSON.stringify(error,null,2) +
+                      JSON.stringify(error,function(k,v) {
+                        if (k.match(/^domain/) && typeof v === 'object')
+                          return '[object ' + v.constructor.name + ']'
+                        }
+                        return v
+                      },2) +
                       '\n```\n\n'
                       : '') +
                      (message ? 'Message:\n```\n' +
