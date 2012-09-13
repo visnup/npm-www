@@ -27,6 +27,7 @@ function transform (data) {
 
   var gr = d.email ? 'retro' : 'mm'
   d.avatar = gravatar(d.email || '', {s:50, d:gr}, true)
+  d.avatarMedium = gravatar(d.email || '', {s:100, d:gr}, true)
   d.avatarLarge = gravatar(d.email || '', {s:496, d:gr}, true)
 
   d.fields = loadFields(d)
