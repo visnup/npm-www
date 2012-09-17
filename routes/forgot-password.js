@@ -94,23 +94,9 @@ function token (req, res) {
                 , password: newPass
                 , mustChangePass: true
                 }
-    var didReLogin = false
 
-    req.log.warn('About to change password', { name: name })
+    req.log.warn('About to change password', { name: name }, config.adminCouch.name)
     couch.changePass(newAuth, function CP (er, cr, data) {
-      if (cr && cr.statusCode === 404 && !didReLogin) {
-        // probably the admin session expired.
-        // try to re-login
-        return couch.tokenGet(function (er2, tok) {
-          if (er2 || !couch.valid(tok)) {
-            er = er || er2
-            return res.error(500, er, 'admin couchdb token failure')
-          }
-          didReLogin = true
-          couch.changePass(newAuth, CP)
-        })
-      }
-
       if (er || cr.statusCode >= 400) {
         return res.error(er, cr && cr.statusCode, data && data.error)
       }
