@@ -86,6 +86,7 @@ queue(function (cb) {
   // fakey fake SSL certs for convenience.
   var fs = require('fs')
   config.https = {
+    ca: [],
     key: fs.readFileSync(require.resolve('./ssl/server.key'), 'utf8'),
     cert: fs.readFileSync(require.resolve('./ssl/server.crt'), 'utf8')
   }
