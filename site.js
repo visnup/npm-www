@@ -29,20 +29,23 @@ function site (req, res) {
     res.error(500, er)
     setTimeout(function () {
       res.socket.destroy()
-      res.emit('error', er)
+      throw er
     }, 5000)
   }, 30*1000) // nothing should take 30s ever.
 
   // maybe the issue is that it's sometimes not flushing?
   // flush after 2s, that might make it go away?
   var flusher = setTimeout(function () {
+    console.error('flusher!', req.url, res.statusCode, res.headers)
     res._flush()
-  })
+  }, 2000)
 
-  res.on('finish', function () {
+  res.on('finish', timeoutOk)
+  res.on('close', timeoutOk)
+  function timeoutOk () {
     clearTimeout(timeout)
     clearTimeout(flusher)
-  })
+  }
 
   var parsed = url.parse(req.url)
   var pathname = parsed.pathname
