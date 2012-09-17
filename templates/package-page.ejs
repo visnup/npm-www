@@ -13,10 +13,11 @@
 
   <pre class="sh"><code>npm install <%= package.name %></code></pre>
 
-  <p class="downloads">
-    <%= dlDay %> downloads in the last day<br>
-    <%= dlWeek %> downloads in the last week<br>
-    <%= dlMonth %> downloads in the last month</p>
+  <%- include('download-counts.ejs', {
+    day: dlDay,
+    week: dlWeek,
+    month: dlMonth
+  }) %>
 
   <table class="metadata">
     <% if (package.maintainers) { %>

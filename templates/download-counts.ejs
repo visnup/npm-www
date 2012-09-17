@@ -1,0 +1,17 @@
+<% if (day || week || month) { %>
+  <p class="downloads">
+    <%
+    var content = []
+    if (day) {
+      content.push(day + ' downloads in the last day')
+    }
+    if (week) {
+      content.push(week + ' downloads in the last week')
+    }
+    if (month) {
+      content.push(month + ' downloads in the last month')
+    }
+    %>
+    <%- content.join('<br>') %>
+  </p>
+<% } %>

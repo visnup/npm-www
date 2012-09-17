@@ -7,10 +7,13 @@
   <p>Total Packages: <%= totalPackages %></p>
   <% } %>
 
-  <p class="downloads">
-    <%= dlDay %> downloads in the last day<br>
-    <%= dlWeek %> downloads in the last week<br>
-    <%= dlMonth %> downloads in the last month</p>
+  <%-
+  include('download-counts.ejs', {
+    day: dlDay,
+    week: dlWeek,
+    month: dlMonth
+  })
+  %>
 
   <p><a href="https://github.com/isaacs/npm-www">Patches welcome!</a></p>
 
