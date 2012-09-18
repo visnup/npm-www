@@ -104,6 +104,13 @@ function morePackages () {
   }).push(function () {
     // this one we just let continue indefinitely.
   })
+
+  new Replicator({
+    from: 'http://isaacs.iriscouch.com/downloads',
+    to: 'http://admin:admin@localhost:15984/downloads'
+  }).push(function () {
+    // this one we just let continue indefinitely.
+  })
 }
 
 // start it going

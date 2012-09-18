@@ -53,6 +53,9 @@ queue(function (cb) {
   touch('dev/couch/public_users.couch', cb)
 
 }, function (cb) {
+  touch('dev/couch/downloads.couch', cb)
+
+}, function (cb) {
   // spawn couchdb, and make sure it stays up for a little bit
   exec('couchdb', ['-a', 'dev/couch/couch.ini'], cb)
 
