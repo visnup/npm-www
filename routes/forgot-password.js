@@ -1,18 +1,28 @@
 var config = require('../config.js')
 
+// if there's no email configuration set up, then we can't do this.
+// however, in dev mode, just show the would-be email right on the screen
+var devMode = false
 if (!config.mailTransportType ||
     !config.mailTransportSettings) {
-  module.exports = function (req, res) {
-    res.error(404, 'Not implemented')
+  if (process.env.NODE_ENV === 'dev') {
+    devMode = true
+  } else {
+    module.exports = function (req, res) {
+      res.error(404, 'Not implemented')
+    }
+    return
   }
-  return
 }
 
-var nodemailer = require('nodemailer')
-, mailer = nodemailer.createTransport(config.mailTransportType,
-                                      config.mailTransportSettings)
-, from = config.emailFrom
+var from = config.emailFrom
 , crypto = require('crypto')
+
+if (!devMode) {
+  var nodemailer = require('nodemailer')
+  , mailer = nodemailer.createTransport(config.mailTransportType,
+                                        config.mailTransportSettings)
+}
 
 module.exports = forgotPassword
 
@@ -102,7 +112,10 @@ function token (req, res) {
       }
 
       config.redis.client.del('pwrecover_' + hash, function () {})
-      res.template('password-changed.ejs', { password: newPass, profile: null })
+      res.template('password-changed.ejs', {
+        password: newPass,
+        profile: null
+      })
     })
   })
 }
@@ -178,28 +191,35 @@ function handle (req, res) {
       , data = { name: name, email: email, token: token }
       , key = 'pwrecover_' + hash
 
-      config.redis.client.hmset(key, data)
-      var u = 'https://' + req.headers.host + '/forgot/' + encodeURIComponent(token)
-      mailer.sendMail
-        ( { to: '"' + name + '" <' + email + '>'
-          , from: 'user-account-bot@npmjs.org'
-          , subject : "npm Password Reset"
-          , headers: { "X-SMTPAPI": { category: "password-reset" } }
-          , text: "You are receiving this because you (or someone else) have "
-            + "requested the reset of the '"
-            + name
-            + "' npm user account.\r\n\r\n"
-            + "Please click on the following link, or paste this into your "
-            + "browser to complete the process:\r\n\r\n"
-            + "    " + u + "\r\n\r\n"
-            + "If you received this in error, you can safely ignore it.\r\n"
-            + "The request will expire shortly.\r\n\r\n"
-            + "You can reply to this message, or email\r\n    "
-            + from + "\r\nif you have questions."
-            + " \r\n\r\nnpm loves you.\r\n"
-          }
-        , done
-        )
+      config.redis.client.hmset(key, data, function (er) {
+        if (er)
+          return res.error(er)
+        var u = 'https://' + req.headers.host + '/forgot/' + encodeURIComponent(token)
+        var mail =
+            { to: '"' + name + '" <' + email + '>'
+            , from: 'user-account-bot@npmjs.org'
+            , subject : "npm Password Reset"
+            , headers: { "X-SMTPAPI": { category: "password-reset" } }
+            , text: "You are receiving this because you (or someone else) have "
+              + "requested the reset of the '"
+              + name
+              + "' npm user account.\r\n\r\n"
+              + "Please click on the following link, or paste this into your "
+              + "browser to complete the process:\r\n\r\n"
+              + "    " + u + "\r\n\r\n"
+              + "If you received this in error, you can safely ignore it.\r\n"
+              + "The request will expire shortly.\r\n\r\n"
+              + "You can reply to this message, or email\r\n    "
+              + from + "\r\nif you have questions."
+              + " \r\n\r\nnpm loves you.\r\n"
+            }
+
+        if (devMode) {
+          return res.json(mail)
+        } else {
+          mailer.sendMail(mail, done)
+        }
+      })
 
       function done (er, result) {
         // now the token is in redis, and the email has been sent.
