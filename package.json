@@ -42,7 +42,7 @@
   "scripts": {
     "start": "node server.js",
     "show-conf": "node config.js",
-    "dev": "node dev/go.js | bunyan",
+    "dev": "node dev/go.js | bunyan -l warn",
     "repl": "node repl.js",
     "dev-repl": "CLUSTER_MASTER_REPL=15337 node repl.js"
   },
