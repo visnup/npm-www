@@ -63,6 +63,11 @@ function handleData (req, res, data) {
     return res.template('password.ejs', td, 403)
   }
 
+  if (data.new.match(/['!:@"]/)) {
+    td.error = 'Sorry, passwords cannot contain these characters: \'!:@"'
+    return res.template('password.ejs', td, 400)
+  }
+
   req.log.info('Changing password', {name: prof.name})
 
   var newAuth = { name: prof.name, password: data.new }
