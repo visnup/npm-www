@@ -46,6 +46,8 @@ exports.profileFields =
     hostmatch(/^github.com$/) ]
 , twitter: [ 'Twitter', '<a href="https://twitter.com/%s">@%s</a>',
     hostmatch(/^twitter.com$/) ]
+, appdotnet: [ 'App.net', '<a href="https://alpha.app.net/%s">%s</a>',
+    hostmatch(/app.net$/) ]
 , homepage: [ 'Homepage', '<a href="%s">%s</a>',
     hostmatch(/[^\.]+\.[^\.]+$/) ]
 , freenode: [ 'IRC Handle', '%s' ]
