@@ -13,7 +13,7 @@
     "routes": "~0.1.1",
     "keygrip": "~0.2.0",
     "cookies": "~0.3.1",
-    "redsess": "0",
+    "redsess": "~0.1.0",
     "ejs": "~0.7.1",
     "templar": "~0.1.1",
     "glob": "~3.1.12",
