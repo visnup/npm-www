@@ -188,7 +188,7 @@ function handle (req, res) {
                   .split('/').join('_')
                   .split('+').join('-')
       , hash = sha(token)
-      , data = { name: name, email: email, token: token }
+      , data = { name: name + '', email: email + '', token: token + '' }
       , key = 'pwrecover_' + hash
 
       config.redis.client.hmset(key, data, function (er) {

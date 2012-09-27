@@ -7,7 +7,7 @@
   "dependencies": {
     "request": "~2.9.202",
     "marked": "~0.2.4",
-    "redis": "~0.7.1",
+    "redis": "~0.8.1",
     "lru-cache": "~2.0.0",
     "cluster-master": "0",
     "routes": "~0.1.1",
