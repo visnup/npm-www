@@ -119,7 +119,10 @@ function decorate (req, res, config) {
   // TODO: Move some/all of this into a separate module.
 
   req.cookies = res.cookies = new Cookies(req, res, config.keys)
-  req.session = res.session = new RedSess(req, res)
+  req.session = res.session = new RedSess(req, res, {
+    keys: config.keys,
+    cookies: req.cookies
+  })
 
   // set up the CouchLogin to automatically save the token in the
   // session, and log in on demand.
