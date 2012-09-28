@@ -18,6 +18,7 @@
 }
 
 .sh_sourceCode .sh_comment {
-  color: #666;
+  color: #999;
+  font-style: italic;
 }
 
