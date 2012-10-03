@@ -1,6 +1,6 @@
 module.exports = packagePage
 
-var commaIt = require("../comma-it").commaIt
+var commaIt = require('comma-it').commaIt
 
 function packagePage (req, res) {
   var name = req.params.name

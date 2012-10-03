@@ -4,7 +4,7 @@ var lastUpdated
 var interval = 1000
 var cache = {}
 var browse = require('../models/browse.js')
-var commaIt = require("../comma-it").commaIt
+var commaIt = require('comma-it').commaIt
 var didStartup = false
 var loading = false
 function load (startup) {
