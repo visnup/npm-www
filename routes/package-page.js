@@ -17,12 +17,9 @@ function packagePage (req, res) {
   var month = Date.now() - 1000 * 60 * 60 * 24 * 31
   var week = Date.now() - 1000 * 60 * 60 * 24 * 8
   var end = Date.now() - 1000 * 60 * 60 * 24
-  var endWComma = commaIt(end)
-  var weekWComma = commaIt(week)
-  var monthWComma = commaIt(month)
-  req.model.loadAs('downloads', 'dlDay', endWComma, end, name, false)
-  req.model.loadAs('downloads', 'dlWeek', weekWComma, end, name, false)
-  req.model.loadAs('downloads', 'dlMonth', monthWComma, end, name, false)
+  req.model.loadAs('downloads', 'dlDay', end, end, name, false)
+  req.model.loadAs('downloads', 'dlWeek', week, end, name, false)
+  req.model.loadAs('downloads', 'dlMonth', month, end, name, false)
 
   req.model.end(function (er, m) {
     if (er && er.code === 'E404') return res.error(404, er)
@@ -47,9 +44,9 @@ function packagePage (req, res) {
       package: p,
       profile: m.profile,
       title: m.package.name,
-      dlDay: m.dlDay,
-      dlMonth: m.dlMonth,
-      dlWeek: m.dlWeek
+      dlDay: commaIt(m.dlDay),
+      dlMonth: commaIt(m.dlMonth),
+      dlWeek: commaIt(m.dlWeek)
     }
     res.template("package-page.ejs", locals)
   })
