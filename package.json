@@ -34,7 +34,8 @@
     "sanitizer": "0.0.15",
     "npm-registry-client": "~0.2.2",
     "npmconf": "0.0",
-    "hardhttps": "0"
+    "hardhttps": "0",
+    "comma-it": "~0.0.4"
   },
   "engines": {
     "node": ">=0.7.7"

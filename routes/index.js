@@ -4,6 +4,7 @@ var lastUpdated
 var interval = 1000
 var cache = {}
 var browse = require('../models/browse.js')
+var commaIt = require("../comma-it").commaIt
 var didStartup = false
 var loading = false
 function load (startup) {
@@ -51,15 +52,19 @@ function indexPage (req, res) {
   var month = Date.now() - 1000 * 60 * 60 * 24 * 31
   var week = Date.now() - 1000 * 60 * 60 * 24 * 8
   var end = Date.now() - 1000 * 60 * 60 * 24
-  req.model.loadAs('downloads', 'dlDay', end, end, name, false)
-  req.model.loadAs('downloads', 'dlWeek', week, end, name, false)
-  req.model.loadAs('downloads', 'dlMonth', month, end, name, false)
+  var endWComma = commaIt(end)
+  var weekWComma = commaIt(week)
+  var monthWComma = commaIt(month)
+  req.model.loadAs('downloads', 'dlDay', endWComma, end, name, false)
+  req.model.loadAs('downloads', 'dlWeek', weekWComma, end, name, false)
+  req.model.loadAs('downloads', 'dlMonth', monthWComma, end, name, false)
 
   req.model.load('profile', req)
 
   req.model.end(function (er, m) {
     var root = m.root || {}
     var dc = root.doc_count || 3
+    var dcWComma = commaIt(dc -  3) //Design docs
     var locals = {
       profile: m.profile,
       title: 'npm',
@@ -70,7 +75,7 @@ function indexPage (req, res) {
       dlDay: m.dlDay,
       dlMonth: m.dlMonth,
       dlWeek: m.dlWeek,
-      totalPackages: dc - 3 // design docs
+      totalPackages: dcWComma
     }
     res.template("index.ejs", locals)
   })

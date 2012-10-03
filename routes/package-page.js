@@ -1,5 +1,7 @@
 module.exports = packagePage
 
+var commaIt = require("../comma-it").commaIt
+
 function packagePage (req, res) {
   var name = req.params.name
   , version = req.params.version || 'latest'
@@ -15,9 +17,12 @@ function packagePage (req, res) {
   var month = Date.now() - 1000 * 60 * 60 * 24 * 31
   var week = Date.now() - 1000 * 60 * 60 * 24 * 8
   var end = Date.now() - 1000 * 60 * 60 * 24
-  req.model.loadAs('downloads', 'dlDay', end, end, name, false)
-  req.model.loadAs('downloads', 'dlWeek', week, end, name, false)
-  req.model.loadAs('downloads', 'dlMonth', month, end, name, false)
+  var endWComma = commaIt(end)
+  var weekWComma = commaIt(week)
+  var monthWComma = commaIt(month)
+  req.model.loadAs('downloads', 'dlDay', endWComma, end, name, false)
+  req.model.loadAs('downloads', 'dlWeek', weekWComma, end, name, false)
+  req.model.loadAs('downloads', 'dlMonth', monthWComma, end, name, false)
 
   req.model.end(function (er, m) {
     if (er && er.code === 'E404') return res.error(404, er)
