@@ -52,12 +52,9 @@ function indexPage (req, res) {
   var month = Date.now() - 1000 * 60 * 60 * 24 * 31
   var week = Date.now() - 1000 * 60 * 60 * 24 * 8
   var end = Date.now() - 1000 * 60 * 60 * 24
-  var endWComma = commaIt(end)
-  var weekWComma = commaIt(week)
-  var monthWComma = commaIt(month)
-  req.model.loadAs('downloads', 'dlDay', endWComma, end, name, false)
-  req.model.loadAs('downloads', 'dlWeek', weekWComma, end, name, false)
-  req.model.loadAs('downloads', 'dlMonth', monthWComma, end, name, false)
+  req.model.loadAs('downloads', 'dlDay', end, end, name, false)
+  req.model.loadAs('downloads', 'dlWeek', week, end, name, false)
+  req.model.loadAs('downloads', 'dlMonth', month, end, name, false)
 
   req.model.load('profile', req)
 
@@ -72,9 +69,9 @@ function indexPage (req, res) {
       authors: cache.authors || [],
       starred: cache.starred || [],
       depended: cache.depended || [],
-      dlDay: m.dlDay,
-      dlMonth: m.dlMonth,
-      dlWeek: m.dlWeek,
+      dlDay: commaIt(m.dlDay),
+      dlMonth: commaIt(m.dlMonth),
+      dlWeek: commaIt(m.dlWeek),
       totalPackages: dcWComma
     }
     res.template("index.ejs", locals)
