@@ -2,13 +2,13 @@
   <table class="downloads">
     <%
     var content = []
-    if (day) {
+    if (day && day !== '0') {
       content.push([day, ' downloads in the last day'])
     }
-    if (week) {
+    if (week && week !== '0') {
       content.push([week, ' downloads in the last week'])
     }
-    if (month) {
+    if (month && month !== '0') {
       content.push([month, ' downloads in the last month'])
     }
     %>
