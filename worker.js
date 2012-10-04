@@ -67,6 +67,7 @@ if (config.couchAuth) {
 
   // the admin couch uses basic auth, or couchdb freaks out eventually
   config.adminCouch = new CouchLogin(config.registryCouch, 'basic')
+  config.adminCouch.strictSSL = false
   config.adminCouch.login(auth, function (er, cr, data) {
     if (er) throw er
   })

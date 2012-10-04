@@ -127,6 +127,7 @@ function decorate (req, res, config) {
   // set up the CouchLogin to automatically save the token in the
   // session, and log in on demand.
   req.couch = CouchLogin(config.registryCouch).decorate(req, res)
+  req.couch.strictSSL = false
 
   res.template = Templar(req, res, templateOptions)
   res.template.locals.canonicalHref = url.resolve(
