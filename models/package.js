@@ -75,7 +75,9 @@ function package (params, cb) {
 }
 
 function parseReadme (readme) {
-  return sanitizer.sanitize(marked.parse(readme), urlPolicy)
+  var p = marked.parse(readme)
+  p = p.replace(/<([a-zA-Z]+)([^>]*)\/>/g, '<$1$2></$1>')
+  return sanitizer.sanitize(p, urlPolicy)
 }
 
 function gravatarPeople (data) {
