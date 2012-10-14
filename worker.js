@@ -30,6 +30,7 @@ try {
     gitHead = gitHead.replace(/^ref: /, '').trim()
     gitHead = fs.readFileSync('.git/' + gitHead, 'utf8').trim()
   }
+  config.HEAD = gitHead
 } catch (_) {
   gitHead = '(not a git repo) ' + _.message
 }

@@ -1,7 +1,13 @@
 <%- include('header.ejs', locals) %>
 <h1><%= package.name %></h1>
 
-<p>Version <%= package.version %></p>
+<p>Version <%- (function() {
+  var v = package.version
+  if (HEAD)
+    v += ' (<a href="https://github.com/isaacs/npm-www/tree/' + HEAD
+      + '">' + HEAD.substr(0,6) + '</a>)'
+  return v
+})()%></p>
 
 <p>This site reflects the data in the 
 npm registry at <%= npm.registry %>, available in a couchdb
