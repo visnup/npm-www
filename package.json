@@ -17,7 +17,6 @@
     "ejs": "~0.7.1",
     "templar": "~0.1.1",
     "glob": "~3.1.12",
-    "filed": "0",
     "stylus": "git://github.com/LearnBoost/stylus.git",
     "nib": "0",
     "couch-login": "0.x >=0.1",

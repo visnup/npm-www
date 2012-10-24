@@ -4,7 +4,6 @@
 var routes = require('routes')
 , Router = routes.Router
 , Route = routes.Route
-, filed = require('filed')
 , router = new Router()
 , config = require('./config.js')
 
