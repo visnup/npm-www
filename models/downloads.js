@@ -72,7 +72,7 @@ function load (k, cb) {
   config.adminCouch.get(u + '?' + q, function (er, cr, data) {
     // downloads aren't really that important.
     // just lie and pretend we didn't see anything.
-    if (er) {
+    if (er || !data) {
       data = { rows: [] }
       er = null
     }
