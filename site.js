@@ -19,68 +19,10 @@ config.keys = new Keygrip(config.keys)
 function site (req, res) {
   var start = process.hrtime()
 
-  var ended = false
-  res.end = function (o) { return function () {
-    ended = true
-    if (flushes) {
-      var elapse = process.hrtime(start)
-      console.error('had to flush before ending', req.url,
-                    elapse, flushes)
-    }
-    return o.apply(this, arguments)
-  }}(res.end)
-
   // only allow access via the canonical hostname
   if (config.canon(req, res)) return
 
   decorate(req, res, config)
-
-  // kludge!  remove this once we figure out wtf is going on.
-  var timeout = setTimeout(function () {
-    res.log.error('TIMEOUT! %s', req.url, res._header, ended)
-    // don't actually kill it, for now, just log
-    // var er = new Error('Request timed out')
-    // res.error(500, er)
-    // setTimeout(function () {
-    //   if (res.connection) res.connection.destroy()
-    //   throw er
-    // }, 5000)
-  }, 30*1000) // nothing should take 30s ever.
-
-  // maybe the issue is that it's sometimes not flushing?
-  // flush after 2s, that might make it go away?
-  var flushes = 0
-  var flusher
-  //flusher = setTimeout(function () {
-    flusher = setInterval(function () {
-      var elapsed = process.hrtime(start)
-      if (elapsed[0] < 2) return
-      res.log.warn('flusher!', req.url, res.statusCode, ended, elapsed)
-      flushes++
-      if (flushes < 20) {
-        res._flush()
-      } else {
-        res.log.warn('flushing was inadequate', req.url, res.statusCode, ended)
-        res.socket && res.socket.destroy()
-        clearInterval(flusher)
-        this.close()
-        setTimeout(function() {
-          process.exit(1)
-        }, 60 * 1000)
-      }
-    }.bind(this), 3000)
-  //}.bind(this), 100)
-
-  res.on('finish', timeoutOk)
-  res.on('close', timeoutOk)
-  function timeoutOk () {
-    clearTimeout(timeout)
-    //if (flushes) {
-      clearInterval(flusher)
-    //} else {
-    //  clearTimeout(flusher)
-    //}
-  }
 
   var parsed = url.parse(req.url)
   var pathname = parsed.pathname
