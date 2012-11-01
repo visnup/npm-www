@@ -42,13 +42,13 @@ exports.profileFields =
 , email: [ 'Email', '<a href="mailto:%s">%s</a>', function (u) {
     return u.protocol === 'mailto:'
   } ]
-, github: [ 'Github', '<a href="https://github.com/%s">%s</a>',
+, github: [ 'Github', '<a rel="me" href="https://github.com/%s">%s</a>',
     hostmatch(/^github.com$/) ]
-, twitter: [ 'Twitter', '<a href="https://twitter.com/%s">@%s</a>',
+, twitter: [ 'Twitter', '<a rel="me" href="https://twitter.com/%s">@%s</a>',
     hostmatch(/^twitter.com$/) ]
-, appdotnet: [ 'App.net', '<a href="https://alpha.app.net/%s">%s</a>',
+, appdotnet: [ 'App.net', '<a rel="me" href="https://alpha.app.net/%s">%s</a>',
     hostmatch(/app.net$/) ]
-, homepage: [ 'Homepage', '<a href="%s">%s</a>',
+, homepage: [ 'Homepage', '<a rel="me" href="%s">%s</a>',
     hostmatch(/[^\.]+\.[^\.]+$/) ]
 , freenode: [ 'IRC Handle', '%s' ]
 }
