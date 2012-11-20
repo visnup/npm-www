@@ -161,6 +161,8 @@ function decorate (req, res, config) {
 
   res.redirect = function (target, code) {
     res.statusCode = code || 302
+    // strip out \n etc.
+    target = url.format(target)
     res.setHeader('location', target)
     var avail = ['text/html', 'application/json']
     res.html( '<html><body><h1>Moved'
