@@ -66,7 +66,7 @@ function package (params, cb) {
 
     if (data.readme && !data.readmeSrc) {
       data.readmeSrc = data.readme
-      data.readme = parseReadme(data.readme)
+      data.readme = parseReadme(data)
     }
     gravatarPeople(data)
     regData.set(k, data)
@@ -74,9 +74,19 @@ function package (params, cb) {
   })
 }
 
-function parseReadme (readme) {
-  var p = marked.parse(readme)
-  p = p.replace(/<([a-zA-Z]+)([^>]*)\/>/g, '<$1$2></$1>')
+function parseReadme (data) {
+  var p
+  if (typeof data.readmeFilename !== 'string' ||
+      data.readmeFilename.match(/\.(m?a?r?k?d?o?w?n?)$/)) {
+    p = marked.parse(data.readme)
+    p = p.replace(/<([a-zA-Z]+)([^>]*)\/>/g, '<$1$2></$1>')
+  } else {
+    var p = data.readme
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+    p = sanitizer.sanitize(p, urlPolicy)
+  }
   return sanitizer.sanitize(p, urlPolicy)
 }
 
