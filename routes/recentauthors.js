@@ -18,11 +18,10 @@ function recentauthors (req, res) {
   var since = new Date(Date.now() - 1000 * 60 * 60 * 24 * 14)
   if (s !== '') {
     var ss = Date.parse(s.replace(/^\/*(.*?)\/*$/, '$1'))
-    if (ss && ss.getTime() !== 0)
+    if (ss)
       since = new Date(ss)
   }
   var age = Date.now() - since.getTime()
-  console.error([age, Date.now(), since.getTime(), since.toISOString()])
   since = since.toISOString().slice(0, 10)
 
   var title = 'Authors active since ' + since

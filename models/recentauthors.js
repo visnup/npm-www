@@ -3,7 +3,7 @@ module.exports = authors
 var qs = require('querystring')
 var AC = require('async-cache')
 var npm = require('npm')
-var maxAge = 1000 * 60 * 60 * 24 * 60
+var maxAge = 1000 * 60 * 60 * 24 * 365
 var day = 1000 * 60 * 60 * 24
 
 var cache = new AC({
