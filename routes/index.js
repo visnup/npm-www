@@ -4,6 +4,7 @@ var lastUpdated
 var interval = 1000
 var cache = {}
 var browse = require('../models/browse.js')
+var recentauthors = require('../models/recentauthors.js')
 var commaIt = require('comma-it').commaIt
 var didStartup = false
 var loading = false
@@ -13,7 +14,9 @@ function load (startup) {
 
   var n = 4
   browse('star', null, 0, 10, next('starred'))
-  browse('author', null, 0, 10, next('authors'))
+
+  // last two weeks
+  recentauthors(1000*60*60*24*14, 0, 10, next('authors'))
   browse('depended', null, 0, 10, next('depended'))
   browse('updated', null, 0, 10, next('updated'))
 

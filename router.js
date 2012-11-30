@@ -78,6 +78,10 @@ router.addRoute('/keyword/:kw', function (q, s) {
 
 router.addRoute('/browse/*?', require('./routes/browse.js'))
 
+var ra = require('./routes/recentauthors.js') 
+router.addRoute('/recent-authors', ra)
+router.addRoute('/recent-authors/*?', ra)
+
 // npmjs.org/npm -> npmjs.org/package/npm
 // if nothing else matches.
 router.addRoute('/:name', require('./routes/maybe-package.js'))
