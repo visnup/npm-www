@@ -44,8 +44,6 @@ function downloads (start, end, pkg, detail, cb) {
 }
 
 function load (k, cb) {
-  return cb(null, 0);
-
   k = JSON.parse(k)
   var start = k[0]
   var end = k[1]
