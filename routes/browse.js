@@ -1,6 +1,7 @@
 module.exports = browse
 
 var pageSize = 100
+, sanitizer = require('sanitizer')
 
 // url is something like:
 // /browse/{type?}/{arg?}/{page}
@@ -19,16 +20,20 @@ function browse (req, res) {
   s = s.split('/')
   var type = s.shift()
   var arg
-  if (!type) {
+
+  if (!type)
     type = 'updated'
-  }
-  if (type !== 'all' && type !== 'updated') {
-    // everything but 'all' optionally takes an arg.
+
+  // everything but 'all' optionally takes an arg.
+  if (type !== 'all' && type !== 'updated')
     arg = s.shift()
-  }
 
   var browseby = type
-  if (arg) browseby += '/' + encodeURIComponent(arg)
+  if (arg)
+    arg = sanitizer.sanitize(arg).replace(/<[^\>]+>/g, '').trim()
+  if (arg)
+    browseby += '/' + encodeURIComponent(arg)
+
 
   var title
   var start = page * pageSize
