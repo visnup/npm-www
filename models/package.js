@@ -77,7 +77,8 @@ function package (params, cb) {
 function parseReadme (data) {
   var p
   if (typeof data.readmeFilename !== 'string' ||
-      data.readmeFilename.match(/\.(m?a?r?k?d?o?w?n?)$/)) {
+      (data.readmeFilename.match(/\.(m?a?r?k?d?o?w?n?)$/i) &&
+       !data.readmeFilename.match(/\.$/))) {
     p = marked.parse(data.readme)
     p = p.replace(/<([a-zA-Z]+)([^>]*)\/>/g, '<$1$2></$1>')
   } else {
