@@ -79,7 +79,11 @@ function parseReadme (data) {
   if (typeof data.readmeFilename !== 'string' ||
       (data.readmeFilename.match(/\.(m?a?r?k?d?o?w?n?)$/i) &&
        !data.readmeFilename.match(/\.$/))) {
-    p = marked.parse(data.readme)
+    try {
+      p = marked.parse(data.readme)
+    } catch (er) {
+      return 'error parsing readme'
+    }
     p = p.replace(/<([a-zA-Z]+)([^>]*)\/>/g, '<$1$2></$1>')
   } else {
     var p = data.readme
