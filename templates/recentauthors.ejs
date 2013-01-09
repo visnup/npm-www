@@ -3,11 +3,11 @@
   <h1><%- pageTitle %></h1>
   <p class="description">
     <% if (page > 0) { %>
-      <a href="/recentauthors/<%= browseby %>/<%= page - 1 %>/">&larr; previous</a>
+      <a href="/recent-authors/<%= browseby %>/<%= page - 1 %>/">&larr; previous</a>
     <% } %>
     Page <%= page + 1 %>
     <% if (items.length >= pageSize) { %>
-      <a href="/recentauthors/<%= browseby %>/<%= page + 1 %>/">next &rarr;</a>
+      <a href="/recent-authors/<%= browseby %>/<%= page + 1 %>/">next &rarr;</a>
     <% } %>
   </p>
   <%
@@ -31,11 +31,11 @@
   %>
   <p class="description">
     <% if (page > 0) { %>
-      <a href="/browse/<%= browseby %>/<%= page - 1 %>/">&larr; previous</a>
+      <a href="/recent-authors/<%= browseby %>/<%= page - 1 %>/">&larr; previous</a>
     <% } %>
     Page <%= page + 1 %>
     <% if (items.length >= pageSize) { %>
-      <a href="/browse/<%= browseby %>/<%= page + 1 %>/">next &rarr;</a>
+      <a href="/recent-authors/<%= browseby %>/<%= page + 1 %>/">next &rarr;</a>
     <% } %>
   </p>
 </div>
