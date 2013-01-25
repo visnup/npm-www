@@ -89,7 +89,9 @@ function decorate (req, res, config) {
   d.add(req)
   d.add(res)
   d.on("error", function (er) {
-    logger.error({ error: er })
+    delete er.domain_emitter
+    delete er.domain
+    logger.error({ error: er }, er.stack)
     try {
       if (res.error) res.error(er)
       else {
