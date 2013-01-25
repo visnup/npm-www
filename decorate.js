@@ -5,6 +5,7 @@ var ErrorPage = require("error-page")
 , domain = require("domain")
 , Cookies = require("cookies")
 , RedSess = require("redsess")
+, csrf = require('csrf-lite')
 
 , path = require('path')
 , Templar = require("templar")
@@ -132,6 +133,11 @@ function decorate (req, res, config) {
   res.template = Templar(req, res, templateOptions)
   res.template.locals.canonicalHref = url.resolve(
     config.canonicalHost, url.parse(req.url).path)
+
+  // use session token as the csrf protection bit
+  var csrfToken = csrf(req.session.token)
+  res.template.locals.csrfToken = csrfToken
+  res.template.locals.csrf = csrf.html(csrfToken)
 
   req.log = res.log = logger.child(
     { serializers: bunyan.stdSerializers

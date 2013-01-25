@@ -7,6 +7,7 @@ var router = require("./router.js")
 , config = require("./config.js")
 , url = require("url")
 , path = require("path")
+, csrf = require('csrf-lite')
 
 , Keygrip = require("keygrip")
 
@@ -77,7 +78,11 @@ function site (req, res) {
       return res.error(415)
     }
     req.on('body', function (data) {
-      req.emit('form', qs.parse(data))
+      data = qs.parse(data)
+      var token = req.session.token
+      if (!csrf.valid(data, token))
+        return res.error(403, 'CSRF Detected')
+      req.emit('form', data)
     })
   }
 

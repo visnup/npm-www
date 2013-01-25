@@ -26,6 +26,7 @@ if (m) location.replace('/package' + m[0].substr(1))
       <header>
         <form action="/search" method="get">
           <input name=q type="search" placeholder="Search Packages" autofocus="autofocus">
+          <%- csrf %>
         </form>
         <h1>
           <a id="npm-logo" href="/">
