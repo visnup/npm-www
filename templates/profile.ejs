@@ -71,22 +71,24 @@
     <%
     var l = starred.length;
     var max = 20;
+    var userstar = {
+      url: '/browse/userstar/' + showprofile.name,
+      name: 'view ' + showprofile.name + '\'s starred packages',
+    }
     if (l > max) {
       // get a random assortment each time.
       starred = starred.sort(function (a, b) {
         return Math.random() * 2 - 1
       }).slice(0, max)
-      starred.push({
-        url: '/browse/userstar/' + showprofile.name,
-        name: 'and ' + (l-max) + ' more',
-        description: ''
-      })
+      userstar.name = 'and ' + (l-max) + ' more'
     }
     starred.forEach(function (d, i) {
       %><li><a href="<%= d.url %>"><%= d.name %></a>
         <%= d.description %></li><%
     })
-    %></ul><%
+    %>
+    <li><a href="<%= userstar.url %>"><%= userstar.name %></a></li>
+  </ul><%
   }
   %>
 
