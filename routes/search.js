@@ -9,6 +9,7 @@ module.exports = search
 
 var fs = require('fs')
 var path = require('path')
+var querystring = require('querystring')
 var logFile = path.resolve(__dirname, '../search.log')
 var searches = []
 var minInterval = 1000 // no more than 1ce per second.
@@ -41,9 +42,11 @@ function update () {
 function search (req, res) {
   var u = req.url && req.url.split('?')[1]
   if (!u) return res.error(404)
-  var target = 'https://encrypted.google.com/search?' +
-               u + '&q=site:npmjs.org&hl=en'
-  searches.push(u.replace(/^q=/, '').replace(/\+/g, ' '))
+  var qs = querystring.parse(u)
+  if (!qs.q) return res.error(404)
+  var target = 'https://encrypted.google.com/search?q=' +
+               qs.q + '&q=site:npmjs.org&hl=en'
+  searches.push(qs.q)
   res.redirect(target, '302')
   update()
 }
