@@ -51,6 +51,14 @@
           <% } %>
         </td>
       </tr>
+      <% if (package.license) { %>
+      <tr>
+        <th>License</th>
+        <td>
+            <a href="<%= package.license.url %>"><%= package.license.name %></a>
+        </td>
+      </tr>
+      <% } %>
       <%
       if (typeof package.keywords === 'string') {
         package.keywords = package.keywords.split(/\s*,?\s*/)
