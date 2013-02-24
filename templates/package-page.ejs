@@ -78,9 +78,9 @@
       <% if (package.repository && package.repository !== 'undefined') {
       var gh = package.repository.url &&
           package.repository.url.match(
-          /^(?:https?:\/\/|git(?::\/\/|@))github.com[:\/](.*?)(?:.git)?$/)
+          /^(?:https?:\/\/|git(?::\/\/|@))(gist.github.com|github.com)[:\/](.*?)(?:.git)?$/)
       if (gh) {
-        gh = 'https://github.com/' + gh[1]
+        gh = 'https://' + gh[1] + '/' + gh[2]
       }
       %>
       <tr>
