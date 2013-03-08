@@ -39,37 +39,41 @@ function browse (req, res) {
   var start = page * pageSize
   var limit = pageSize
   req.model.load('browse', type, arg, start, limit)
+
+  var sarg
+  if (arg)
+    sarg = encodeURIComponent(arg)
   switch (type) {
     case 'all':
       title = 'All Packages (alphabetically)'
       break
     case 'keyword':
       title = 'Browse by Keyword'
-      if (arg) title += ': ' + JSON.stringify(arg)
+      if (sarg) title += ': ' + JSON.stringify(sarg)
       break
     case 'author':
       title = 'Browse by Author'
-      if (arg) title += ': <a href="/profile/' +
-          encodeURIComponent(arg) + '">' + encodeURIComponent(arg) +
+      if (sarg) title += ': <a href="/profile/' +
+          sarg + '">' + sarg +
           '</a>'
       break
     case 'updated':
       title = 'All Packages (by updated date)'
       break
     case 'depended':
-      title = arg ? 'Packages depending on ' +
-              '<a href="/package/' + arg + '">' + arg + '</a>'
+      title = sarg ? 'Packages depending on ' +
+              '<a href="/package/' + sarg + '">' + sarg + '</a>'
             : 'Most Depended-upon Packages'
       break
     case 'star':
-      title = arg ? 'Users who starred ' +
-              '<a href="/package/' + arg + '">' + arg + '</a>'
+      title = sarg ? 'Users who starred ' +
+              '<a href="/package/' + sarg + '">' + sarg + '</a>'
             : 'Most Starred Packages'
       break
     case 'userstar':
-      title = arg ? 'Starred Packages By User: ' +
-              '<a href="/profile/' + encodeURIComponent(arg) + '">' +
-              encodeURIComponent(arg) + '</a>'
+      title = sarg ? 'Starred Packages By User: ' +
+              '<a href="/profile/' + sarg + '">' +
+              sarg + '</a>'
             : 'Starred Packages by User'
       break
     default:
