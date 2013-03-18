@@ -25,6 +25,10 @@ function packagePage (req, res) {
     if (er && er.code === 'E404') return res.error(404, er)
     if (er) return res.error(er)
     if (!m.package) return res.error(404)
+    // We are catching this one very late in the application
+    // as the npm-client will have cached this response as json
+    // and we are not getting a valid http error code in that case
+    if (m.package.error === 'not_found') return res.error(404)
 
     var p = m.package
     p.dependents = m.browse
