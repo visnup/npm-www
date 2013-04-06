@@ -84,6 +84,14 @@
         </td>
       </tr>
       <% } %>
+      <% if (package.homepage) { %>
+      <tr>
+        <th>Homepage</td>
+        <td>
+          <a href="<%= encodeURI(package.homepage) %>"><%= package.homepage.replace(/</g, '&lt;') %></a>
+        </td>
+      </tr>
+      <% } %>
       <% if (package.bugs && package.bugs.url) { %>
       <tr>
         <th>Bugs</td>
