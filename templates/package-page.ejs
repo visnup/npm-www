@@ -1,87 +1,88 @@
 <%- include('header.ejs', locals) %>
 
-<div id="package">
-  <h1><%= package.name %></h1>
+  <div id="package">
+    <h1><%= package.name %></h1>
 
-  <% if (package.deprecated) { %>
-    <p class="deprecated"><%= package.deprecated %></p>
-  <% } %>
+    <% if (package.deprecated) { %>
+      <p class="deprecated"><%= package.deprecated %></p>
+    <% } %>
 
-  <% if (package.description) { %>
-    <p class="description"><%= package.description %></p>
-  <% } %>
+    <% if (package.description) { %>
+      <p class="description"><%= package.description %></p>
+    <% } %>
 
-  <pre class="sh"><code>npm install <%= package.name %></code></pre>
+    <pre class="sh"><code>npm install <%= package.name %></code></pre>
 
-  <%- include('download-counts.ejs', {
-    day: dlDay,
-    week: dlWeek,
-    month: dlMonth
-  }) %>
+    <%- include('download-counts.ejs', {
+      day: dlDay,
+      week: dlWeek,
+      month: dlMonth
+    }) %>
 
-  <table class="metadata">
-    <% if (package.maintainers) { %>
-    <tr>
-      <th>Maintainers</th>
-      <td>
-      <%
-      package.maintainers.forEach(function (m) {
-        %>
-        <div class="user">
-        <a class="username" href="/~<%= m.name %>"><%
-          if (m.avatar) {
-          %><img src="<%= m.avatar %>" class="avatar">
-          <% } %><%= m.name %></a>
-        </div>
+    <table class="metadata">
+      <% if (package.maintainers) { %>
+      <tr>
+        <th>Maintainers</th>
+        <td>
         <%
-      })
+        package.maintainers.forEach(function (m) {
+          %>
+          <div class="user">
+          <a class="username" href="/~<%= m.name %>"><%
+            if (m.avatar) {
+            %><img src="<%= m.avatar %>" class="avatar">
+            <% } %><%= m.name %></a>
+          </div>
+          <%
+        })
+        %>
+        </td>
+      </tr>
+      <% } %>
+      <tr>
+        <th>Version</th>
+        <td>
+          <b>
+          <%= package.version %>
+          </b>
+          <% if (package.fromNow) { %>
+          last updated
+          <%= package.fromNow %>
+          <% } %>
+        </td>
+      </tr>
+      <%
+      if (typeof package.keywords === 'string') {
+        package.keywords = package.keywords.split(/\s*,?\s*/)
+      }
+      if (Array.isArray(package.keywords)) {
       %>
-      </td>
-    </tr>
-    <% } %>
-    <tr>
-      <th>Version</th>
-      <td>
-        <b>
-        <%= package.version %>
-        </b>
-        <% if (package.fromNow) { %>
-        last updated
-        <%= package.fromNow %>
-        <% } %>
-      </td>
-    </tr>
-    <%
-    if (typeof package.keywords === 'string') {
-      package.keywords = package.keywords.split(/\s*,?\s*/)
-    }
-    if (Array.isArray(package.keywords)) {
-    %>
-    <tr>
-      <th>Keywords</th>
-      <td><%-
-        package.keywords.map(function (kw) {
-          kw = kw.replace(/</g, '&lt;').replace(/"/g, '&quot;')
-          return '<a href="/browse/keyword/' + kw + '">' + kw + '</a>'
-        }).join(', ')
-        %></td>
-    </tr>
-    <% } %>
-    <% if (package.repository && package.repository !== 'undefined') {
-    var gh = package.repository.url &&
-        package.repository.url.match(
-        /^(?:https?:\/\/|git(?::\/\/|@))github.com[:\/](.*?)(?:.git)?$/)
-    if (gh) {
-      gh = 'https://github.com/' + gh[1]
-    }
-    %>
-    <tr>
-      <th>Repository</td>
-      <td>
-        <% if (gh) { %><a href="<%= gh %>"><% } %>
-        <%= package.repository.url %><% if (gh) { %></a><% } %>
-        (<%= package.repository.type %>)
-      </td>
+      <tr>
+        <th>Keywords</th>
+        <td><%-
+          package.keywords.map(function (kw) {
+            kw = kw.replace(/</g, '&lt;').replace(/"/g, '&quot;')
+            return '<a href="/browse/keyword/' + kw + '">' + kw + '</a>'
+          }).join(', ')
+          %></td>
+      </tr>
+      <% } %>
+      <% if (package.repository && package.repository !== 'undefined') {
+      var gh = package.repository.url &&
+          package.repository.url.match(
+          /^(?:https?:\/\/|git(?::\/\/|@))github.com[:\/](.*?)(?:.git)?$/)
+      if (gh) {
+        gh = 'https://github.com/' + gh[1]
+      }
+      %>
+      <tr>
+        <th>Repository</td>
+        <td>
+          <% if (gh) { %><a href="<%= gh %>"><% } %>
+          <%= package.repository.url %><% if (gh) { %></a><% } %>
+          (<%= package.repository.type %>)
+        </td>
+      </tr>
       <% } %>
       <% if (package.bugs && package.bugs.url) { %>
       <tr>
@@ -89,103 +90,103 @@
         <td>
           <a href="<%= package.bugs.url %>"><%= package.bugs.url %></a>
         </td>
-        <% } %>
-        <tr>
-          <%
-            var deps = Object.keys(package.dependencies || {})
-            var l = deps.length
-          %>
-          <th>Dependencies<%= l > 5 ? ' (' + l + ')' : '' %></th>
-          <td>
-            <%
-            if (l === 0) {
-              %>None<%
-            } else {
-              var m = 200
-              if (l > m) deps = deps.slice(0, m)
-              deps.forEach(function(pkg, i) {
-                if (i > 0) { %>, <% }
-                %>
-                <a href="/package/<%= pkg %>"><%= pkg %></a><%
-              })
-              if (l > m) {
-                %>, and <%= l-m %> more<%
-              }
-            }
-            %>
-          </td>
-        </tr>
+      </tr>
+      <% } %>
+      <tr>
         <%
-        var dependents = package.dependents
-        var l = dependents.length
-        if (dependents && l) { %>
-        <tr>
-          <th>Dependents<%= l > 5 ? ' (' + l + ')' : '' %></th>
-          <td>
+          var deps = Object.keys(package.dependencies || {})
+          var l = deps.length
+        %>
+        <th>Dependencies<%= l > 5 ? ' (' + l + ')' : '' %></th>
+        <td>
           <%
-          var l = dependents.length
+          if (l === 0) {
+            %>None<%
+          } else {
+            var m = 200
+            if (l > m) deps = deps.slice(0, m)
+            deps.forEach(function(pkg, i) {
+              if (i > 0) { %>, <% }
+              %>
+              <a href="/package/<%= pkg %>"><%= pkg %></a><%
+            })
+            if (l > m) {
+              %>, and <%= l-m %> more<%
+            }
+          }
+          %>
+        </td>
+      </tr>
+      <%
+      var dependents = package.dependents
+      var l = dependents.length
+      if (dependents && l) { %>
+      <tr>
+        <th>Dependents<%= l > 5 ? ' (' + l + ')' : '' %></th>
+        <td>
+        <%
+        var l = dependents.length
+        var max = 20
+        if (l > max) {
+          // get a random assortment each time.
+          var dependents = dependents.sort(function (a, b) {
+            return Math.random() * 2 - 1
+          }).slice(0, max)
+          dependents.push({
+            url: '/browse/depended/' + package.name,
+            name: '<br>and ' + (l-max) + ' more'
+          })
+        }
+        dependents.forEach(function (d, i) {
+          if (i > 0) { %>, <% }
+          %><a href="<%= d.url %>"><%- d.name %></a><%
+        })
+        %>
+        </td>
+      </tr>
+      <% } %>
+
+      <% if (package.users) {
+        var starredBy = package.starredBy
+        var l = starredBy.length
+      %>
+      <tr>
+        <th>Starred by<%= l > 5 ? ' (' + l + ')' : '' %></th>
+        <td>
+          <%
           var max = 20
           if (l > max) {
-            // get a random assortment each time.
-            var dependents = dependents.sort(function (a, b) {
+            starredBy = starredBy.sort(function (a, b) {
               return Math.random() * 2 - 1
             }).slice(0, max)
-            dependents.push({
-              url: '/browse/depended/' + package.name,
-              name: '<br>and ' + (l-max) + ' more'
-            })
           }
-          dependents.forEach(function (d, i) {
+          starredBy.forEach(function (user, i) {
             if (i > 0) { %>, <% }
-            %><a href="<%= d.url %>"><%- d.name %></a><%
+            %><a href="/~<%= user %>"><%= user %></a><%
           })
+          if (l > max) {
+            %><br><a href="/browse/star/<%= package.name %>">and
+            <%= (l-max) %> more</a><%
+          }
           %>
-          </td>
-        </tr>
-        <% } %>
+        </td>
+      </tr>
+      <% } %>
+    </table>
 
-        <% if (package.users) {
-          var starredBy = package.starredBy
-          var l = starredBy.length
-        %>
-        <tr>
-          <th>Starred by<%= l > 5 ? ' (' + l + ')' : '' %></th>
-          <td>
-            <%
-            var max = 20
-            if (l > max) {
-              starredBy = starredBy.sort(function (a, b) {
-                return Math.random() * 2 - 1
-              }).slice(0, max)
-            }
-            starredBy.forEach(function (user, i) {
-              if (i > 0) { %>, <% }
-              %><a href="/~<%= user %>"><%= user %></a><%
-            })
-            if (l > max) {
-              %><br><a href="/browse/star/<%= package.name %>">and
-              <%= (l-max) %> more</a><%
-            }
-            %>
-          </td>
-        </tr>
-        <% } %>
-      </table>
-
-      <div class="details">
-        <ul class="toc">
-          <% if (package.readme) { %>
-          <li><a href="#readme">Read Me</a></li>
-          <% } %>
-        </ul>
-
+    <div class="details">
+      <ul class="toc">
         <% if (package.readme) { %>
-        <section id="readme">
-        <%- package.readme %>
-        </section>
+        <li><a href="#readme">Read Me</a></li>
         <% } %>
-      </div>
+      </ul>
+
+      <% if (package.readme) { %>
+      <section id="readme">
+      <%- package.readme %>
+      </section>
+      <% } %>
     </div>
   </div>
-</div>
+
 <%- include('footer.ejs', locals) %>
