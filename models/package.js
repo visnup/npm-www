@@ -66,6 +66,13 @@ function package (params, cb) {
       setLicense(data, v)
     }
 
+    if (data.homepage && typeof data.homepage !== 'string') {
+      if (Array.isArray(data.homepage))
+        data.homepage = data.homepage[0]
+      else
+        delete data.homepage
+    }
+
     if (data.readme && !data.readmeSrc) {
       data.readmeSrc = data.readme
       data.readme = parseReadme(data)
