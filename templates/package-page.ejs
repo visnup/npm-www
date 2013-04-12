@@ -92,7 +92,7 @@
         </td>
       </tr>
       <% } %>
-      <% if (package.homepage) { %>
+      <% if (typeof package.homepage === 'string') { %>
       <tr>
         <th>Homepage</td>
         <td>
