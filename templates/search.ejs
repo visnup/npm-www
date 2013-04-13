@@ -1,0 +1,30 @@
+<%- include('header.ejs', locals) %>
+<h1>Search Results</h1>
+
+<% if (hits && hits.total > 0) {%>
+<ul>
+  <% hits.hits.forEach(function(hit) { %>
+  <li>
+    <h2><%= hit.fields.name %></h2>
+    <p><%= hit.fields.description %></p>
+    <p>
+      <span class="author"><%= hit.fields.author %></span>
+      <% if (hit.fields.keywords.length) { %>
+      <ul class="keywords">
+        <% hit.fields.keywords.forEach(function(keyword) { %>
+          <li>
+            <a href="/search?q=keywords:<%= keyword %>"><%= keyword %></a>
+          </li>
+        <% }) %>
+      </ul>
+      <% } %>
+    </p>
+  </li>
+  <% }); %>
+</ul>
+<% } else { %>
+  No results!
+<% } %>
+
+
+<%- include('footer.ejs', locals) %>
