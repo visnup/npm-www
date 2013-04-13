@@ -2,22 +2,25 @@
 <h1>Search Results</h1>
 
 <% if (hits && hits.total > 0) {%>
-<ul>
+<ul class="search-results">
   <% hits.hits.forEach(function(hit) { %>
-  <li>
-    <h2><%= hit.fields.name %></h2>
-    <p><%= hit.fields.description %></p>
+  <li class="search-result package">
+    <h2><a href="/package/<%= hit.fields.name %>"><%= hit.fields.name %></a></h2>
     <p>
-      <span class="author"><%= hit.fields.author %></span>
+      version <%= hit.fields.version %> by
+      <a href="/~<%= hit.fields.author %>"><%= hit.fields.author %></a>
+    </p>
+    <p><%= hit.fields.description %></p>
       <% if (hit.fields.keywords.length) { %>
-      <ul class="keywords">
-        <% hit.fields.keywords.forEach(function(keyword) { %>
+      keywords: <ul class="keywords">
+        <% hit.fields.keywords.forEach(function(keyword, idx) { %>
           <li>
-            <a href="/search?q=keywords:<%= keyword %>"><%= keyword %></a>
+            <a href="/search?q=keywords:<%= keyword %>"><%= keyword %></a><% if(idx<hit.fields.keywords.length-1) { %>, <% } %>
           </li>
         <% }) %>
       </ul>
       <% } %>
+
     </p>
   </li>
   <% }); %>

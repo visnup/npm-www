@@ -312,7 +312,27 @@ table.downloads {
   }
 }
 
-#package, #profile {
+
+.search-results, .search-results li, .search-result ul {
+  list-style:none
+  margin:0;
+  padding: 0;
+}
+
+.search-result ul li {
+  display:inline
+}
+
+.package.search-result ul.keywords {
+  display:inline;
+}
+
+html body ul.search-results .package.search-result {
+  padding: .5em 0;
+}
+
+
+.package, #package, #profile {
   width:490px;
   > h1 {
     font: 28px Georgia, serif;
