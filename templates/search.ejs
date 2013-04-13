@@ -15,7 +15,7 @@
       keywords: <ul class="keywords">
         <% hit.fields.keywords.forEach(function(keyword, idx) { %>
           <li>
-            <a href="/search?q=keywords:<%= keyword %>"><%= keyword %></a><% if(idx<hit.fields.keywords.length-1) { %>, <% } %>
+            <a href="/browse/keyword/<%= keyword %>"><%= keyword %></a><% if(idx<hit.fields.keywords.length-1) { %>, <% } %>
           </li>
         <% }) %>
       </ul>
