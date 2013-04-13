@@ -32,7 +32,7 @@ function search(params, cb) {
     }
 
   request.get({
-    url : url, // TODO: make configurable
+    url : url,
     json: payload
   }, function(e, r, o) {
     if (r.error) {
