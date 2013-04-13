@@ -10,8 +10,10 @@ function search(params, cb) {
     return cb(null, { hits: { total : 0 }})
   }
 
+  var page = parseInt(params.page || '0', 10);
+  var queryPage = (page > 1) ? page - 1 : 0;
   var qs =
-    { from : params.page || 0
+    { from : queryPage*config.elasticsearch.pageSize
     , size : config.elasticsearch.pageSize
     , pretty: false
     }
@@ -37,6 +39,8 @@ function search(params, cb) {
       e = new Error(r.error);
     }
     o.q = params.q;
+    o.page = (page < 1) ? 1 : page;
+    o.pageSize = config.elasticsearch.pageSize;
 
     cb(e, o);
   });

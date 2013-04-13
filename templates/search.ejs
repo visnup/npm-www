@@ -22,6 +22,19 @@
   </li>
   <% }); %>
 </ul>
+
+<p class="description">
+  <% if (page > 2) { %>
+    <a href="/search?q=<%= q %>&page=<%= page - 1 %>">&larr; previous</a>
+  <% }  else if (page === 2) { %>
+    <a href="/search?q=<%= q %>">&larr; previous</a>
+  <% } %>
+  Page <%= page %>
+  <% if (hits.total >= (pageSize*(page-1) + pageSize)) { %>
+    <a href="/search?q=<%= q %>&page=<%= page + 1 %>">next &rarr;</a>
+  <% } %>
+</p>
+
 <% } else { %>
   No results!
 <% } %>
