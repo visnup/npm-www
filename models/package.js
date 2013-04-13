@@ -69,7 +69,7 @@ function package (params, cb) {
     if (data.homepage && typeof data.homepage !== 'string') {
       if (Array.isArray(data.homepage))
         data.homepage = data.homepage[0]
-      else
+      if (typeof data.homepage !== 'string')
         delete data.homepage
     }
 
