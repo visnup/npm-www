@@ -27,13 +27,13 @@
 </ul>
 
 <p class="description">
-  <% if (page > 2) { %>
+  <% if (page > 1) { %>
     <a href="/search?q=<%= q %>&page=<%= page - 1 %>">&larr; previous</a>
-  <% }  else if (page === 2) { %>
+  <% }  else if (page === 1) { %>
     <a href="/search?q=<%= q %>">&larr; previous</a>
   <% } %>
-  Page <%= page %>
-  <% if (hits.total >= (pageSize*(page-1) + pageSize)) { %>
+  Page <%= page + 1 %>
+  <% if (hits.total >= (pageSize*page + pageSize)) { %>
     <a href="/search?q=<%= q %>&page=<%= page + 1 %>">next &rarr;</a>
   <% } %>
 </p>

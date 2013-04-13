@@ -11,9 +11,9 @@ function search(params, cb) {
   }
 
   var page = parseInt(params.page || '0', 10);
-  var queryPage = (page > 1) ? page - 1 : 0;
+
   var qs =
-    { from : queryPage*config.elasticsearch.pageSize
+    { from : page*config.elasticsearch.pageSize
     , size : config.elasticsearch.pageSize
     , pretty: false
     }
@@ -39,7 +39,7 @@ function search(params, cb) {
       e = new Error(r.error);
     }
     o.q = params.q;
-    o.page = (page < 1) ? 1 : page;
+    o.page = page;
     o.pageSize = config.elasticsearch.pageSize;
 
     cb(e, o);
