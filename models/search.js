@@ -12,7 +12,7 @@ function search(params, cb) {
 
   var qs =
     { from : params.page || 0
-    , size : config.elasticsearch.perPage
+    , size : config.elasticsearch.pageSize
     , pretty: false
     }
 

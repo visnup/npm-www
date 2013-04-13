@@ -110,7 +110,7 @@ queue(function (cb) {
 
   config.elasticsearch = config.elasticsearch || {
     url: 'http://127.0.0.1:9200/npm',
-    perPage: 20,
+    pageSize: 20
   }
 
   config.debug = true
