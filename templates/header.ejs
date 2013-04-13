@@ -26,7 +26,7 @@ if (m) location.replace('/package' + m[0].substr(1))
       <header>
         <form action="/search" method="get">
           <% if (typeof q !== 'undefined') { %>
-          <input name=q type="search" placeholder="Search Packages" autofocus="autofocus" value="<%= q %>">
+          <input name=q type="search" placeholder="Search Packages" autofocus="autofocus" value="<%= sanitize(q) %>">
           <% } else { %>
           <input name=q type="search" placeholder="Search Packages" autofocus="autofocus">
           <% } %>
