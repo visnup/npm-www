@@ -25,8 +25,12 @@ if (m) location.replace('/package' + m[0].substr(1))
     <div id="page">
       <header>
         <form action="/search" method="get">
+          <% if (typeof q !== 'undefined') { %>
+          <input name=q type="search" placeholder="Search Packages" autofocus="autofocus" value="<%= q %>">
+          <% } else { %>
           <input name=q type="search" placeholder="Search Packages" autofocus="autofocus">
-          <%- csrf %>
+          <% } %>
+
         </form>
         <h1>
           <a id="npm-logo" href="/">
