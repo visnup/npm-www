@@ -6,13 +6,13 @@
   <% hits.hits.forEach(function(hit) { %>
   <li class="search-result package">
     <h2><a href="/package/<%= encodeURI(hit.fields.name) %>"><%= sanitize(hit.fields.name) %></a></h2>
-    <p>
-      version <%= hit.fields.version %> by
+    <p class="details">
+      <%= hit.fields.version %> by
       <a href="/~<%= hit.fields.author %>"><%= hit.fields.author %></a>
     </p>
     <p><%= sanitize(hit.fields.description) %></p>
     <% if (hit.fields.keywords.length) { %>
-    keywords: <ul class="keywords">
+    <ul class="keywords">
       <% hit.fields.keywords.forEach(function(keyword, idx) { %>
         <li>
           <a href="/browse/keyword/<%= encodeURI(keyword) %>"><%= sanitize(keyword) %></a><% if(idx<hit.fields.keywords.length-1) { %>, <% } %>
