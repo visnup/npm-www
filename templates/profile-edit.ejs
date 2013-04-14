@@ -3,6 +3,10 @@
 
 <p><a href=/password>Change your Password</a></p>
 
+<% if (error) { %>
+  <p class="error"><%- error %></p>
+<% } %>
+
 <form method=post action=/profile-edit>
   <input type=hidden name=_id value="<%= profile._id %>">
   <input type=hidden name=name value="<%= profile.name %>">
