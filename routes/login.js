@@ -1,7 +1,6 @@
 module.exports = login
 var url = require("url")
-, request = require("request")
-, config = require("../config.js")
+  , request = require("request")
 
 function login (req, res) {
   switch (req.method) {
@@ -15,7 +14,8 @@ function login (req, res) {
         req.model.end(function(er, m) {
           // error just means we're not logged in.
           var locals = {
-            profile: m && m.profile
+            profile: m && m.profile,
+            error: null
           }
 
           res.template('login.ejs', locals)
@@ -30,19 +30,13 @@ function login (req, res) {
 function handleForm (req, res) {
   req.on('form', function (data) {
     if (!data.name || !data.password) {
-      var er = new Error('Name or password not provided')
-      return res.error(er, 400, 'login.ejs')
+      return res.template('login.ejs', {error: 'Name or password not provided'})
     }
 
     req.couch.login(data, function (er, cr, couchSession) {
       if (er) return res.error(er, 'login.ejs')
       if (cr.statusCode !== 200) {
-        // XXX Should just render the login form
-        // with an error about a bad login or something.
-        // Something like:
-        // res.template('login.ejs', {message:'bad login'})
-        er = er || new Error('Username and/or password is wrong')
-        return res.error(er, cr.statusCode, 'login.ejs')
+        return res.template('login.ejs', {error: 'Username and/or password is wrong'})
       }
 
       // look up the profile data.  we're gonna need

@@ -11,6 +11,10 @@
   <% } %>
 <% } %>
 
+<% if (error) { %>
+  <p class=error><%- error %></p>
+<% } %>
+
 <form action='' method='post' class=form>
   <fieldset>
     <label for=name>Username</label>
