@@ -48,7 +48,9 @@ function search(params, cb) {
 
     // make sure that an exact match gets the top hit
     var name = params.q.trim()
-    if (o.hits.hits[0]._id === name && page === 0)
+    if (!o.hits.hits ||
+        !o.hits.hits.length ||
+        o.hits.hits[0]._id === name && page === 0)
       return cb(e, o)
 
     o.hits.hits = o.hits.hits.filter(function(n) {
