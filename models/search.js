@@ -1,6 +1,7 @@
 var request = require('request')
 , querystring = require('querystring')
-, config = require('../config')
+, config = require('../config.js')
+, package = require('./package.js')
 
 module.exports = search
 
@@ -25,7 +26,7 @@ function search(params, cb) {
     , query :
         { multi_match :
           { query : params.q
-          , fields : ['name^4', 'keywords^3', 'description^2']
+          , fields : ['name^4', 'keywords', 'description', 'readme']
           }
         }
     , sort : ['_score']
@@ -35,13 +36,52 @@ function search(params, cb) {
     url : url,
     json: payload
   }, function(e, r, o) {
-    if (r.error) {
-      e = new Error(r.error);
-    }
-    o.q = params.q;
-    o.page = page;
-    o.pageSize = config.elasticsearch.pageSize;
+    if (r.error)
+      e = new Error(r.error)
 
-    cb(e, o);
+    if (e)
+      return cb(e)
+
+    o.q = params.q
+    o.page = page
+    o.pageSize = config.elasticsearch.pageSize
+
+    // make sure that an exact match gets the top hit
+    var name = params.q.trim()
+    o.hits.hits = o.hits.hits.filter(function(n) {
+      return n._id !== name
+    })
+    if (page !== 0) {
+      cb(null, o)
+    } else {
+      package(name, function(er, data) {
+        if (er ||
+            data.name !== name ||
+            !data.versions ||
+            !data['dist-tags'])
+          return cb(null, o)
+
+        if (!data.keywords || !Array.isArray(data.keywords)) {
+          if (typeof data.keywords === 'string')
+            data.keywords = data.keywords.split(/[,\s]+/)
+          else
+            data.keywords = []
+        }
+        o.hits.hits.unshift({
+          _index: 'npm',
+          _type: 'package',
+          _id: name,
+          _score: 9999,
+          fields: {
+            author: data.maintainers[0].name,
+            keywords: data.keywords,
+            description: data.description,
+            version: data['dist-tags'].latest,
+            name: name
+          }
+        })
+        cb(null, o)
+      })
+    }
   });
 }
