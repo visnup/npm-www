@@ -8,6 +8,7 @@ var ErrorPage = require("error-page")
 , csrf = require('csrf-lite')
 
 , path = require('path')
+, sanitizer = require('sanitizer')
 , Templar = require("templar")
 , ejs = require('ejs')
 , tplDir = path.resolve(__dirname, 'templates')
@@ -133,6 +134,7 @@ function decorate (req, res, config) {
   req.couch.strictSSL = false
 
   res.template = Templar(req, res, templateOptions)
+  res.template.locals.sanitize = sanitizer.sanitize
   res.template.locals.canonicalHref = url.resolve(
     config.canonicalHost, url.parse(req.url).path)
 

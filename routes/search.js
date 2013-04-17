@@ -43,10 +43,12 @@ function search (req, res) {
   var u = req.url && req.url.split('?')[1]
   if (!u) return res.error(404)
   var qs = querystring.parse(u)
-  if (!qs.q) return res.error(404)
-  var target = 'https://encrypted.google.com/search?q=' +
-               qs.q + '&q=site:npmjs.org&hl=en'
+
+  req.model.load('search', qs)
+  req.model.end(function(er, m) {
+    res.template('search.ejs', m.search)
+  })
+
   searches.push(qs.q)
-  res.redirect(target, '302')
   update()
 }

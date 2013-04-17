@@ -2,6 +2,11 @@ exports.port = 15443
 exports.host = 'localhost'
 exports.httpPort = 15080
 
+exports.elasticsearch = {
+  url: 'http://localhost:9200/npm',
+  pageSize: 20
+}
+
 exports.cluster = { size : require("os").cpus().length }
 
 // redis auth 

@@ -108,6 +108,11 @@ queue(function (cb) {
     _token: ''
   }
 
+  config.elasticsearch = config.elasticsearch || {
+    url: 'http://127.0.0.1:9200/npm',
+    pageSize: 20
+  }
+
   config.debug = true
 
   // write to the dev admin config.

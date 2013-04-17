@@ -51,7 +51,8 @@
   },
   "devDependencies": {
     "replicate": "git://github.com/isaacs/replicate",
-    "touch": "0"
+    "touch": "0",
+    "npm2es": "~0.1.1"
   },
   "repository": {
     "type": "git",
