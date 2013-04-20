@@ -1,5 +1,6 @@
 module.exports = profileEdit
 var config = require('../config.js')
+var userValidate = require('npm-user-validate')
 
 // thing for editing bits of your profile.
 // gets saved back to couchdb.
@@ -58,8 +59,9 @@ function saveThenShow (data, req, res) {
     prof.type = 'user'
     prof.roles = []
 
-    if (!(prof.email && prof.email.match(/^.+@.+\..+$/))) {
-      return show('Email must be an email address', req, res)
+    var error = userValidate.email(prof.email)
+    if (error) {
+      return res.error(error, 400)
     }
 
     var pu = '/_users/' + prof._id

@@ -2,8 +2,19 @@
   <h1>Sign all the way up</h1>
 
 <%
-if (error) {
-  %><p class=error>There was a problem!  The server said: <%= error %></p><%
+if (errors) {
+  %>
+  <p class="error">There was a problem! The server said:</p>
+  <ul>
+    <%
+    errors.forEach(function (error) { %>
+      <li>
+        <p class="error"><%= error.message %></p>
+      </li>
+    <%
+    }) %>
+  </ul>
+  <%
 }
 %>
 

@@ -1,6 +1,7 @@
 module.exports = password
 
 var crypto = require('crypto')
+var userValidate = require("npm-user-validate")
 
 // change the password on post, if valid,
 // or show the form to do the same.
@@ -63,8 +64,9 @@ function handleData (req, res, data) {
     return res.template('password.ejs', td, 403)
   }
 
-  if (data.new.match(/['!:@"]/)) {
-    td.error = 'Sorry, passwords cannot contain these characters: \'!:@"'
+  var error = userValidate.pw(data.new)
+  if (error) {
+    td.error = error.message
     return res.template('password.ejs', td, 400)
   }
 

@@ -40,6 +40,9 @@
     "async-cache": "~0.1.2",
     "npm-user-validate": "0"
   },
+  "bundleDependencies": [
+    "npm-user-validate"
+  ],
   "engines": {
     "node": ">=0.7.7"
   },

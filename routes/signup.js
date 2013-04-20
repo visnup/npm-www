@@ -1,5 +1,6 @@
 module.exports = signup
 var config = require("../config.js")
+var userValidate = require("npm-user-validate")
 
 function signup (req, res) {
   switch (req.method) {
@@ -15,14 +16,14 @@ function show (req, res) {
     if (er) return res.error(er);
     res.template('signup-form.ejs', {
       profile: m.profile,
-      error: null,
+      errors: null,
       data: null
     })
   })
 }
 
 function handle (req, res) {
-  var td = { error: null, data: null }
+  var td = { errors: null, data: null }
   req.on('form', function (data) {
     td.data = data
 
@@ -30,20 +31,21 @@ function handle (req, res) {
     , password = data.password
     , verify = data.verify
     , email = data.email
+    , errors = []
 
     if (!name || !password || !verify || !email) {
-      td.error = 'All fields are required'
+      errors.push(new Error('All fields are required'))
     } else if (password !== verify) {
-      td.error = "Passwords don't match"
-    } else if (name !== name.toLowerCase()) {
-      td.error = 'Name can only be lowercase characters'
-    } else if (name !== encodeURIComponent(name)) {
-      td.error = 'Name cannot contain any non-urlsafe characters'
-    } else if (!email.match(/^.+@.+\..+$/)) {
-      td.error = 'Email must be valid'
+      errors.push(new Error("Passwords don't match"))
     }
 
-    if (td.error) {
+    //colloect other errors
+    userValidate.username(name) && errors.push(userValidate.username(name))
+    userValidate.pw(password) && errors.push(userValidate.pw(password))
+    userValidate.email(email) && errors.push(userValidate.email(email))
+
+    if (errors && errors.length) {
+      td.errors = errors
       return res.template('signup-form.ejs', td, 400)
     }
 
