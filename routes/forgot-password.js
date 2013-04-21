@@ -1,4 +1,5 @@
 var config = require('../config.js')
+var userValidate = require('npm-user-validate')
 
 // if there's no email configuration set up, then we can't do this.
 // however, in dev mode, just show the would-be email right on the screen
@@ -75,7 +76,7 @@ function forgotPassword (req, res) {
 }
 
 function form (req, res) {
-  res.template('password-recovery-form.ejs')
+  res.template('password-recovery-form.ejs', {error: null})
 }
 
 function token (req, res) {
@@ -132,12 +133,12 @@ function handle (req, res) {
   // redis.set(hash, {name, email, token})
   req.on('form', function (data) {
     if (!data.name) {
-      return res.error(400, 'Bad request')
+      return res.template('password-recovery-form.ejs', {error: new Error('All fields are required')}, 400)
     }
 
-    var name = encodeURIComponent(data.name)
-    if (name !== data.name) {
-      return res.error(400, 'Bad request')
+    var error = userValidate.username(data.name)
+    if (error) {
+      return res.template('password-recovery-form.ejs', {error: error}, 400)
     }
 
     // look up this user.
@@ -180,7 +181,12 @@ function handle (req, res) {
       // send an email to them.
       var email = data.email
       if (!email) {
-        return res.error(400, 'Bad user, no email')
+        return res.template('password-recovery-form.ejs', {error: new Error('Bad user, no email')}, 400)
+      }
+
+      var error = userValidate.email(email)
+      if (error) {
+        return res.template('password-recovery-form.ejs', {error: error}, 400)
       }
 
       // the token needs to be url-safe.
