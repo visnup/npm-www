@@ -32,7 +32,7 @@ function transform (data) {
 
   //Template will append "@", make sure db entry is sent out clean.
   if (d.twitter)
-    d.twitter = d.twitter.replace(/^@*(.*)/, '$1')
+    d.twitter = d.twitter.replace(/^@*(.*)/, '$1').replace(/^https?:\/\/twitter.com\//, '')
 
   d.fields = loadFields(d)
   return d
