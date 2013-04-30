@@ -65,7 +65,11 @@ router.addRoute('/forgot/:token', forgot)
 
 router.addRoute('/about', require('./routes/about.js'))
 
-router.addRoute('/', require('./routes/index.js'))
+router.addRoute('/', function (req, res) {
+  var search = req.url && req.url.split('?')[1]
+  if (search) return res.redirect('/search?' + search, 301)
+  return require('./routes/index.js')(req, res)
+})
 
 // The package details page
 var packagePage = require('./routes/package-page.js')
