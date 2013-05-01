@@ -30,6 +30,9 @@ function transform (data) {
   d.avatarMedium = gravatar(d.email || '', {s:100, d:gr}, true)
   d.avatarLarge = gravatar(d.email || '', {s:496, d:gr}, true)
 
+  if (d.github)
+    d.github = d.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')
+
   //Template will append "@", make sure db entry is sent out clean.
   if (d.twitter)
     d.twitter = d.twitter.replace(/^@*(.*)/, '$1').replace(/^https?:\/\/twitter.com\//, '')
