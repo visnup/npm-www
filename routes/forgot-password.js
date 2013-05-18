@@ -69,14 +69,24 @@ function forgotPassword (req, res) {
       if (req.params && req.params.token) {
         return token(req, res)
       } else {
-        return form(req, res)
+        return form(null, req, res)
       }
     default: return res.error(405)
   }
 }
 
-function form (req, res) {
-  res.template('password-recovery-form.ejs', {error: null})
+function form (er, req, res) {
+  var msg = er || null
+  var code = 200
+  var locals = {
+    error: msg
+  }
+
+  if (er && er.code) {
+    code = er.code
+  }
+
+  res.template('password-recovery-form.ejs', locals, code)
 }
 
 function token (req, res) {
@@ -166,11 +176,15 @@ function handle (req, res) {
             }
 
             // actually doesn't exist.
-            return res.error(404, er)
+            var err = new Error('Sorry! User does not exist')
+            err.code = 404
+            return form(err, req, res)
           })
         }
         // actually doesn't exist.
-        return res.error(404, er)
+        var err = new Error('Sorry! User does not exist')
+        err.code = 404
+        return form(err, req, res)
       }
 
       if (er || cr.statusCode >= 400) {
