@@ -1,7 +1,6 @@
 module.exports = showprofile
 module.exports.transform = transform
 
-var gravatar = require('gravatar').url
 var npm = require('npm')
 var gravatar = require('gravatar').url
 var sanitizer = require('sanitizer')
