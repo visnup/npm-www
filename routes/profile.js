@@ -17,7 +17,7 @@ function profile (req, res) {
   }
 
   req.model.end(function (er, m) {
-    if (er) return res.error(er)
+    if (er) return res.error(er.code, er)
     req.showprofile = m.showprofile || m.profile
     if (m.profile && req.showprofile) {
       req.showprofile.isSelf = req.showprofile.name === m.profile.name

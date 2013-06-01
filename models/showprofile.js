@@ -11,8 +11,12 @@ var url = require('url')
 
 function showprofile (name, cb) {
   // get the most recent data for this req.
-  npm.registry.get('/-/user/org.couchdb.user:' + name, 0, function (er, data) {
-    if (er || !data) return cb(er, data)
+  npm.registry.get('/-/user/org.couchdb.user:' + name, 0,
+    function (er, data, raw, res) {
+    if (er)
+      er.code = res.statusCode
+    if (er || !data)
+      return cb(er, data)
     cb(er, transform(data))
   })
 }
