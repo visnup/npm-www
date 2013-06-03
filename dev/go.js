@@ -64,6 +64,21 @@ queue(function (cb) {
   exec('redis-server', ['dev/redis/redis.conf'], cb)
 
 }, function (cb) {
+  // and elasticsearch
+  exec('elasticsearch', [
+    '-Des.config=dev/elasticsearch/elasticsearch.yml'
+    , '-f'
+  ], 1000, cb)
+
+}, function (cb) {
+  // and npm2es
+  exec(process.execPath, [
+    './node_modules/npm2es/bin/npm2es.js'
+    , '--couch=http://localhost:15984/registry'
+    , '--es=http://127.0.0.1:9200/npm'
+  ], cb)
+
+}, function (cb) {
   // give it a few seconds to download some interesting data.
   // otherwise the site is pretty empty.
   exec(process.execPath, [require.resolve('./replicate.js')], 5000, cb)
