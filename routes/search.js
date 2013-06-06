@@ -44,8 +44,6 @@ function search (req, res) {
     qs = querystring.parse(u)
   }
 
-  return res.json(qs)
-
   req.model.load('search', qs)
   req.model.end(function(er, m) {
     res.template('search.ejs', m.search)
