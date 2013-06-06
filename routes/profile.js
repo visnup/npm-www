@@ -25,7 +25,7 @@ function profile (req, res) {
           stack: er.stack,
           response: er.responseRaw.trim(),
           profile: m.profile
-        })
+        }, 404)
       else
         return res.error(er.code, er)
     }
