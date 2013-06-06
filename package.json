@@ -20,7 +20,7 @@
     "stylus": "git://github.com/LearnBoost/stylus.git",
     "nib": "0",
     "couch-login": "~0.1.17",
-    "npm": "~1.2.25",
+    "npm": "~1.2.27",
     "error-page": "0",
     "bunyan": "~0.14.0",
     "nodemailer": "~0.3.19",
