@@ -1,0 +1,20 @@
+<%- include('header.ejs', locals) %>
+
+<div id="profile">
+  <h1>User Not Found: <%= locals.name %></h1>
+  <p>Sorry, there's no user by that name.</p>
+
+  <p>If you believe that this is a bug (for example, if this is your
+  account, but it is not showing up on the website), then please
+  <a href="https://github.com/isaacs/npm-www/issues/new?title=<%=
+  encodeURIComponent('User ' + encodeURIComponent(name) + ' not found')
+  %>&body=<%=
+  encodeURIComponent(
+    (locals.stack ? 'Stack:\n```\n' + stack + '\n```\n\n' : '') +
+    (locals.response ? 'Response:\n```\n' + response + '\n```\n\n' : '')
+  )
+  %>">report the issue</a>.</p>
+  <p>Thank you, and we apologize for the inconvenience.</p>
+</div>
+
+<%- include('footer.ejs', locals) %>

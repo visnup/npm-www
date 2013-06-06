@@ -13,8 +13,11 @@ function showprofile (name, cb) {
   // get the most recent data for this req.
   npm.registry.get('/-/user/org.couchdb.user:' + name, 0,
     function (er, data, raw, res) {
-    if (er)
+    if (er) {
       er.code = res.statusCode
+      er.response = data
+      er.responseRaw = raw
+    }
     if (er || !data)
       return cb(er, data)
     cb(er, transform(data))
