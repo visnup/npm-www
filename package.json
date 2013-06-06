@@ -37,7 +37,8 @@
     "comma-it": "~0.0.4",
     "csrf-lite": "0.1",
     "graceful-fs": "~1.2.0",
-    "async-cache": "~0.1.2"
+    "async-cache": "~0.1.2",
+    "npm-user-validate": "0"
   },
   "engines": {
     "node": ">=0.7.7"
@@ -96,6 +97,7 @@
     "comma-it",
     "csrf-lite",
     "graceful-fs",
-    "async-cache"
+    "async-cache",
+    "npm-user-validate"
   ]
 }
