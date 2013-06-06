@@ -46,7 +46,10 @@ function search (req, res) {
 
   req.model.load('search', qs)
   req.model.end(function(er, m) {
-    res.template('search.ejs', m.search)
+    if (er)
+      res.error(er)
+    else
+      res.template('search.ejs', m.search)
   })
 
   searches.push(qs.q)
