@@ -136,7 +136,8 @@ function handle (req, res) {
       return res.template('password-recovery-form.ejs', {error: new Error('All fields are required')}, 400)
     }
 
-    var error = userValidate.username(data.name)
+    var name = data.name
+    var error = userValidate.username(name)
     if (error) {
       return res.template('password-recovery-form.ejs', {error: error}, 400)
     }
