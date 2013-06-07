@@ -36,7 +36,7 @@ function search(params, cb) {
     url : url,
     json: payload
   }, function(e, r, o) {
-    if (r.error)
+    if (r && r.error)
       e = new Error(r.error)
 
     if (e)
@@ -48,6 +48,20 @@ function search(params, cb) {
 
     // make sure that an exact match gets the top hit
     var name = params.q.trim()
+
+    if (o && o.error) {
+      var er = new Error('Search Error: ' + o.error)
+      er.code = o.status || 500
+      return cb(er, o)
+    }
+
+    if (r.statusCode !== 200 || !o) {
+      var er = new Error('Search failed:' + JSON.stringify(o, null, 2))
+      er.code = r.statusCode
+      if (er.code === 200)
+        er.code = 500
+      return cb(er, o)
+    }
 
     if (!o.hits ||
         !o.hits.hits ||
