@@ -41,33 +41,6 @@
     "npm-user-validate": "0"
   },
   "bundleDependencies": [
-    "npm-user-validate"
-  ],
-  "engines": {
-    "node": ">=0.7.7"
-  },
-  "scripts": {
-    "start": "node server.js",
-    "show-conf": "node config.js",
-    "dev": "node dev/go.js | bunyan -l warn",
-    "repl": "node repl.js",
-    "dev-repl": "CLUSTER_MASTER_REPL=15337 node repl.js"
-  },
-  "devDependencies": {
-    "replicate": "git://github.com/isaacs/replicate",
-    "touch": "0",
-    "npm2es": "~0.4.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/isaacs/npm-www.git"
-  },
-  "keywords": [
-    "npm",
-    "website"
-  ],
-  "license": "BSD",
-  "bundleDependencies": [
     "request",
     "marked",
     "redis",
@@ -102,5 +75,30 @@
     "graceful-fs",
     "async-cache",
     "npm-user-validate"
-  ]
+  ],
+  "engines": {
+    "node": ">=0.7.7"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "show-conf": "node config.js",
+    "dev": "node dev/go.js | bunyan -l warn",
+    "repl": "node repl.js",
+    "dev-repl": "CLUSTER_MASTER_REPL=15337 node repl.js"
+  },
+  "devDependencies": {
+    "replicate": "git://github.com/isaacs/replicate",
+    "touch": "0",
+    "npm2es": "~0.4.0",
+    "once": "~1.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/isaacs/npm-www.git"
+  },
+  "keywords": [
+    "npm",
+    "website"
+  ],
+  "license": "BSD"
 }
