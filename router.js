@@ -41,6 +41,10 @@ router.addRoute('/search', require('./routes/search.js'))
 router.addRoute('/login', require('./routes/login.js'))
 
 router.addRoute('/profile-edit', require('./routes/profile-edit.js'))
+
+router.addRoute('/email-edit', require('./routes/email-edit.js'))
+router.addRoute('/email-edit/:action/:token', require('./routes/email-edit.js'))
+
 router.addRoute('/profile/:name', profRedir)
 router.addRoute('/profile', profRedir)
 router.addRoute('/~/:name', profRedir)

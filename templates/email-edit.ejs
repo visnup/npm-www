@@ -1,0 +1,40 @@
+<%- include('header.ejs', locals) %>
+<h1>Edit your Email Address</h1>
+
+<p>
+  <a href=/profile-edit>Edit Profile</a> -
+  <a href=/password>Change Password</a> -
+  <a href=/forgot>Forgot Password</a>
+</p>
+
+<% if (error) { %>
+  <p class="error"><%- error %></p>
+<% } %>
+
+<p>An email will be sent to the new address to confirm.  Please
+click the link when you receive it.</p>
+
+<p>An informative confirmation email will be sent to the old address
+just to verify that this is intentional.</p>
+
+
+<form method=post action=/email-edit>
+  <input type=hidden name=password_sha value="<%= profile.password_sha %>">
+  <input type=hidden name=_id value="<%= profile._id %>">
+  <input type=hidden name=name value="<%= profile.name %>">
+
+  <fieldset>
+    <label for=password>Password</label>
+    <input id=password name=password type=password>
+  </fieldset>
+  <fieldset>
+    <label for="email">New Email Address</label>
+    <input type=email name=email id=email value="">
+  </fieldset>
+  <fieldset class=buttons>
+    <button class=btn type=submit>Save</button>
+  </fieldset>
+<%- csrf %>
+</form>
+
+<%- include('footer.ejs', locals) %>
