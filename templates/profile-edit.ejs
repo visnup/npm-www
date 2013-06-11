@@ -1,7 +1,11 @@
 <%- include('header.ejs', locals) %>
 <h1>Edit your Profile</h1>
 
-<p><a href=/password>Change your Password</a></p>
+<p>
+  <a href=/email-edit>Edit Email Address</a> -
+  <a href=/password>Change Password</a> -
+  <a href=/forgot>Forgot Password</a>
+</p>
 
 <% if (error) { %>
   <p class="error"><%- error %></p>
