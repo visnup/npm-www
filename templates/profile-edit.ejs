@@ -16,13 +16,25 @@
   <input type=hidden name=name value="<%= profile.name %>">
 <%
 fields.forEach(function (field) {
-  %>
-  <fieldset>
-    <label for="<%= field.name %>"><%= field.title %></label>
-    <input id="<%= field.name %>" name="<%= field.name %>"
-      value="<%= field.value %>">
-  </fieldset>
-  <%
+  if (field.name === 'email') {
+    %>
+    <fieldset>
+      <a href="/email-edit" class="email-label"><%= field.title %></a>
+      <a href="/email-edit" class="email-field">
+        <input id="<%= field.name %>" name="<% field.name %>"
+          value="<%= field.value %>" disabled=disabled>
+      </a>
+    </fieldset>
+    <%
+  } else {
+    %>
+    <fieldset>
+      <label for="<%= field.name %>"><%= field.title %></label>
+      <input id="<%= field.name %>" name="<%= field.name %>"
+        value="<%= field.value %>">
+    </fieldset>
+    <%
+  }
 })
 %>
 

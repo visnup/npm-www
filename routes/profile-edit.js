@@ -49,6 +49,7 @@ function saveThenShow (data, req, res) {
           k === 'name' ||
           k === 'type' ||
           k === 'roles' ||
+          k === 'email' ||
           k === 'password_sha' ||
           k === 'salt') {
         return
@@ -58,11 +59,6 @@ function saveThenShow (data, req, res) {
 
     prof.type = 'user'
     prof.roles = []
-
-    var error = userValidate.email(prof.email)
-    if (error) {
-      return res.error(error, 400)
-    }
 
     var pu = '/_users/' + prof._id
     req.couch.put(pu, prof, function (er, cr, data) {

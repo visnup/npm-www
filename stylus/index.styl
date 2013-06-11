@@ -47,7 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 form {
-  label {
+  a.email-label, label {
     display: inline-block;
     width: 30%;
     font-weight:bold;
@@ -58,7 +58,26 @@ form {
     display: inline-block;
     width: 65%;
   }
+  a.email-field {
+    display: inline-block;
+    width: 65%;
+  }
+  a.email-field input {
+    background:#eee;
+    font-style:italic;
+    width: 100%;
+  }
+  a.email-field:hover input {
+    background:#fff;
+    cursor:hand;
+    cursor:pointer;
+  }
+  a.email-field span {
+    position:absolute;
+    right:0;
+  }
   fieldset {
+    position:relative;
     border-width:0;
     margin-bottom:5px;
   }
