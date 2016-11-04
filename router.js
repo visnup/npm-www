@@ -4,7 +4,6 @@
 var routes = require('routes')
 , Router = routes.Router
 , Route = routes.Route
-, filed = require('filed')
 , router = new Router()
 , config = require('./config.js')
 
@@ -42,6 +41,10 @@ router.addRoute('/search', require('./routes/search.js'))
 router.addRoute('/login', require('./routes/login.js'))
 
 router.addRoute('/profile-edit', require('./routes/profile-edit.js'))
+
+router.addRoute('/email-edit', require('./routes/email-edit.js'))
+router.addRoute('/email-edit/:action/:token', require('./routes/email-edit.js'))
+
 router.addRoute('/profile/:name', profRedir)
 router.addRoute('/profile', profRedir)
 router.addRoute('/~/:name', profRedir)
@@ -66,7 +69,11 @@ router.addRoute('/forgot/:token', forgot)
 
 router.addRoute('/about', require('./routes/about.js'))
 
-router.addRoute('/', require('./routes/index.js'))
+router.addRoute('/', function (req, res) {
+  var search = req.url && req.url.split('?')[1]
+  if (search) return res.redirect('/search?' + search, 301)
+  return require('./routes/index.js')(req, res)
+})
 
 // The package details page
 var packagePage = require('./routes/package-page.js')
@@ -78,6 +85,10 @@ router.addRoute('/keyword/:kw', function (q, s) {
 })
 
 router.addRoute('/browse/*?', require('./routes/browse.js'))
+
+var ra = require('./routes/recentauthors.js') 
+router.addRoute('/recent-authors', ra)
+router.addRoute('/recent-authors/*?', ra)
 
 // npmjs.org/npm -> npmjs.org/package/npm
 // if nothing else matches.

@@ -1,7 +1,6 @@
 module.exports = showprofile
 module.exports.transform = transform
 
-var gravatar = require('gravatar').url
 var npm = require('npm')
 var gravatar = require('gravatar').url
 var sanitizer = require('sanitizer')
@@ -12,8 +11,15 @@ var url = require('url')
 
 function showprofile (name, cb) {
   // get the most recent data for this req.
-  npm.registry.get('/-/user/org.couchdb.user:' + name, 0, function (er, data) {
-    if (er || !data) return cb(er, data)
+  npm.registry.get('/-/user/org.couchdb.user:' + name, 0,
+    function (er, data, raw, res) {
+    if (er) {
+      er.code = res.statusCode
+      er.response = data
+      er.responseRaw = raw
+    }
+    if (er || !data)
+      return cb(er, data)
     cb(er, transform(data))
   })
 }
@@ -27,7 +33,15 @@ function transform (data) {
 
   var gr = d.email ? 'retro' : 'mm'
   d.avatar = gravatar(d.email || '', {s:50, d:gr}, true)
+  d.avatarMedium = gravatar(d.email || '', {s:100, d:gr}, true)
   d.avatarLarge = gravatar(d.email || '', {s:496, d:gr}, true)
+
+  if (d.github)
+    d.github = d.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')
+
+  //Template will append "@", make sure db entry is sent out clean.
+  if (d.twitter)
+    d.twitter = d.twitter.replace(/^@*(.*)/, '$1').replace(/^https?:\/\/twitter.com\//, '')
 
   d.fields = loadFields(d)
   return d

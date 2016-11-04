@@ -2,12 +2,17 @@ exports.port = 15443
 exports.host = 'localhost'
 exports.httpPort = 15080
 
+exports.elasticsearch = {
+  url: 'http://localhost:9200/npm',
+  pageSize: 20
+}
+
 exports.cluster = { size : require("os").cpus().length }
 
 // redis auth 
 exports.redis = { host: '127.0.0.1', port: 6379 }
 
-exports.registryCouch = "https://isaacs.iriscouch.net/"
+exports.registryCouch = "https://isaacs.iriscouch.com/"
 
 // npm config settings
 exports.npm =
@@ -42,11 +47,13 @@ exports.profileFields =
 , email: [ 'Email', '<a href="mailto:%s">%s</a>', function (u) {
     return u.protocol === 'mailto:'
   } ]
-, github: [ 'Github', '<a href="https://github.com/%s">%s</a>',
+, github: [ 'Github', '<a rel="me" href="https://github.com/%s">%s</a>',
     hostmatch(/^github.com$/) ]
-, twitter: [ 'Twitter', '<a href="https://twitter.com/%s">@%s</a>',
+, twitter: [ 'Twitter', '<a rel="me" href="https://twitter.com/%s">@%s</a>',
     hostmatch(/^twitter.com$/) ]
-, homepage: [ 'Homepage', '<a href="%s">%s</a>',
+, appdotnet: [ 'App.net', '<a rel="me" href="https://alpha.app.net/%s">%s</a>',
+    hostmatch(/app.net$/) ]
+, homepage: [ 'Homepage', '<a rel="me" href="%s">%s</a>',
     hostmatch(/[^\.]+\.[^\.]+$/) ]
 , freenode: [ 'IRC Handle', '%s' ]
 }

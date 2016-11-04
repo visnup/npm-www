@@ -7,7 +7,7 @@ The new npmjs.org website.
 
 ## Getting Started
 
-First install couchdb, and redis, and clone the repo.
+First install couchdb, and redis, and elasticsearch and clone the repo.
 
 ```bash
 # first grab all the deps, though most of the important ones are

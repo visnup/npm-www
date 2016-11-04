@@ -14,7 +14,7 @@ if (cluster.isMaster) {
 
 var config = require("./config.js")
 , http = require("http")
-, https = require("https")
+, https = require("hardhttps")
 , site = require("./site.js")
 , server
 , loneServer
@@ -30,6 +30,7 @@ try {
     gitHead = gitHead.replace(/^ref: /, '').trim()
     gitHead = fs.readFileSync('.git/' + gitHead, 'utf8').trim()
   }
+  config.HEAD = gitHead
 } catch (_) {
   gitHead = '(not a git repo) ' + _.message
 }
@@ -65,16 +66,12 @@ if (config.couchAuth) {
   , password = ca.join(':')
   , auth = { name: name, password: password }
 
-  config.adminCouch = new CouchLogin(config.registryCouch)
+  // the admin couch uses basic auth, or couchdb freaks out eventually
+  config.adminCouch = new CouchLogin(config.registryCouch, 'basic')
+  config.adminCouch.strictSSL = false
   config.adminCouch.login(auth, function (er, cr, data) {
     if (er) throw er
   })
-  // automatically re-login the adminCouch when it expires.
-  config.adminCouch.tokenGet = function (cb) {
-    config.adminCouch.login(auth, function (er, cr, data) {
-      cb(er, this.token)
-    })
-  }
 }
 config.anonCouch = new CouchLogin(config.registryCouch, NaN)
 
@@ -88,19 +85,13 @@ config.redis.client = redis.createClient(r.port, r.host, r)
 if (r.auth) config.redis.client.auth(r.auth)
 
 if (config.https) {
-  // no beasts
-  config.https.ciphers = 'ECDHE-RSA-AES256-SHA:AES256-SHA:RC4-SHA:RC4:HIGH:'
-                       + '!MD5:!aNULL:!EDH:!AESGCM'
-  config.https.honorCipherOrder = true
-  config.https.ca = require('./ca.js')
-  require('tls').CLIENT_RENEG_LIMIT = 0
-
   server = https.createServer(config.https, site)
   loneServer = https.createServer(config.https, site)
 } else {
   server = http.createServer(site)
   loneServer = http.createServer(site)
 }
+
 
 var npmconf = config.npm || {}
 npmconf["node-version"] = null

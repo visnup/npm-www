@@ -1,6 +1,7 @@
 module.exports = password
 
 var crypto = require('crypto')
+var userValidate = require("npm-user-validate")
 
 // change the password on post, if valid,
 // or show the form to do the same.
@@ -61,6 +62,12 @@ function handleData (req, res, data) {
   if (data.new !== data.verify) {
     td.error = 'Failed to verify password'
     return res.template('password.ejs', td, 403)
+  }
+
+  var error = userValidate.pw(data.new)
+  if (error) {
+    td.error = error.message
+    return res.template('password.ejs', td, 400)
   }
 
   req.log.info('Changing password', {name: prof.name})

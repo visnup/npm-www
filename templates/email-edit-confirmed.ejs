@@ -1,0 +1,12 @@
+<%- include('header.ejs', locals) %>
+<h1>Email Address Confirmed!</h1>
+
+<p>
+  <a href=/profile-edit>Edit Profile</a> -
+  <a href=/password>Change Password</a> -
+  <a href=/forgot>Forgot Password</a>
+</p>
+
+<p>Your email address is now <code><%= profile.email %></code>.</p>
+
+<%- include('footer.ejs', locals) %>

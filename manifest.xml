@@ -35,7 +35,7 @@
     <stability value="Evolving" />
     <template>
       <common_name>
-        <loctext xml:lang="C">node remote testing drone</loctext>
+        <loctext xml:lang="C">npm website</loctext>
       </common_name>
     </template>
   </service>

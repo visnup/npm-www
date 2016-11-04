@@ -11,6 +11,10 @@
   <% } %>
 <% } %>
 
+<% if (error) { %>
+  <p class=error><%- error %></p>
+<% } %>
+
 <form action='' method='post' class=form>
   <fieldset>
     <label for=name>Username</label>
@@ -24,6 +28,7 @@
     <button class='btn' type='submit'>Login!</button>
     <a href="/forgot">Forgot password?</a>
   </fieldset>
+  <%- csrf %>
 </form>
 
 <p>Don't have an account? <a href="/signup">Sign up.</a>

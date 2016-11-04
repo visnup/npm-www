@@ -5,8 +5,10 @@ var ErrorPage = require("error-page")
 , domain = require("domain")
 , Cookies = require("cookies")
 , RedSess = require("redsess")
+, csrf = require('csrf-lite')
 
 , path = require('path')
+, sanitizer = require('sanitizer')
 , Templar = require("templar")
 , ejs = require('ejs')
 , tplDir = path.resolve(__dirname, 'templates')
@@ -88,7 +90,9 @@ function decorate (req, res, config) {
   d.add(req)
   d.add(res)
   d.on("error", function (er) {
-    logger.error({ error: er })
+    delete er.domain_emitter
+    delete er.domain
+    logger.error({ error: er }, er.stack)
     try {
       if (res.error) res.error(er)
       else {
@@ -119,15 +123,25 @@ function decorate (req, res, config) {
   // TODO: Move some/all of this into a separate module.
 
   req.cookies = res.cookies = new Cookies(req, res, config.keys)
-  req.session = res.session = new RedSess(req, res)
+  req.session = res.session = new RedSess(req, res, {
+    keys: config.keys,
+    cookies: req.cookies
+  })
 
   // set up the CouchLogin to automatically save the token in the
   // session, and log in on demand.
   req.couch = CouchLogin(config.registryCouch).decorate(req, res)
+  req.couch.strictSSL = false
 
   res.template = Templar(req, res, templateOptions)
+  res.template.locals.sanitize = sanitizer.sanitize
   res.template.locals.canonicalHref = url.resolve(
     config.canonicalHost, url.parse(req.url).path)
+
+  // use session token as the csrf protection bit
+  var csrfToken = csrf(req.session.token)
+  res.template.locals.csrfToken = csrfToken
+  res.template.locals.csrf = csrf.html(csrfToken)
 
   req.log = res.log = logger.child(
     { serializers: bunyan.stdSerializers
@@ -157,6 +171,8 @@ function decorate (req, res, config) {
 
   res.redirect = function (target, code) {
     res.statusCode = code || 302
+    // strip out \n etc.
+    target = url.format(target)
     res.setHeader('location', target)
     var avail = ['text/html', 'application/json']
     res.html( '<html><body><h1>Moved'

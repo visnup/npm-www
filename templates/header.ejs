@@ -8,6 +8,10 @@
     href="/static/normalize.css">
   <link type="text/css" rel="stylesheet" media="all"
     href="/stylus/index.css">
+  <link type="text/css" rel="stylesheet" media="all"
+    href="/static/sh.css">
+  <link rel="search" type="application/opensearchdescription+xml"
+    href="/static/opensearch.xml" title="Search Packages" />
 <script>(function(){
 if (location.pathname === '/') {
 var m = location.hash.match(/^#\/[^\/]*$/)
@@ -21,7 +25,11 @@ if (m) location.replace('/package' + m[0].substr(1))
     <div id="page">
       <header>
         <form action="/search" method="get">
-          <input name=q type="search" placeholder="Search Packages" autofocus="autofocus">
+          <% if (typeof q !== 'undefined') { %>
+          <input name=q type="search" placeholder="Search Packages" value="<%= sanitize(q) %>">
+          <% } else { %>
+          <input name=q type="search" placeholder="Search Packages">
+          <% } %>
         </form>
         <h1>
           <a id="npm-logo" href="/">

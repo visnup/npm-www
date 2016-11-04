@@ -5,6 +5,7 @@ function profile (req, required, cb) {
   if (typeof required === 'function') cb = required, required = false
   req.session.get('profile', function (er, data) {
     if (!required && er) er = null
+
     if (er || data) return cb(er, req.profile = transform(data))
 
     // if we're logged in, try to see if we can get it

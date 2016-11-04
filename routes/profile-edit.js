@@ -1,5 +1,6 @@
 module.exports = profileEdit
 var config = require('../config.js')
+var userValidate = require('npm-user-validate')
 
 // thing for editing bits of your profile.
 // gets saved back to couchdb.
@@ -15,7 +16,7 @@ function profileEdit (req, res) {
 
     case 'HEAD':
     case 'GET':
-      return show(req, res)
+      return show(null, req, res)
 
     default:
       return res.error(405)
@@ -25,7 +26,7 @@ function profileEdit (req, res) {
 
 function saveThenShow (data, req, res) {
   if (!data.name) {
-    return res.error(new Error('name is required'), 400)
+    return show('name is required', req, res)
   }
 
   // get the user's own profile
@@ -48,6 +49,7 @@ function saveThenShow (data, req, res) {
           k === 'name' ||
           k === 'type' ||
           k === 'roles' ||
+          k === 'email' ||
           k === 'password_sha' ||
           k === 'salt') {
         return
@@ -82,10 +84,11 @@ function saveThenShow (data, req, res) {
 }
 
 // get the profile and show it on a form, maybe with a message
-function show (req, res) {
+function show (err, req, res) {
   req.model.load('profile', req)
   req.model.end(function (er, m) {
     var profile = m.profile
+    var statusCode = 200
     if (er || !profile || !profile.name) {
       req.session.set('done', req.url)
       return res.redirect('/login')
@@ -96,9 +99,14 @@ function show (req, res) {
     var locals = {
       profile: profile,
       fields: profile.fields,
-
-      title: 'Edit profile'
+      title: 'Edit profile',
+      error: err
     }
-    res.template("profile-edit.ejs", locals)
+
+    if (err) {
+      statusCode = 400
+    }
+
+    res.template("profile-edit.ejs", locals, statusCode)
   })
 }

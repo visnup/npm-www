@@ -7,6 +7,7 @@ var router = require("./router.js")
 , config = require("./config.js")
 , url = require("url")
 , path = require("path")
+, csrf = require('csrf-lite')
 
 , Keygrip = require("keygrip")
 
@@ -17,24 +18,12 @@ var router = require("./router.js")
 config.keys = new Keygrip(config.keys)
 
 function site (req, res) {
+  var start = process.hrtime()
+
   // only allow access via the canonical hostname
   if (config.canon(req, res)) return
 
   decorate(req, res, config)
-
-  // kludge!  remove this once we figure out wtf is going on.
-  var timeout = setTimeout(function () {
-    res.log.error('TIMEOUT! %s', req.url, res._header)
-    var er = new Error('Request timed out')
-    res.error(500, er)
-    setTimeout(function () {
-      res.socket.destroy()
-      throw er
-    }, 5000)
-  }, 30*1000) // nothing should take 30s ever.
-  res.on('finish', function () {
-    clearTimeout(timeout)
-  })
 
   var parsed = url.parse(req.url)
   var pathname = parsed.pathname
@@ -89,7 +78,11 @@ function site (req, res) {
       return res.error(415)
     }
     req.on('body', function (data) {
-      req.emit('form', qs.parse(data))
+      data = qs.parse(data)
+      var token = req.session.token
+      if (!csrf.valid(data, token))
+        return res.error(403, 'CSRF Detected')
+      req.emit('form', data)
     })
   }
 

@@ -2,8 +2,19 @@
   <h1>Sign all the way up</h1>
 
 <%
-if (error) {
-  %><p class=error>There was a problem!  The server said: <%= error %></p><%
+if (errors) {
+  %>
+  <p class="error">There was a problem! The server said:</p>
+  <ul>
+    <%
+    errors.forEach(function (error) { %>
+      <li>
+        <p class="error"><%= error.message %></p>
+      </li>
+    <%
+    }) %>
+  </ul>
+  <%
 }
 %>
 
@@ -27,7 +38,7 @@ if (error) {
 <fieldset>
 <label for=email>Email Address</label>
 <input id=email name=email type=email>
-<p class='form-help'>Must be a valid email address.  It <strong>will<strong>
+<p class='form-help'>Must be a valid email address.  It <strong>will</strong>
 be shown on the site, and on all packages you publish.</p>
 <p class='form-help'>Accounts without valid email addresses may be deleted
 without notice.</p>
@@ -36,5 +47,6 @@ without notice.</p>
 <fieldset class='buttons'>
 <button class='btn' type='submit'>Make it so.</button>
 </fieldset>
+<%- csrf %>
 </form>
 <%- include('footer.ejs', locals) %>

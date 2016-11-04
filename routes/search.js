@@ -1,14 +1,8 @@
-// this is basically just here to count form submissions,
-// but conceivably it could be used for other things as well.
-
 module.exports = search
-
-// behave like as if the user had done
-// <form method=get action="https://encrypted.google.com/search">
-// <input name=q type=hidden value='site:npmjs.org'>
 
 var fs = require('fs')
 var path = require('path')
+var querystring = require('querystring')
 var logFile = path.resolve(__dirname, '../search.log')
 var searches = []
 var minInterval = 1000 // no more than 1ce per second.
@@ -38,12 +32,26 @@ function update () {
   })
 }
 
+// TODO(isaacs): Show a fancy search page if no query, not a 404
 function search (req, res) {
   var u = req.url && req.url.split('?')[1]
   if (!u) return res.error(404)
-  var target = 'https://encrypted.google.com/search?' +
-               u + '&q=site:npmjs.org&hl=en'
-  searches.push(u.replace(/^q=/, '').replace(/\+/g, ' '))
-  res.redirect(target, '302')
+  var qs = querystring.parse(u)
+
+  // Support /search?foo+bar as well as /search?q=foo+bar
+  if (!qs.q) {
+    u = 'q=' + u
+    qs = querystring.parse(u)
+  }
+
+  req.model.load('search', qs)
+  req.model.end(function(er, m) {
+    if (er)
+      res.error(er)
+    else
+      res.template('search.ejs', m.search)
+  })
+
+  searches.push(qs.q)
   update()
 }

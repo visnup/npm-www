@@ -17,7 +17,18 @@ function profile (req, res) {
   }
 
   req.model.end(function (er, m) {
-    if (er) return res.error(er)
+    if (er) {
+      // if it's just a 404 then show the profile 404 page.
+      if (er.code === 404)
+        return res.template('profile-not-found.ejs', {
+          name: req.params.name,
+          stack: er.stack,
+          response: er.responseRaw.trim(),
+          profile: m.profile
+        }, 404)
+      else
+        return res.error(er.code, er)
+    }
     req.showprofile = m.showprofile || m.profile
     if (m.profile && req.showprofile) {
       req.showprofile.isSelf = req.showprofile.name === m.profile.name

@@ -11,6 +11,7 @@ function about (req, res) {
   req.model.end(function(er, m) {
     if(er) return res.error(er);
     td.profile = m.profile;
+    td.HEAD = config.HEAD
     res.template('about.ejs', td)
   })
 }

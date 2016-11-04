@@ -1,0 +1,21 @@
+<%- include('header.ejs', locals) %>
+<h1>Email Address Reverted!</h1>
+
+<p>
+  <a href=/profile-edit>Edit Profile</a> -
+  <a href=/password>Change Password</a> -
+  <a href=/forgot>Forgot Password</a>
+</p>
+
+<p>You have successfully reverted the email address change attempt.</p>
+
+<p>Your email address is (once again) <code><%= profile.email %></code>,
+  and the previous attempt to change it has been voided and completely
+  removed from the system.</p>
+
+<p>If this happened without your knowledge or consent, then there's a
+  very good chance that your password is no longer secure.</p>
+
+<p>Please <a href="/password">change your password now</a>.</p>
+
+<%- include('footer.ejs', locals) %>

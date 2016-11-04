@@ -1,0 +1,19 @@
+<% if (day || week || month) { %>
+  <table class="downloads">
+    <%
+    var content = []
+    if (day && day !== '0') {
+      content.push([day, ' downloads in the last day'])
+    }
+    if (week && week !== '0') {
+      content.push([week, ' downloads in the last week'])
+    }
+    if (month && month !== '0') {
+      content.push([month, ' downloads in the last month'])
+    }
+    %>
+    <%- content.map(function(l) {
+      return '<tr><td>' + l[0] + '</td><td>' + l[1] + '</td></tr>'
+    }).join('\n') %>
+  </table>
+<% } %>

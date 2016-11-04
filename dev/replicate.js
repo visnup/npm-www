@@ -6,6 +6,7 @@
 var replicate = require('replicate')
 , Replicator = replicate.Replicator
 , request = require('request')
+, initCouchDocs = require('./initCouchDocs')
 
 var crypto = require('crypto')
 function hash (id) {
@@ -28,30 +29,8 @@ function filterUser (id, rev) {
 
 // first sync up the design docs, since this is the most important
 // thing for the dev server starting up properly.
-var ddocs =
-  [ 'registry/_design/app',
-    'registry/_design/ghost',
-    'registry/_design/scratch' ]
 function replicateDdocs () {
-  var ddoc = ddocs.pop()
-  if (!ddoc) return replicatePackages()
-  request({ url: 'http://isaacs.iriscouch.com/' + ddoc, json: true }, then)
-  function then (er, res, body) {
-    if (er) throw er
-    if (res.statusCode !== 200) {
-      throw new Error('wtf?\n' + JSON.stringify([res.statusCode, body]))
-    }
-    request.put({ url: 'http://admin:admin@localhost:15984/' + ddoc +
-                       '?new_edits=false', body: body, json: true }, then2)
-  }
-  function then2 (er, res, body) {
-    if (er) throw er
-    if (res.statusCode !== 201) {
-      throw new Error('wtf?\n' + JSON.stringify([res.statusCode, body]))
-    }
-    console.error(body)
-    replicateDdocs()
-  }
+  initCouchDocs.replicateDdocs(replicatePackages);
 }
 
 
@@ -101,6 +80,13 @@ function morePackages () {
     from: 'http://isaacs.iriscouch.com/registry',
     to: 'http://admin:admin@localhost:15984/registry',
     filter: filterPackageMore
+  }).push(function () {
+    // this one we just let continue indefinitely.
+  })
+
+  new Replicator({
+    from: 'http://isaacs.iriscouch.com/downloads',
+    to: 'http://admin:admin@localhost:15984/downloads'
   }).push(function () {
     // this one we just let continue indefinitely.
   })

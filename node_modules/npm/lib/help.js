@@ -10,9 +10,10 @@ help.completion = function (opts, cb) {
 
 var fs = require("graceful-fs")
   , path = require("path")
-  , exec = require("./utils/exec.js")
+  , spawn = require("child_process").spawn
   , npm = require("./npm.js")
   , log = require("npmlog")
+  , opener = require("opener")
 
 function help (args, cb) {
   var num = 1
@@ -59,26 +60,19 @@ function help (args, cb) {
           switch (viewer) {
             case "woman":
               var a = ["-e", "(woman-find-file \"" + sectionPath + "\")"]
-              exec("emacsclient", a, env, true, cb)
+              var conf = { env: env, customFds: [ 0, 1, 2] }
+              var woman = spawn("emacsclient", a, conf)
+              woman.on("close", cb)
               break
 
             case "browser":
-              var b = npm.config.get("browser")
-              if (!b) {
-                return cb(new Error("viewer=browser and no browser set."))
-              }
-              console.log("Opening HTML in default browser...")
-              process.nextTick(cb)
-              // windows is SO weird.
-              if (process.platform === "win32") {
-                exec("cmd", ["/c", htmlPath], env, false, function () {})
-              } else {
-                exec(b, [htmlPath], env, false, function () {})
-              }
+              opener(htmlPath, { command: npm.config.get("browser") }, cb)
               break
 
             default:
-              exec("man", [num, section], env, true, cb)
+              var conf = { env: env, customFds: [ 0, 1, 2] }
+              var man = spawn("man", [num, section], conf)
+              man.on("close", cb)
           }
         }
       )

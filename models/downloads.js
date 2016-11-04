@@ -70,8 +70,12 @@ function load (k, cb) {
   })
 
   config.adminCouch.get(u + '?' + q, function (er, cr, data) {
-    if (er)
-      return cb(er)
+    // downloads aren't really that important.
+    // just lie and pretend we didn't see anything.
+    if (er || !data) {
+      data = { rows: [] }
+      er = null
+    }
 
     if (detail)
       data = data.rows.reduce(function (set, row) {
@@ -83,7 +87,7 @@ function load (k, cb) {
         return set
       }, {})
     else if (pkg)
-      data = data.rows.reduce(function (set, row) {
+      data = (data.rows || []).reduce(function (set, row) {
         var h = row.key[0]
         set[h] = row.value
         return set

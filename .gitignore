@@ -19,3 +19,5 @@ api/
 static/style.css
 static/webfonts/
 search.log
+dev/elasticsearch/data
+dev/elasticsearch/logs
